@@ -1,0 +1,129 @@
+package Modelo;
+
+import Conexion.ConectaSqlServer;
+import Entidad.Cliente;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClienteModel {
+
+    public List<Cliente> getAllClientes() {
+        List<Cliente> clientes = new ArrayList<Cliente>();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String Sql = "SELECT Cliente_id, Nombre, Correo, Telefono, Ci, Tipo_cliente_id, Estado\n"
+                    + "FROM Cliente WHERE Tipo_cliente_id = 1";
+            ResultSet res = db.consulta(Sql);
+            while (res.next()) {
+                Cliente cli = new Cliente();
+                cli.setCliente_id(res.getInt("Cliente_id"));
+                cli.setNombre(res.getString("Nombre"));
+                cli.setCorreo(res.getString("Correo"));
+                cli.setTelefono(res.getString("Telefono"));
+                cli.setEstado(res.getInt("Estado"));
+                clientes.add(cli);
+            }
+            db.cierraConexion();
+        } catch (SQLException ex) {
+            System.out.println("Modelo.ClienteModel.getAllClientes() " + ex.getMessage());
+        }
+        return clientes;
+    }
+
+    public Cliente getClienteByClienteId(int id) {
+        Cliente cli = new Cliente();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String Sql = "SELECT Cliente_id, Nombre, Correo, Telefono, Ci, Tipo_cliente_id, Estado\n"
+                    + "FROM Cliente where Tipo_cliente_id = 1 AND Cliente_id = '" + id + "'";
+            ResultSet res = db.consulta(Sql);
+            if (res.next()) {
+                cli.setCliente_id(res.getInt("Cliente_id"));
+                cli.setNombre(res.getString("Nombre"));
+                cli.setCorreo(res.getString("Correo"));
+                cli.setTelefono(res.getString("Telefono"));
+                cli.setEstado(res.getInt("Estado"));
+            }
+            db.cierraConexion();
+        } catch (SQLException ex) {
+            System.out.println("Modelo.ClienteModel.getAllClientes() " + ex.getMessage());
+        }
+        return cli;
+    }
+
+    public String UpdateCliente(Cliente cliente) {
+        String mensaje = "";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "UPDATE  Cliente\n"
+                    + "   SET Nombre = '" + cliente.getNombre() + "'\n"
+                    + "      ,Correo = '" + cliente.getCorreo() + "'\n"
+                    + "      ,Telefono = '" + cliente.getTelefono() + "'\n"
+                    + "      ,Estado = '" + cliente.getEstado() + "'\n"
+                    + "WHERE Cliente_id = '" + cliente.getCliente_id() + "'";
+            db.actualizar(sql);
+            db.cierraConexion();
+            mensaje = "Ok";
+        } catch (SQLException ex) {
+            System.out.println("Modelo.ClienteModel.UpdateCliente() " + ex.getMessage());
+        }
+        return mensaje;
+    }
+
+    public String DeleteCliente(int clienteId) {
+        String res = "";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "DELETE FROM Cliente\n"
+                    + "WHERE Cliente_id ='" + clienteId + "'";
+            db.insertar(sql);
+            res = "Ok";
+            db.cierraConexion();
+        } catch (SQLException e) {
+            res = "Modelo.ClienteModel.DeleteCliente() " + e.getMessage();
+            System.out.println(res);
+        }
+        return res;
+    }
+
+    public String InsertOrUpdateCliente(Cliente cliente) {
+        String respuesta = "";
+        try {
+            if (cliente.getCliente_id() == 0) {
+                //Insertamos
+                respuesta = InsertCliente(cliente);
+            } else {
+                //Actualizamos
+                respuesta = UpdateCliente(cliente);
+            }
+        } catch (Exception e) {
+            respuesta = "Modelo.ClienteModel.InsertOrUpdateCliente() " + e.getMessage();
+            System.out.println(respuesta);
+        }
+        return respuesta;
+    }
+
+    public String InsertCliente(Cliente cliente) {
+        String respuesta = "";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "INSERT INTO Cliente(Nombre, Correo, Telefono,Estado, Tipo_cliente_id)\n"
+                    + "     VALUES('" + cliente.getNombre() + "','" + cliente.getCorreo() + "','" + cliente.getTelefono() + "','" + cliente.getEstado() + "', 1)";
+            db.insertar(sql);
+            respuesta = "Ok";
+            db.cierraConexion();
+        } catch (SQLException e) {
+            respuesta = "Modelo.ClienteModel.InsertCliente() " + e.getMessage();
+            System.out.println(respuesta);
+        }
+        return respuesta;
+    }
+
+}

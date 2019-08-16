@@ -1,0 +1,151 @@
+package Entidad;
+
+public class Empleado {
+
+    private int Empleado_id;
+    private String Nombre;
+    private String Apellido_paterno;
+    private String Apellido_materno;
+    private String Email;
+    private String Fecha_nacimiento;
+    private String Telefono;
+    private String Fecha_creacion;
+    private int Estado;
+    private int Estado_civil_id;
+    private String Pais_id;
+    private String Foto;
+    
+
+    //Esta tabla esta relacionada con 
+    //Empleado_cargo
+    private Empleado_cargo Cargo;
+
+    /*
+    Tiene relacion con la tabla Pais
+    Estado_civil
+    Agregamos estos parametros
+     */
+    private String PaisNombre;
+    private String Estado_civil_Nombre;
+
+    public String getFoto() {
+        return Foto;
+    }
+
+    public void setFoto(String Foto) {
+        this.Foto = Foto;
+    }
+
+    public Empleado_cargo getCargo() {
+        return Cargo;
+    }
+
+    public void setCargo(Empleado_cargo Cargo) {
+        this.Cargo = Cargo;
+    }
+
+    public String getPaisNombre() {
+        return PaisNombre;
+    }
+
+    public void setPaisNombre(String PaisNombre) {
+        this.PaisNombre = PaisNombre;
+    }
+
+    public String getEstado_civil_Nombre() {
+        return Estado_civil_Nombre;
+    }
+
+    public void setEstado_civil_Nombre(String Estado_civil_Nombre) {
+        this.Estado_civil_Nombre = Estado_civil_Nombre;
+    }
+
+    public int getEmpleado_id() {
+        return Empleado_id;
+    }
+
+    public void setEmpleado_id(int Empleado_id) {
+        this.Empleado_id = Empleado_id;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
+
+    public String getApellido_paterno() {
+        return Apellido_paterno;
+    }
+
+    public void setApellido_paterno(String Apellido_paterno) {
+        this.Apellido_paterno = Apellido_paterno;
+    }
+
+    public String getApellido_materno() {
+        return Apellido_materno;
+    }
+
+    public void setApellido_materno(String Apellido_materno) {
+        this.Apellido_materno = Apellido_materno;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+
+    public String getFecha_nacimiento() {
+        return Fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(String Fecha_nacimiento) {
+        this.Fecha_nacimiento = Fecha_nacimiento;
+    }
+
+    public String getTelefono() {
+        return Telefono;
+    }
+
+    public void setTelefono(String Telefono) {
+        this.Telefono = Telefono;
+    }
+
+    public String getFecha_creacion() {
+        return Fecha_creacion;
+    }
+
+    public void setFecha_creacion(String Fecha_creacion) {
+        this.Fecha_creacion = Fecha_creacion;
+    }
+
+    public int getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(int Estado) {
+        this.Estado = Estado;
+    }
+
+    public int getEstado_civil_id() {
+        return Estado_civil_id;
+    }
+
+    public void setEstado_civil_id(int Estado_civil_id) {
+        this.Estado_civil_id = Estado_civil_id;
+    }
+
+    public String getPais_id() {
+        return Pais_id;
+    }
+
+    public void setPais_id(String Pais_id) {
+        this.Pais_id = Pais_id;
+    }
+
+}

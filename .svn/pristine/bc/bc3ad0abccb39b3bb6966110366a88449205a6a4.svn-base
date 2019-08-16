@@ -1,0 +1,37 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controlador;
+
+import Entidad.A_Tarea;
+import Modelo.A_TareaModel;
+import java.util.List;
+
+/**
+ *
+ * @author Invitado1
+ */
+public class A_TareaController {
+    public List<A_Tarea> getAllEstadoTarea(int idUsuario) {
+        A_TareaModel x = new A_TareaModel();
+        return x.getAllTarea(idUsuario);
+    }
+    
+    public A_Tarea getTareaById(int idTarea) {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getTareaById(idTarea);
+    }
+    
+    public String SaveOrUpdate(A_Tarea tarea) {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.SaveOrUpdate(tarea);
+    }
+    
+    public String DeleteTareaById(int idTarea) {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.DeleteTarea(idTarea);
+    }
+    
+}

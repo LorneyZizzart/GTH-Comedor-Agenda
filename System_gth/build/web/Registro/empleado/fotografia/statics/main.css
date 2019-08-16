@@ -1,0 +1,211 @@
+
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+.btn-success {
+    border: 1px solid rgba(0,0,0,.2);
+    padding: 8px 20px;
+    background-color: #FFDC73;
+    background: -moz-linear-gradient(top,#FFE599 0%,#FFDC73);
+    background: -webkit-gradient(linear, left top, left bottom,from(#FFE599),to(#FFDC73));
+    box-shadow: 0 1px 1px rgba(255,255,255,.5);
+}
+
+
+.btn input {
+    top: -10px;
+    right: -40px;
+    z-index: 2;
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.btn-txt {
+    position: relative;
+}
+
+.btn .progress {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: .5;
+    position: absolute;
+}
+.progress .bar {
+    width: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    background-color: #f60;
+}
+
+
+.progress-small {
+    height: 5px;
+    padding: 1px;
+    box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.5);
+}
+.progress-small .bar {
+    width: 0;
+    height: 100%;
+    position: static;
+    border-radius: 10px;
+    background-color: orange;
+}
+
+
+.userpic {
+    width: 200px;
+    height: 200px;
+    border: 2px solid #aaa;
+    display: inline-block;
+    position: relative;
+    background: url('uploader/userpic.gif') no-repeat;
+    background-size: cover;
+}
+
+
+
+
+
+.btn {
+    cursor: pointer;
+    *zoom: 1;
+    *display: inline;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    font-size: 20px;
+    font-family: Arial;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+.btn_browse {
+    border: 1px solid rgba(0,0,0,.2);
+    padding: 8px 20px;
+    background-color: #FFDC73;
+    background: -moz-linear-gradient(top,#FFE599 0%,#FFDC73);
+    background: -webkit-gradient(linear, left top, left bottom,from(#FFE599),to(#FFDC73));
+    box-shadow: 0 1px 1px rgba(255,255,255,.5);
+}
+.btn_browse_small {
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
+.btn_browse_small[aria-disabled] {
+    opacity: .5;
+}
+
+.btn_choose {
+    color: #fff;
+    border: 2px solid rgba(255,255,255,.4);
+    padding: 5px 10px;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    background-color: rgba(0,0,0,.4);
+    *background-color: #aaa;
+}
+
+.btn__inp {
+    top: -10px;
+    right: -10px;
+    cursor: pointer;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    font-size: 50px;
+    position: absolute;
+}
+
+.btn__progress {
+    top: 0;
+    left: 0;
+    height: 100%;
+    opacity: .5;
+    position: absolute;
+    background-color: #f60;
+}
+
+.fileprogress {
+    padding: 1px;
+    height: 5px;
+    box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.5);
+}
+.fileprogress__bar {
+    width: 0;
+    height: 100%;
+    border-radius: 10px;
+    background-color: orange;
+}
+
+.userpic {
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgba(0,0,0,.3);
+    display: inline-block;
+    position: relative;
+}
+.userpic .btn {
+    margin-top: 150px;
+}
+
+.userpic__preview {
+    position: absolute;
+}
+
+
+.b-upload {
+    white-space: nowrap;
+}
+.b-upload__name,
+.b-upload__size {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    max-width: 150px;
+    vertical-align: middle;
+}
+.b-upload__size {
+    color: #666;
+    font-size: 12px;
+}
+
+.b-upload .js-files:after {
+    clear: both;
+    content: '';
+    display: block;
+}
+
+.b-upload__dnd {
+    padding: 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: rgba(0,0,0,.1);
+}
+.b-upload__dnd_hover {
+    color: #fff;
+    background-color: orange;
+}
+
+.popup {
+    margin: 25px;
+    float: right;
+    display: inline-block;
+    box-shadow: 0 0 5px #000;
+    background-color: #fff;
+}
+.popup__body {
+
+    margin: auto;
+}

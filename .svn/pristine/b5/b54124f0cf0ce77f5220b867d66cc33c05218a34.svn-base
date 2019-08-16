@@ -1,0 +1,139 @@
+<%@page import="Entidad.C_TipoComensal"%>
+<%@page import="Entidad.C_TipoComida"%>
+<%@page import="Entidad.Empleado"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<jsp:useBean id="_tipoComida" class="Controlador.C_TipoComidaController"/>
+<jsp:useBean id="_tipoComensal" class="Controlador.C_TipoComensalesController"/>
+<jsp:useBean id="_empleadoController" class="Controlador.EmpleadoController"/>
+<%
+
+    String idUsuario = request.getParameter("idUser");
+    String dataStart = request.getParameter("fechaInicio");
+    String dataEnd = request.getParameter("fechaFin");        
+    List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
+    List<C_TipoComida> listaTipoComida = new ArrayList<C_TipoComida>();
+    List<Empleado> listaEmpleados = new ArrayList<Empleado>();
+
+    listaEmpleados = _empleadoController.GetAllEmpleado();
+    listaComensal = _tipoComensal.getAllTipoComensal();
+    listaTipoComida = _tipoComida.getAllTipoComida();
+%>
+<input type="hidden" value="<%=listaTipoComida.size()%>" name="lengthComida" id="lengthComida">
+<form id="form_guardar" method="post" class="form_guardar">
+    <input type="hidden" value="<%=idUsuario%>" name="idUsuario" id="idUsuario">
+    <input type="hidden" value="<%=dataStart%>" name="fechaInicio" id="fechaInicio">
+    <input type="hidden" value="<%=dataEnd%>" name="fechaFin" id="fechaFin">
+                    <div class="box-body">
+                         <div class="form-group">
+                            <label>Empleados</label>
+                            <select name="idEmpleado" class="select2 form-control"  multiple="multiple"  style="width: 100%;">
+                                <option disabled>Selecione una opci�n</option>
+                                <%
+                                    for (Empleado item : listaEmpleados) {
+                                    if(item.getEstado() == 1){
+                                    %>
+                                <option value="<%=item.getEmpleado_id()%>"><%=item.getNombre()%> <%=item.getApellido_paterno()%></option>
+                                <% } } %>
+                            </select>
+                        </div>                         
+                        <div class="form-group">
+                            <label>Color</label>
+                            <input type="color" class="form-control" id="color" name="color">
+                        </div>
+                        <div id="editor">
+                            <h2>The three greatest things you learn from traveling</h2>
+                            <p>Like all the great things on earth traveling teaches us by example. Here are some of the most precious lessons I?ve learned over the years of traveling.</p>
+                            <h3>Appreciation of diversity</h3>
+                            <p>Getting used to an entirely different culture can be challenging. While it?s also nice to learn about cultures online or from books, nothing comes close to experiencing <a href="https://en.wikipedia.org/wiki/Cultural_diversity">cultural diversity</a> in person. You learn to appreciate each and every single one of the differences while you become more culturally fluid.</p>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                        <button type="submit" class="btn-purple pull-right"><i class="fa fa-calendar-check-o"></i> Reservar</button>
+                    </div>
+                </form>
+        <div id="mensaje"></div>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+    $(function () {
+    $('.select2').select2()
+    });
+
+    ClassicEditor
+    .create( document.querySelector( '#editor' ), {
+    language: 'es',
+    toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+    } )
+    .then( editor => {
+    window.editor = editor;
+    } )
+    .catch( err => {
+    console.error( err.stack );
+    });
+
+    var array = [];
+    for(var i = 1; i <= $("#lengthComida").val(); i++){
+        array.push(i);
+    }
+    array.forEach(function (element){
+      $('.posicion'+ element).change(function() {
+            if(this.checked) {
+              $('.cantidad'+element).prop("disabled", false);
+              $('.cantidad'+element).val("1");
+            } else {
+              $('.cantidad'+element).prop("disabled", true);
+              $('.cantidad'+element).val("");
+            }
+       });  
+    })
+    
+        $('.form_guardar').bootstrapValidator({
+//            SOLO VALIDA TRES TIPOS DE COMIDAS [DESAYUNO, ALMUERZO, CENA]
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                idTipoComensal: {
+                    validators: {
+                        notEmpty: {
+                            message: 'El tipo de comensal es requerido'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function (e) {
+            // Prevent submit form
+            e.preventDefault();
+            $("#mensaje").show();
+            $("#mensaje").addClass("loader");
+
+
+            var $form = $(e.target),
+                    validator = $form.data('bootstrapValidator');
+            $.ajax({
+                type: "POST",
+                url: "guardarReservaEmpleado.jsp",
+                data: $(".form_guardar").serialize(),
+                success: function (data)
+                {
+                    $("#mensaje").removeClass("loader");
+                    $("#mensaje").html(data);
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $("#mensaje").removeClass("loader");
+                    var menn = "<p class='text-red'>Se produjo un error " + errorThrown + "  " + textStatus + "</p>";
+                    $("#mensaje").html(menn);
+                }
+            });
+        });
+        
+        
+        
+    });
+</script>

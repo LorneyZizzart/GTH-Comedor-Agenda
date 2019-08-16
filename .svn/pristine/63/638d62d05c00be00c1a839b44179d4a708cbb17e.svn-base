@@ -1,0 +1,134 @@
+package Modelo;
+
+import Conexion.ConectaSqlServer;
+import Entidad.Login_Entidad;
+import Entidad.Menu;
+import Entidad.Opcion;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class LoginModel {
+
+    public Login_Entidad Iniciar_sesion(String usuario, String contrasena) {
+        Login_Entidad login = new Login_Entidad();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "Select e.foto, u.User_id, u.Usuario, u.Estado, u.Perfil, u.email, (e.Nombre +' '+e.Apellido_paterno+' '+e.Apellido_materno)NombreCompleto, e.Nombre,u.Empleado_id \n"
+                    + "from Usuario u\n"
+                    + "inner join Empleado e\n"
+                    + "on e.Empleado_id = u.Empleado_id\n"
+                    + "where u.email = '" + usuario + "' and u.Contrasena = '" + contrasena + "'";
+            //System.out.println("Login --- " + sql);
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {
+                login.setUser_id(res.getInt("User_id"));
+                login.setUsuario(res.getString("Usuario"));
+                login.setEstado(res.getInt("Estado"));
+                login.setPerfil(res.getString("Perfil"));
+                if (login.getEstado() > 1) {
+                    login.setMensage("Se encuentra Bloqueado la cuenta");
+                } else {
+                    login.setMensage("Ok");
+                }
+                login.setCorreo(res.getString("email"));
+                login.setNombreCompleto(res.getString("NombreCompleto"));
+                login.setNombre(res.getString("Nombre"));
+                login.setEmpleado_id(res.getInt("Empleado_id"));
+                login.setFoto_Empleado(res.getString("foto"));
+            } else {
+                login.setEstado(0);
+                login.setMensage("Usuario no encontrado");
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            String mensage = ("Modelo.LoginModel.Iniciar_sesion()" + e.getMessage());
+            System.out.println(mensage);
+            login.setMensage(mensage);
+            login.setEstado(-1);
+        }
+        return login;
+    }
+
+    public List<Menu> MenuUsuario(int codigo_usuario) {
+        List<Menu> MenuUser = new ArrayList<Menu>();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "Select m.Menu_id, m.Nombre, m.Url, m.Estado, m.Posicion, m.Icono \n"
+                    + "from Usuario_opcion uo \n"
+                    + "		inner join Opcion o \n"
+                    + "		on uo.Opcion_id = o.Opcion_id\n"
+                    + "		inner join Menu m \n"
+                    + "		on m.Menu_id = o.Menu_id\n"
+                    + "where uo.User_id = '" + codigo_usuario + "' and m.Estado=1 \n"
+                    + "group by m.Menu_id, m.Nombre,m.Url,m.Estado, m.Posicion, m.Icono order by m.Posicion ";
+            ResultSet res = db.consulta(sql);
+            while (res.next()) {
+                Menu item = new Menu();
+                item.setMenu_id(res.getInt("Menu_id"));
+                item.setNombre(res.getString("Nombre"));
+                item.setUrl(res.getString("Url"));
+                item.setEstado(res.getInt("Estado"));
+                item.setPosicion(res.getInt("Posicion"));
+                item.setIcono(res.getString("Icono"));
+
+                List<Opcion> opciones = new ArrayList<>();
+                String sql2 = "Select o.Opcion_id, o.Nombre, o.Url, o.Descriocion, o.Estado, o.Orden, o.Menu_id\n"
+                        + "from Usuario_opcion uo \n"
+                        + "		inner join Opcion o \n"
+                        + "		on uo.Opcion_id = o.Opcion_id		\n"
+                        + "where uo.User_id = '" + codigo_usuario + "' and o.Menu_id = '" + item.getMenu_id() + "' order by o.Orden";
+                ResultSet re = db.consulta(sql2);
+                while (re.next()) {
+                    Opcion o = new Opcion();
+                    o.setOpcion_id(re.getInt("Opcion_id"));
+                    o.setNombre(re.getString("Nombre"));
+                    o.setUrl(re.getString("Url"));
+                    o.setDescriocion(re.getString("Descriocion"));
+                    o.setEstado(re.getInt("Estado"));
+                    o.setOrden(re.getInt("Orden"));
+                    o.setMenu_id(re.getInt("Menu_id"));
+                    opciones.add(o);
+                }
+                item.setOpciones(opciones);
+                MenuUser.add(item);
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Modelo.LoginModel.MenuUsuario()" + e.getMessage());
+        }
+        return MenuUser;
+    }
+
+    public Login_Entidad evaluacion_login(int id) {
+        Login_Entidad usuario = new Login_Entidad();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            int id_user = 0;
+            String sql = "select Evalua_empleado_id from  Cuestioario_evalua where Cuestionario_evalua_id = '" + id + "'";
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {
+                id_user = res.getInt("Evalua_empleado_id");
+            }
+            String sql_datosEmpleado = "select Empleado_id, (Nombre+' '+Apellido_paterno+' '+Apellido_materno)Usuario, email,(Nombre+' '+Apellido_paterno+' '+Apellido_materno)NombreCompleto, Nombre\n"
+                    + "from Empleado where Empleado_id = '" + id_user + "'";
+            ResultSet res_datos = db.consulta(sql_datosEmpleado);
+            if (res_datos.next()) {
+                usuario.setUser_id(res_datos.getInt("Empleado_id"));
+                usuario.setUsuario(res_datos.getString("Usuario"));
+                usuario.setCorreo(res_datos.getString("email"));
+                usuario.setNombreCompleto(res_datos.getString("NombreCompleto"));
+                usuario.setNombre(res_datos.getString("Nombre"));
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println(" " + e.getMessage());
+        }
+        return usuario;
+    }
+
+}

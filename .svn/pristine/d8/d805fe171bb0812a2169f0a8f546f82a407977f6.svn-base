@@ -1,0 +1,62 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controlador;
+
+import Entidad.A_RepeticionTarea;
+import Entidad.A_Tarea;
+import Controlador.A_RepeticionTareaController;
+import Modelo.A_TareaModel;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Invitado1
+ */
+public class A_TareaController {
+    public List<A_Tarea> getAllTarea(int idUsuario) {
+        A_TareaModel x = new A_TareaModel();
+        return x.getAllTarea(idUsuario);
+    }
+    
+    public A_Tarea getTareaById(int idTarea) {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getTareaById(idTarea);
+    }
+    
+    public String SaveOrUpdate(A_Tarea tarea) {
+        A_TareaModel mod = new A_TareaModel();
+        A_RepeticionTareaController _repeticionTarea = new A_RepeticionTareaController();
+        List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
+        listaRepeticionTarea =  _repeticionTarea.getAllRepeticionTarea();
+        tarea.getIdRepeticionTarea();
+        
+        return mod.SaveOrUpdate(tarea);
+    }
+    
+    public String DeleteTareaById(int idTarea) {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.DeleteTarea(idTarea);
+    }
+    
+    public List<A_Tarea> getAllTareaCalendar(int idUsuario) {        
+        A_TareaModel x = new A_TareaModel();
+        List<A_Tarea> tareas = new ArrayList<A_Tarea>();
+        tareas = x.getAllTarea(idUsuario);
+        for(A_Tarea item : tareas){
+            String[] fechaInicio = item.getFechaInicio().split("/");
+            String[] fechaFinal = item.getFechaFinal().split("/");
+            item.setFechaInicio(fechaInicio[2]+"-"+fechaInicio[1]+"-"+fechaInicio[0]);
+            item.setFechaFinal(fechaFinal[2]+"-"+fechaFinal[1]+"-"+fechaFinal[0]);
+            String horaInicio = item.getHoraInicio().replace(" ","");
+            String horaFinal = item.getHoraFinal().replace(" ","");
+            item.setHoraInicio(horaInicio.substring(0, 5));
+            item.setHoraFinal(horaFinal.substring(0, 5));
+        }
+        return tareas;
+    }
+    
+}

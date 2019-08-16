@@ -1,0 +1,107 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Entidad;
+
+import java.sql.Date;
+
+/**
+ *
+ * @author Invitado1
+ */
+public class A_Tarea extends A_EstadoTarea{
+    
+    private int IdTarea;
+    private String Titulo;
+    private String Descripcion;
+    private String Color;
+    private String FechaInicio;
+    private String FechaFinal;
+    private int EstadoTarea;
+    private Date FechaRegistroTarea;
+    private Date FechaActualizacionTarea;
+    private int IdUserCrea;
+    
+    private void setIdUserCrea(int idUserCrea){
+        this.IdUserCrea = idUserCrea;
+    }
+    
+    private int getIdUserCrea(){
+        return IdUserCrea;
+    }
+    
+    public void setFechaActualizacion(Date fechaActualizacion){
+        this.FechaActualizacionTarea = fechaActualizacion;
+    }
+    
+    public Date getFechaActualizacion(){
+        return FechaActualizacionTarea;
+    }
+    
+    public void setFechaRegistro(Date fechaRegistro){
+        this.FechaRegistroTarea = fechaRegistro;
+    }
+    
+    public Date getFechaRegistroTare(){
+        return FechaRegistroTarea;
+    }
+    
+    public void setEstadoTarea(int estadoTarea){
+        this.EstadoTarea = estadoTarea;
+    }
+    
+    public int getEstadoTarea(){
+        return EstadoTarea;
+    }
+    
+    public void serFechaFinal(String fechaFinal){
+        this.FechaFinal = fechaFinal; 
+    }
+    
+    public String getFechaFinal(){
+        return FechaFinal;
+    }
+    
+    public void setFechaInicio(String fechaInicio){
+        this.FechaInicio = fechaInicio;
+    }
+    
+    public String getFechaInicio(){
+        return FechaInicio;
+    }
+    
+    public void setColor(String color){
+        this.Color = color;
+    }
+    
+    public String getColor(){
+        return Color;
+    }
+    
+    public void setDescripcion(String descripcion){
+        this.Descripcion = descripcion;
+    }
+    
+    public String getDescripcion(){
+        return Descripcion;
+    }
+    
+    public void setTitulo(String titulo){
+        this.Titulo = titulo;
+    }
+    
+    public String getTitulo(){
+        return Titulo;
+    }
+    
+    public void setIdTarea(int idTarea){
+        this.IdTarea = idTarea;
+    }
+    
+    public int getIdTarea(){
+        return IdTarea;
+    }
+    
+}
