@@ -24,26 +24,19 @@
     <input type="hidden" value="<%=id%>" name="id" id="id">
     <input type="hidden" value="0" name="idUsuario" id="idUsuario">
     <input type="hidden" value="<%=tarea.getFechaFinal()%>" name="ff" id="ff">
-                    <div class="box-body">
+    
+    <div class="nav-tabs-custom" style="margin-bottom: 0px;">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab">Tab 1</a></li>
+              <li><a href="#tab_2" data-toggle="tab">Tab 2</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                <div class="box-body">
                         <div class="form-group" >
                             <label>Título</label>
                             <input type="text" class="form-control" id="titulo"  name="titulo" value="<%=tarea.getTitulo()%>" >                            
-                        </div>                         
-                        <div class="form-group">
-                            <label>Color</label>
-
-                            <div class="input-group my-colorpicker2">
-                                <input type="text" class="form-control" name="color" value="<%=tarea.getColor()%>">
-                              <div class="input-group-addon">
-                                <i></i>
-                              </div>
-                            </div>
-                            <!-- /.input group -->
-                        </div>
-                        <div class="form-group">
-                            <label>Descripción</label>
-                            <textarea class="form-control" rows="3" id="descripcion"  name="descripcion"><%=tarea.getDescripcion()%></textarea>
-                        </div>
+                        </div>                                                                                                          
                         <div class="form-group col-md-6" style="padding-right: 0;padding-left: 0;">
                             <label>Fecha incio:</label>
                             <div class="input-group date">
@@ -143,6 +136,50 @@
                             </select>
                         </div>
                     </div>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+                <div class="box-body">                        
+                        <div class="form-group">
+                            <label>Color</label>
+
+                            <div class="input-group my-colorpicker2">
+                                <input type="text" class="form-control" name="color" value="<%=tarea.getColor()%>">
+                              <div class="input-group-addon">
+                                <i></i>
+                              </div>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <textarea class="form-control" rows="15" id="descripcion"  name="descripcion"><%=tarea.getDescripcion()%></textarea>
+                        </div>
+                        <ul class="mailbox-attachments clearfix">
+                <li>
+                  <span class="mailbox-attachment-icon"><i class="fa fa-file-word-o"></i></span>
+
+                  <div class="mailbox-attachment-info">
+                    <a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> CARTA JOVEN.docx</a>
+                        <span class="mailbox-attachment-size">
+                          1,245 KB
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
+                        </span>
+                  </div>
+                </li>
+              </ul>
+                        <div class="form-group" >
+                            <label>Seleccionar archivo</label>
+                            <input type="file" id="file"  name="file"> 
+                        </div>
+                    </div>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    
+                    
                     <!-- /.box-body -->
 
                     <div class="box-footer">
@@ -150,7 +187,7 @@
                         <button type="submit" class="btn btn-purple pull-right"><i class="fa fa-refresh"></i> Actualizar</button>
                     </div>
                 </form>
-        <div id="mensaje"></div>
+                        <div id="mensaje" style="margin: 2%;padding-bottom: 0.1%;"></div>
 <script type="text/javascript">
     $(document).ready(function () {
         //Timepicker

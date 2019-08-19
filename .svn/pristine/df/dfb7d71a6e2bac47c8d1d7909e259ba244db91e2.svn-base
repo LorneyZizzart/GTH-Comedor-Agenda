@@ -33,15 +33,6 @@ public class A_Tarea extends A_EstadoTarea{
     private String HoraFinal;
     private List<Empleado> Empleados;
     private int IdEmpleadoTarea;
-    private String Path;
-    
-    public void setPath(String path){
-        this.Path = path;
-    }
-    
-    public String getPath(){
-        return Path;
-    }
     
     public void setIdEmpleadoTarea(int idEmpleadoTarea){
         this.IdEmpleadoTarea = idEmpleadoTarea;

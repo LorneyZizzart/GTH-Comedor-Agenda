@@ -45,7 +45,7 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h4 id="titleModal" class="modal-title">title</h4>
                 </div>
-                <div class="modal-body cuerpo_registro">
+                <div class="modal-body cuerpo_registro " style="padding: 0%;">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
                 </div>
             </div>
@@ -82,7 +82,7 @@
       selectable: true,
       selectMirror: true,
       select: function(e) {       
-        $(".modal-dialog").width("30%");
+        $(".modal-dialog").width("40%");
         $("#titleModal").html("Crear tarea");
         $('#formulario_registro').modal('show');
         $(".cuerpo_registro").html('');
@@ -147,7 +147,7 @@
         return yesterday.diff(select.start) <= 0;
       },
       eventClick(e){
-        $(".modal-dialog").width("30%");
+        $(".modal-dialog").width("40%");
         $("#titleModal").html("Editar tarea");
         $('#formulario_registro').modal('show');
         $(".cuerpo_registro").html('');

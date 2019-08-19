@@ -157,11 +157,26 @@ button[disabled], html input[disabled] {
     border-radius: 10px;
 }
 
-@media screen and (max-width:480px){
+.modal-body .calendarBody{
+    padding: 0%;
+}
+
+@media only  screen and (max-width:480px){
     .content-encuesta{
         padding: 0;
         margin-right: 2%;
         margin-left: 2%;
         margin-bottom: 2%;
     }
+    
+    .modal-dialog {
+        color: #c31717;
+        width: 95%;
+    }    
+}
+
+@media only  screen and (max-width:700px){    
+    .modal-dialog {
+        width: 80%;
+    }    
 }

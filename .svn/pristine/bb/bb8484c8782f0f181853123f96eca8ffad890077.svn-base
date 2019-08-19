@@ -8,18 +8,13 @@ package Controlador;
 import Entidad.A_RepeticionTarea;
 import Entidad.A_Tarea;
 import Controlador.A_RepeticionTareaController;
-import Modelo.AFileUploadHandler;
 import Modelo.A_TareaModel;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -101,16 +96,6 @@ public class A_TareaController {
             item.setHoraFinal(horaFinal.substring(0, 5));
         }
         return tareas;
-    }
-    
-    public void UploadFile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        AFileUploadHandler mod = new AFileUploadHandler();
-        try {
-                mod.doPost( request, response);
-            } catch (Exception ex) {
-               request.setAttribute("message", "File Upload Failed due to " + ex);
-            } 
-        
     }
     
 }

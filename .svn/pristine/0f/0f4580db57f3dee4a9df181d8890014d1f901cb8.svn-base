@@ -1,8 +1,8 @@
-<%--<%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="org.apache.commons.fileupload.FileItem"%>
 <%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
 <%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
 <%@page import="javax.servlet.http.*" %>
-<%@page import="org.apache.commons.io.output.*" %>--%>
+<%@page import="org.apache.commons.io.output.*" %>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.io.File"%>
 <%@page import="Entidad.Empleado"%>
@@ -34,7 +34,6 @@
         tarea.setIdRepeticionTarea(Integer.parseInt(request.getParameter("idRepeticion")));
         tarea.setIdTipoTarea(Integer.parseInt(request.getParameter("idCategoria")));
         tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));
-        tarea.setPath("");
         if (request.getParameterValues("funcionario") != null) {
             String[] funcionario  = request.getParameterValues("funcionario");
             for(String f : funcionario){

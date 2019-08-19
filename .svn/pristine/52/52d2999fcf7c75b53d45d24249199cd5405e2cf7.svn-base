@@ -38,19 +38,30 @@
     <input type="hidden" value="0" name="id" id="id">
     <input type="hidden" value="<%=idUsuario%>" name="idUsuario" id="idUsuario">
     <input type="hidden" value="<%=formateador.format(dateEnd)%>" name="ff" id="ff">
-    
-    <div class="nav-tabs-custom" style="margin-bottom: 0px;">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab">Tab 1</a></li>
-              <li><a href="#tab_2" data-toggle="tab">Tab 2</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="tab_1">
-                <div class="box-body">
+                    <div class="box-body">
                         <div class="form-group" >
                             <label>TÌtulo</label>
                             <input type="text" class="form-control" id="titulo"  name="titulo">                            
-                        </div> 
+                        </div>                         
+                        <div class="form-group">
+                            <label>Color</label>
+
+                            <div class="input-group my-colorpicker2">
+                                <input type="text" class="form-control" name="color">
+                              <div class="input-group-addon">
+                                <i></i>
+                              </div>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>DescripciÛn</label>
+                            <textarea class="form-control" rows="3" id="descripcion"  name="descripcion"></textarea>
+                        </div>
+                        <div class="form-group" >
+                            <label>Seleccionar archivo</label>
+                            <input type="file" id="file"  name="file"> 
+                        </div>
                         <div class="form-group col-md-6" style="padding-right: 0;padding-left: 0;">
                             <label>Fecha incio:</label>
                             <div class="input-group date">
@@ -147,37 +158,6 @@
                             </select>
                         </div>
                     </div>
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="tab_2">
-                  <div class="box-body">
-                <div class="form-group">
-                            <label>Color</label>
-
-                            <div class="input-group my-colorpicker2">
-                                <input type="text" class="form-control" name="color" value="#541686">
-                              <div class="input-group-addon">
-                                <i></i>
-                              </div>
-                            </div>
-                            <!-- /.input group -->
-                        </div>
-                        <div class="form-group">
-                            <label>DescripciÛn</label>
-                            <textarea class="form-control" rows="15" id="descripcion"  name="descripcion"></textarea>
-                        </div>
-                        <div class="form-group" >
-                            <label>Seleccionar archivo</label>
-                            <input type="file" id="file"  name="file"> 
-                        </div>
-                      </div>
-              </div>
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-                    
                     <!-- /.box-body -->
 
                     <div class="box-footer">
@@ -185,8 +165,10 @@
                         <button type="submit" class="btn-purple pull-right"><i class="fa fa-save"></i> Guardar</button>
                     </div>
                 </form>
-        <div  id="mensaje" style="margin: 2%; padding-bottom: 0.1%;"></div>
+        <div id="mensaje"></div>
 <script type="text/javascript">
+    
+
 
     function cargarArchivo(elemento){
         var file = elemento.files[0];
@@ -271,6 +253,15 @@
                     validators: {
                         notEmpty: {
                             message: 'La descripciÛn no puede ser vacio.'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 500,
+                            message: 'La descripciÛn debe contener de 5 a 500 caracteres.'
+                        },
+                        regexp: {
+                            regexp: /^([-a-z0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
+                            message: 'El nombre de usuario solo puede constar de letras, n˙meros y guiones bajos.'
                         }
                     }
                 },

@@ -24,7 +24,7 @@ public class A_TareaModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT ta.idTarea, ta.idTipoTarea, ta.idEstadoTarea, ta.idRepeticionTarea, ta.idUsuarioCrea, ta.titulo, ta.descripcion, ta.color, ta.fechaInicio, ta.fechaFinal, ta.estado, ta.fechaRegistro, ta.fechaActualizacion, ta.horaInicio, ta.horaFinal, ta.path,\n" +
+            String sql = "SELECT ta.idTarea, ta.idTipoTarea, ta.idEstadoTarea, ta.idRepeticionTarea, ta.idUsuarioCrea, ta.titulo, ta.descripcion, ta.color, ta.fechaInicio, ta.fechaFinal, ta.estado, ta.fechaRegistro, ta.fechaActualizacion, ta.horaInicio, ta.horaFinal,\n" +
                         "ti.nombre as nombreTipo,\n" +
                         "et.nombre as nombreEstado,\n" +
                         "rt.nombre as nombreRepeticion, rt.sumarDias, rt.sumarMes, rt.sumarYear,						\n" +
@@ -69,7 +69,6 @@ public class A_TareaModel {
                 tarea.setSumarMes(res.getInt("sumarMes"));
                 tarea.setSumarYear(res.getInt("sumarYear"));
                 tarea.setIdEmpleadoTarea(res.getInt("idEmpleadoTarea"));
-                tarea.setPath(res.getString("path"));
                 tareas.add(tarea);
             }
             db.cierraConexion();
@@ -86,7 +85,7 @@ public class A_TareaModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT ta.idTarea, ta.idTipoTarea, ta.idEstadoTarea, ta.idRepeticionTarea, ta.idUsuarioCrea, ta.titulo, ta.descripcion, ta.color, ta.fechaInicio, ta.fechaFinal, ta.estado, ta.fechaRegistro, ta.fechaActualizacion, ta.horaInicio, ta.horaFinal, ta.path,\n" +
+            String sql = "SELECT ta.idTarea, ta.idTipoTarea, ta.idEstadoTarea, ta.idRepeticionTarea, ta.idUsuarioCrea, ta.titulo, ta.descripcion, ta.color, ta.fechaInicio, ta.fechaFinal, ta.estado, ta.fechaRegistro, ta.fechaActualizacion, ta.horaInicio, ta.horaFinal, \n" +
                         "ti.nombre as nombreTipo,\n" +
                         "et.nombre as nombreEstado,\n" +
                         "rt.nombre as nombreRepeticion, rt.sumarDias, rt.sumarMes, rt.sumarYear,\n" +
@@ -128,7 +127,6 @@ public class A_TareaModel {
                 tarea.setSumarDias(res.getInt("sumarDias"));
                 tarea.setSumarMes(res.getInt("sumarMes"));
                 tarea.setSumarYear(res.getInt("sumarYear"));
-                tarea.setPath(res.getString("path"));
                 tareas.add(tarea);
             }
             db.cierraConexion();
@@ -149,7 +147,7 @@ public class A_TareaModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT ta.idTarea, ta.idTipoTarea, ta.idEstadoTarea, ta.idRepeticionTarea, ta.idUsuarioCrea, ta.titulo, ta.descripcion, ta.color, ta.fechaInicio, ta.fechaFinal, ta.estado, ta.fechaRegistro, ta.fechaActualizacion, ta.horaInicio, ta.horaFinal, ta.path,\n" +
+            String sql = "SELECT ta.idTarea, ta.idTipoTarea, ta.idEstadoTarea, ta.idRepeticionTarea, ta.idUsuarioCrea, ta.titulo, ta.descripcion, ta.color, ta.fechaInicio, ta.fechaFinal, ta.estado, ta.fechaRegistro, ta.fechaActualizacion, ta.horaInicio, ta.horaFinal, \n" +
                         "ti.nombre as nombreTipo,\n" +
                         "et.nombre as nombreEstado,\n" +
                         "rt.nombre as nombreRepeticion, rt.sumarDias, rt.sumarMes, rt.sumarYear,\n" +
@@ -190,7 +188,6 @@ public class A_TareaModel {
                 tarea.setSumarDias(res.getInt("sumarDias"));
                 tarea.setSumarMes(res.getInt("sumarMes"));
                 tarea.setSumarYear(res.getInt("sumarYear"));
-                tarea.setPath(res.getString("path"));
             }
             db.cierraConexion();
         } catch (SQLException e) {
@@ -221,9 +218,9 @@ public class A_TareaModel {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
             String sql = "INSERT INTO ATarea\n"
-                    + "  (titulo, descripcion, color, fechaInicio, fechaFinal, idTipoTarea, estado, fechaRegistro, fechaActualizacion, idEstadoTarea, idUsuarioCrea, horaInicio, horaFinal, idRepeticionTarea, path)"
+                    + "  (titulo, descripcion, color, fechaInicio, fechaFinal, idTipoTarea, estado, fechaRegistro, fechaActualizacion, idEstadoTarea, idUsuarioCrea, horaInicio, horaFinal, idRepeticionTarea)"
                     + "  VALUES\n"
-                    + "  ('" + tarea.getTitulo()+"','" + tarea.getDescripcion()+ "','"+tarea.getColor()+"','"+tarea.getFechaInicio()+"','"+tarea.getFechaFinal()+"',"+tarea.getIdTipoTarea()+",1,CONVERT(date, SYSDATETIME()),CONVERT(date, SYSDATETIME()),"+tarea.getIdEstadoTarea()+","+tarea.getIdUserCrea()+",'"+tarea.getHoraInicio()+"','"+tarea.getHoraFinal()+"',"+tarea.getIdRepeticionTarea()+",'"+tarea.getPath()+"')";
+                    + "  ('" + tarea.getTitulo()+"','" + tarea.getDescripcion()+ "','"+tarea.getColor()+"','"+tarea.getFechaInicio()+"','"+tarea.getFechaFinal()+"',"+tarea.getIdTipoTarea()+",1,CONVERT(date, SYSDATETIME()),CONVERT(date, SYSDATETIME()),"+tarea.getIdEstadoTarea()+","+tarea.getIdUserCrea()+",'"+tarea.getHoraInicio()+"','"+tarea.getHoraFinal()+"',"+tarea.getIdRepeticionTarea()+")";
             db.insertar(sql);
             db.cierraConexion();
             if(tarea.getEmpleados().size() > 0){
@@ -291,7 +288,6 @@ public class A_TareaModel {
                     + "      ,horaInicio = '" + tarea.getHoraInicio()+ "' \n"
                     + "      ,horaFinal = '" + tarea.getHoraFinal()+ "' \n"
                     + "      ,idRepeticionTarea = " + tarea.getIdRepeticionTarea()+ " \n"
-                    + "      ,path = '" + tarea.getPath()+ "' \n"
                     + "      ,fechaActualizacion = CONVERT(date, SYSDATETIME()) "
                     + " WHERE idTarea = " + tarea.getIdTarea();
             db.actualizar(sql);
