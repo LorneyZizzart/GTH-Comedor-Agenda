@@ -1,0 +1,16 @@
+SMAP
+eliminarEmpleado_jsp.java
+JSP
+*S JSP
+*F
++ 0 eliminarEmpleado.jsp
+GTH/ciclo/eliminarEmpleado.jsp
+*L
+1,2:44,9
+4,11:63
+14,9:74
+22,3:83
+25:86,3
+26,2:89
+27:90
+*E

@@ -1,0 +1,17 @@
+SMAP
+deleteCargo_jsp.java
+JSP
+*S JSP
+*F
++ 0 deleteCargo.jsp
+Registro/cargo/deleteCargo.jsp
+*L
+1:45
+2:46,9
+4,11:56
+14,15:67
+28,3:82
+31:85,3
+32,2:88
+33:89
+*E

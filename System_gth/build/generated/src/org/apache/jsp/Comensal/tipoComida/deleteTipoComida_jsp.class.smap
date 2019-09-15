@@ -1,0 +1,17 @@
+SMAP
+deleteTipoComida_jsp.java
+JSP
+*S JSP
+*F
++ 0 deleteTipoComida.jsp
+Comensal/tipoComida/deleteTipoComida.jsp
+*L
+5,5:47
+9:51,9
+11,11:61
+21,15:72
+35,3:87
+38:90,3
+39,2:93
+40:94
+*E

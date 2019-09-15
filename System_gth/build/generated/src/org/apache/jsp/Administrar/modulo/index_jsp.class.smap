@@ -1,0 +1,59 @@
+SMAP
+index_jsp.java
+JSP
+*S JSP
+*F
++ 0 head.jsp
+Administrar/modulo/../../masterPage/complemento/head.jsp
++ 1 index.jsp
+Administrar/modulo/index.jsp
++ 2 menu.jsp
+Administrar/modulo/../../masterPage/complemento/menu.jsp
++ 3 footer.jsp
+Administrar/modulo/../../masterPage/complemento/footer.jsp
+*L
+1,53:57
+54,6:111
+59,3:117
+62,4:121
+65,38:125
+103:163,3
+104,7:166
+111:173,5
+112,22:178
+1#1,3:200
+3,3:202
+5:205
+1#2,12:206
+12,22:218
+35,6:242
+40,3:248
+43:251,5
+44,6:256
+50,2:263
+51,2:265
+53:267,5
+54,2:272
+56,2:275
+57,5:277
+62,2:283
+63,9:285
+6#1:294,2
+7,2:296
+8:298
+9,2:299,9
+12,3:318
+14,40:321
+54,4:362
+57,2:366
+59,3:368,3
+62:377,5
+63:382,7
+64:389
+65,2:390,3
+67,3:396
+70,2:400
+71,41:402
+1#3,100:442
+111#1,86:541
+*E

@@ -1,0 +1,18 @@
+SMAP
+head_jsp.java
+JSP
+*S JSP
+*F
++ 0 head.jsp
+masterPage/complemento/head.jsp
+*L
+1,53:45
+54,6:99
+59,3:105
+62,4:109
+65,38:113
+103:151,3
+104,7:154
+111:161,5
+112,22:166
+*E

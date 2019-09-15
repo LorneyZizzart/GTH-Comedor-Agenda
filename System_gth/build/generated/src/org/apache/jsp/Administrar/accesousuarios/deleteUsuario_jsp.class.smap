@@ -1,0 +1,17 @@
+SMAP
+deleteUsuario_jsp.java
+JSP
+*S JSP
+*F
++ 0 deleteUsuario.jsp
+Administrar/accesousuarios/deleteUsuario.jsp
+*L
+5,2:45
+7:47,9
+9,10:57
+18,15:67
+32,3:82
+35:85,3
+36,2:88
+37:89
+*E

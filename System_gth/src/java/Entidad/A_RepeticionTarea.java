@@ -9,7 +9,7 @@ package Entidad;
  *
  * @author Invitado1
  */
-public class A_RepeticionTarea {
+public class A_RepeticionTarea extends A_ProcedimientoTarea{
     
     private int IdRepeticionTarea;
     private String NombreRepeticion;

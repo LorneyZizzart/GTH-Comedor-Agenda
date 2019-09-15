@@ -1,0 +1,17 @@
+SMAP
+deleteCliente_jsp.java
+JSP
+*S JSP
+*F
++ 0 deleteCliente.jsp
+Registro/cliente/deleteCliente.jsp
+*L
+5,2:45
+7:47,9
+9,5:57
+13,15:62
+27,4:77
+31:81,3
+32,2:84
+33:85
+*E

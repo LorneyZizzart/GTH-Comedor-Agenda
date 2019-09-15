@@ -1,0 +1,28 @@
+SMAP
+eliminarPregunta_jsp.java
+JSP
+*S JSP
+*F
++ 0 eliminarPregunta.jsp
+Evaluacion/preguntas/eliminarPregunta.jsp
+*L
+1,4:47
+4,3:50,9
+8,15:78
+22,2:93
+24:95,3
+25,6:98
+31,5:105
+35:110
+36:111,8
+37:119,3
+38,4:122
+42:126,3
+43,3:129
+46:132,3
+47,4:135
+51,5:140
+55:145
+56:146,3
+57,28:149
+*E

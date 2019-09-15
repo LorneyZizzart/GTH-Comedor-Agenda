@@ -1,0 +1,29 @@
+SMAP
+eliminarComensal_jsp.java
+JSP
+*S JSP
+*F
++ 0 eliminarComensal.jsp
+Comensal/tipoComensal/eliminarComensal.jsp
+*L
+5,2:45
+7,3:47,9
+11,11:75
+21,2:86
+23:88,3
+24,4:91
+28:95,3
+29,3:98
+32:101,3
+33,3:104
+36:107,3
+37,3:110
+40:113,3
+41,3:116
+44:119,3
+45,4:122
+49,5:127
+53:132
+54:133,3
+55,29:136
+*E

@@ -1,0 +1,28 @@
+SMAP
+eliminaMenu_005felimina_jsp.java
+JSP
+*S JSP
+*F
++ 0 eliminaMenu_elimina.jsp
+Administrar/modulo/eliminaMenu_elimina.jsp
+*L
+1:47,9
+2,9:56
+10,15:65
+24,7:80
+31:87,3
+32,22:90
+54,2:113
+55,2:115
+57,3:117,3
+60:126
+61,2:128
+62:130
+63,2:132
+64:134
+65,2:136
+66,3:138
+69,2:142
+70,6:144
+76,2:151
+*E

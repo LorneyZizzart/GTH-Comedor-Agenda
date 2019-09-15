@@ -1,0 +1,31 @@
+SMAP
+eliminarTipoComida_jsp.java
+JSP
+*S JSP
+*F
++ 0 eliminarTipoComida.jsp
+Comensal/tipoComida/eliminarTipoComida.jsp
+*L
+1:45
+2,2:46,9
+5,12:65
+16,2:77
+18:79,3
+19,3:82
+22:85,3
+23,3:88
+26:91,3
+27,3:94
+30:97,3
+31,3:100
+34:103,3
+35,3:106
+38:109,3
+39,3:112
+42:115,3
+43,4:118
+47,5:123
+51:128
+52:129,3
+53,28:132
+*E

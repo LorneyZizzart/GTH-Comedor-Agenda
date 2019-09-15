@@ -1,0 +1,21 @@
+SMAP
+crearUsuario_jsp.java
+JSP
+*S JSP
+*F
++ 0 crearUsuario.jsp
+Administrar/accesousuarios/crearUsuario.jsp
+*L
+1,4:47
+4:50,9
+6,4:60
+9,2:64
+11:66,3
+12,7:69
+18,2:76
+19:78
+20:79,6
+21:85
+22,2:87
+23,154:89
+*E
