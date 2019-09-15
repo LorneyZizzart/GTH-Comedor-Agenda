@@ -36,9 +36,10 @@
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
     String fechaInicio = null;  String fechaFinal = null;
-   
+    Boolean orderAlfa = false, orderDate = false;
     
     try {
+        
         fechaInicio =  request.getParameter("fi");
         fechaFinal = request.getParameter("ff");
         
@@ -46,7 +47,6 @@
             String[] comensales  = request.getParameterValues("c");
             for (String c : comensales) {
                 idsComensal.add(c);
-
             }
         }
          
@@ -54,17 +54,29 @@
             String[] comidas = request.getParameterValues("a");
             for (String c : comidas) {
                 idsComida.add(c);
-
             }
         }
-       listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida);
-
     } catch (Exception e) {
         idsComensal = null;
         idsComida = null;
     }
+    
+    try{
+        if(request.getParameter("oA").equalsIgnoreCase("on")) 
+        orderAlfa = true;
+    }catch(Exception e){
+        orderAlfa = false;
+    }
+    
+     try{
+        if(request.getParameter("oF").equalsIgnoreCase("on")) 
+            orderDate = true;
+    }catch(Exception e){
+        orderDate = false;
+    }
+        
+    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate);
 
-//    listaReservas = _empleadoReserva.getAllReservaEmpleado();
 %>
 
 <body onload="window.print();" >

@@ -4,8 +4,8 @@
 <jsp:useBean id="_feedback_ver" class="Controlador.FeedbackController" />
 <jsp:useBean id="_encripta" class="Controlador.EncriptionController" />
 <%
-    List<Feedback> notas = new ArrayList<Feedback>();
-    notas = _feedback_ver.Get_all_feedback_empleado(idEmpleado);
+ List<Feedback> notas = new ArrayList<Feedback>();
+
 %>
 <div class="box-header">
     <h3 class="box-title">Lista de Retroalimentación</h3>

@@ -44,6 +44,10 @@
                             <label>Día Inicio</label>
                             <input type="text" class="form-control" id="diaInicio"  name="diaInicio" value="<%=entidad.getDiaInicio()%>">                            
                         </div>
+                        <div class="form-group" >
+                            <label>Día fin</label>
+                            <input type="text" class="form-control" id="diaFin"  name="diaFin" value="<%=entidad.getDiaFin()%>">                            
+                        </div>
                         <div class="form-group">
                             <label>Estado</label>
                             <%
@@ -156,6 +160,25 @@
                         notEmpty: 
                         {
                             message: 'El día de inicio no puede ser vacio. '
+                        },
+                        stringLength: 
+                        {
+                            min: 1,
+                            max: 2,
+                            message: 'Solo puede tener 2 caracteres.'
+                        },
+                        integer: {
+                            message: 'El valor debe ser un número entero.'
+                        }
+                    }
+                },
+                diaFin: {
+                    message: 'El valor no es valido.',
+                    validators: 
+                    {
+                        notEmpty: 
+                        {
+                            message: 'El día de fin no puede ser vacio. '
                         },
                         stringLength: 
                         {

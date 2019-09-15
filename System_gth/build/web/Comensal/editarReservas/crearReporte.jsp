@@ -30,7 +30,12 @@
                               <input type="text" class="form-control pull-right" name="ff" id="datepicker2">
                             </div>
                         </div>
-                        <div class="form-group" style="margin-top: 19%">
+                        <div class="form-group row">
+                            <label class="col-md-3">Ordenar :</label>
+                            <label class="col-md-4"><input type="checkbox" name="oA" id="oA"  class="flat-red"> Alfabéticamente</label>
+                            <label class="col-md-5"><input type="checkbox" name="oF" id="oF"  class="flat-red" checked> Fecha</label>
+                        </div> 
+                        <div class="form-group">
                                 <h4 style="color: #501482;" class="page-header"><i class="fa fa-user"></i> Tipos de comensal</h4>
                                 <select name="c" class="form-control selectComensal" multiple="multiple" data-placeholder="Selelcione una opción"
                                         style="width: 100%;">

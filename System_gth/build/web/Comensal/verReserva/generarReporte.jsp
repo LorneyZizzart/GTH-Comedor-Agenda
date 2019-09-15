@@ -36,7 +36,7 @@
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
     String fechaInicio = null;  String fechaFinal = null;
-   
+    Boolean orderAlfa = false, orderDate = false;
     
     try {
         fechaInicio =  request.getParameter("fi");
@@ -57,14 +57,28 @@
 
             }
         }
-       listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida);
+      
 
     } catch (Exception e) {
         idsComensal = null;
         idsComida = null;
     }
+    
+    try{
+        if(request.getParameter("oA").equalsIgnoreCase("on")) 
+        orderAlfa = true;
+    }catch(Exception e){
+        orderAlfa = false;
+    }
+    
+     try{
+        if(request.getParameter("oF").equalsIgnoreCase("on")) 
+            orderDate = true;
+    }catch(Exception e){
+        orderDate = false;
+    }
 
-//    listaReservas = _empleadoReserva.getAllReservaEmpleado();
+    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate);
 %>
 
 <body onload="window.print();" >
@@ -92,11 +106,9 @@
                                 <th>Tipo de alimento</th>
                                 <th>Fecha</th>
                                 <th>Cantidad</th>
-                                <th>Costo</th>
-                                <th>Descuento</th>
-                                <th>Descuento adicional</th>
                                 <th>Precio total</th>
                                 <th>Comensal</th>
+                                <th class="text-center" style="width: 15%;">Firma</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,17 +124,6 @@
                                 <td><%= item.getNombreComida()%></td>
                                 <td><%= item.getFecha()%></td>
                                 <td><%= item.getCantidad()%></td>
-                                <td><%= item.getCosto()%></td>
-                                <%
-                                   if(item.getIdTipoComida() == 1){
-                                      %><td><%= item.getDescuentoDesayuno()%> Bs.</td><% 
-                                   }else if(item.getIdTipoComida() == 2){
-                                      %><td><%= item.getDescuentoAlmuerzo()%> Bs.</td><% 
-                                   }else if(item.getIdTipoComida() == 3){
-                                      %><td><%= item.getDescuentoCena()%> Bs.</td><%  
-                                   }
-                                %>
-                                <td><%= item.getDescuentoAdicional()%> Bs.</td>
                                 <%
                                    if(item.getIdTipoComida() == 1){
                                       %><td><%=((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
@@ -133,6 +134,7 @@
                                    }
                                 %>
                                 <td><%= item.getNombreComensal()%></td>
+                                <td></td>
                             </tr>
                             <%
                                 }

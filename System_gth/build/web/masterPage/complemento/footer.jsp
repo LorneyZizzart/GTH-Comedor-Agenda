@@ -69,8 +69,16 @@
 <script src='../../dist/fullcalendar-4.2.0/packages/daygrid/main.js'></script>
 <script src='../../dist/fullcalendar-4.2.0/packages/timegrid/main.js'></script> 
 <!--moment-->
+<!-- daterangepicker -->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="../../plugins/daterangepicker/daterangepicker.js"></script>-->
+
 <!-- bootstrap datepicker -->
 <script src="../../plugins/datepicker/bootstrap-datepicker.js"></script>
+
+<!--<script type="text/javascript" src="http://www.prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js"></script>-->
+<!--<script src='.. ../../plugins/tablaEditor/js/shieldui-lite-all.js'></script>--> 
+<!--<script type="text/javascript" src="http://www.prepbootstrap.com/Content/data/shortGridData.js"></script>-->
 <script src='../../dist/js/moment.js'></script>
 <script type="text/javascript" charset="utf-8">
     $("#btn_salir").click(function () {

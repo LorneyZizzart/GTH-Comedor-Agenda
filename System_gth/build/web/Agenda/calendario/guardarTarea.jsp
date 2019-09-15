@@ -27,23 +27,16 @@
         tarea.setFechaFinal(request.getParameter("ff"));
         tarea.setAuxFechaFinal(request.getParameter("fechaFinal"));
         tarea.setTitulo(String.valueOf(request.getParameter("titulo")));
-        tarea.setDescripcion(String.valueOf(request.getParameter("descripcion")));
-        tarea.setColor(String.valueOf(request.getParameter("color")));       
+        tarea.setCodigo("");
+        tarea.setVersion("");
+        tarea.setDescripcion("");
+        tarea.setColor("");       
         tarea.setHoraInicio(request.getParameter("horaInicio")); 
         tarea.setHoraFinal(request.getParameter("horaFinal"));
         tarea.setIdRepeticionTarea(Integer.parseInt(request.getParameter("idRepeticion")));
         tarea.setIdTipoTarea(Integer.parseInt(request.getParameter("idCategoria")));
-        tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));
-        tarea.setPath("");
-        if (request.getParameterValues("funcionario") != null) {
-            String[] funcionario  = request.getParameterValues("funcionario");
-            for(String f : funcionario){
-                Empleado e = new Empleado();
-                e.setEmpleado_id(Integer.parseInt(f));
-                Empleados.add(e);
-            }
-        }
-        tarea.setEmpleados(Empleados);
+        tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));     
+
         resultado = _tarea.SaveOrUpdateCalendar(tarea);
         
     }catch(Exception e){

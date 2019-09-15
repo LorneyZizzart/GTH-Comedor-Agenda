@@ -15,6 +15,8 @@ import java.util.List;
 public class A_Tarea extends A_EstadoTarea{
     
     private int IdTarea;
+    private String Codigo;
+    private String Version;
     private String Titulo;
     private String Descripcion;
     private String Color;
@@ -31,32 +33,93 @@ public class A_Tarea extends A_EstadoTarea{
     private String Foto;
     private String HoraInicio;
     private String HoraFinal;
-    private List<Empleado> Empleados;
-    private int IdEmpleadoTarea;
-    private String Path;
+    private int Lunes;
+    private int Martes;
+    private int Miercoles;
+    private int Jueves;
+    private int Viernes;
+    private int Sabado;
+    private int Domingo;
+    private List<A_ProcedimientoTarea> ListaProcedimientoTarea;
     
-    public void setPath(String path){
-        this.Path = path;
+    public void setAProcedimientoTarea(List<A_ProcedimientoTarea> ListaProcedimientoTarea){
+        this.ListaProcedimientoTarea = ListaProcedimientoTarea;
     }
     
-    public String getPath(){
-        return Path;
+    public List<A_ProcedimientoTarea> getAProcedimientoTarea(){
+        return ListaProcedimientoTarea;
     }
     
-    public void setIdEmpleadoTarea(int idEmpleadoTarea){
-        this.IdEmpleadoTarea = idEmpleadoTarea;
+    public void setDomingo(int Domingo){
+        this.Domingo = Domingo;
     }
     
-    public int getIdEmpleadoTarea(){
-        return IdEmpleadoTarea;
+    public int getDomingo(){
+        return Domingo;
     }
     
-    public List<Empleado> getEmpleados() {
-        return Empleados;
+    public void setSabado(int Sabado){
+        this.Sabado = Sabado;
     }
-
-    public void setEmpleados(List<Empleado> Empleados) {
-        this.Empleados = Empleados;
+    
+    public int getSabado(){
+        return Sabado;
+    }
+    
+    public void setViernes(int Viernes){
+        this.Viernes = Viernes;
+    }
+    
+    public int getViernes(){
+        return Viernes;
+    }
+    
+    public void setJueves(int Jueves){
+        this.Jueves = Jueves;
+    }
+    
+    public int getJueves(){
+        return Jueves;
+    }
+    
+    public void setMiercoles(int Miercoles){
+        this.Miercoles = Miercoles;
+    }
+    
+    public int getMiercoles(){
+        return Miercoles;
+    }
+    
+    public void setMartes(int Martes){
+        this.Martes = Martes;
+    }
+    
+    public int getMartes(){
+        return Martes;
+    }
+    
+    public void setLunes(int Lunes){
+        this.Lunes = Lunes;
+    }
+    
+    public int getLunes(){
+        return Lunes;
+    }
+    
+    public void setCodigo(String Codigo){
+        this.Codigo = Codigo;
+    }
+    
+    public String getCodigo(){
+        return Codigo;
+    }
+    
+    public void setVersion(String Version){
+        this.Version = Version;
+    }
+    
+    public String getVersion(){
+        return Version;
     }
     
     public void setAuxFechaFinal(String auxFechaFinal){

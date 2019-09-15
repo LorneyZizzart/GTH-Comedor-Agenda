@@ -38,7 +38,7 @@
     reservasNow = _empleadoReserva.getReservaByIdDate(Integer.parseInt(idUsuario), fecha[2]+"/"+fecha[1]+"/"+fecha[0]);
     
     for(C_TipoComensal item : listaComensal){
-        if(Integer.parseInt(diaInicio) >= item.getDiaInicio() && item.getEstado() == 1){
+        if(Integer.parseInt(diaInicio) >= item.getDiaInicio() && Integer.parseInt(diaInicio) <= item.getDiaFin() && item.getEstado() == 1){
             tipoComensal = item.getNombreComensal();
         }
 //        else if(dateNow.get(Calendar.MONTH) != Month.get(Calendar.MONTH)&& item.getEstado() == 1){
@@ -54,9 +54,10 @@
     <input type="hidden" value="<%=dataEnd%>" name="fechaFin" id="fechaFin">
                     <div class="box-body">
                         <div class="form-group">
-                            <p>Comensal: <span class="badge bg-purple"><%=tipoComensal%></span>  </p>                             
+                            <p class=" col-sm-6">Comensal: <span class="badge bg-purple"><%=tipoComensal%></span>  </p>    
+                            <label class="col-sm-6"> <input  id="repetir" name="repetir" type="checkbox" class="minimal"> Repetir en el mes </label>
                         </div> 
-                        
+                        <br>
                         <h4 style="color: #501482" class="page-header">Tipos de alimentos</h4>
                         <div class="form-group groupTipoAlimento">
                             <%
@@ -86,8 +87,14 @@
                                 <label class="col-md-5">
                                     <input <%=estado%> id="posicion" type="checkbox" class="minimal posicion<%=contador%>"> <%=item.getNombreComida()%>
                                 </label>
-                                <div style="padding: 0" class="col-md-7">
-                                    <input type="text" class="form-control cantidad<%=contador%>" id="cantidad" name="cantidad<%=item.getNombreComida()%>" disabled>    
+                               
+                                <div class="form-group">
+                                    <select class="form-control cantidad<%=contador%> form-cantidad" id="cantidad" name="cantidad<%=item.getNombreComida()%>" disabled>
+                                      <option disabled selected="selected">Cantidad</option>
+                                      <option>1</option>
+                                      <option>2</option>
+                                      <option>3</option>
+                                    </select>
                                 </div>
                               <% } } %>
                         </div>  
@@ -117,7 +124,7 @@ $(document).ready(function () {
               $('.cantidad'+element).val("1");
             } else {
               $('.cantidad'+element).prop("disabled", true);
-              $('.cantidad'+element).val("");
+              $('.cantidad'+element).val("Cantidad");
             }
        });  
     })

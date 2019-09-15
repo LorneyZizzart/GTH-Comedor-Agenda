@@ -1,10 +1,10 @@
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%  String idEncript = request.getParameter("id");
     int idUsuario = Integer.parseInt(_encript.ValorADesencriptar(idEncript));
-    int idNivel = 0;%>
+%>
 
          <form id="form_area_guardar" method="post" class="form_area_guardar">
-             <input type="hidden" value="<%=idNivel%>" name="id" id="id">
+             <input type="hidden" value="0" name="id" id="id">
              <input type="hidden" value="<%=idUsuario%>" name="idUsuario" id="idUsuario">
                     <div class="box-body">
                         
@@ -26,8 +26,12 @@
                             <input type="text" class="form-control" id="descuentoCena"  name="descuentoCena">                            
                         </div>
                         <div class="form-group" >
-                            <label>Día Inicio</label>
+                            <label>Día inicio</label>
                             <input type="text" class="form-control" id="diaInicio"  name="diaInicio">                            
+                        </div>
+                        <div class="form-group" >
+                            <label>Día fin</label>
+                            <input type="text" class="form-control" id="diaFin"  name="diaFin">                            
                         </div>
                         <div class="form-group">
                             <label>Estado</label>
@@ -136,6 +140,25 @@
                         notEmpty: 
                         {
                             message: 'El día de inicio no puede ser vacio. '
+                        },
+                        stringLength: 
+                        {
+                            min: 1,
+                            max: 2,
+                            message: 'Solo puede tener 2 caracteres.'
+                        },
+                        integer: {
+                            message: 'El valor debe ser un número entero.'
+                        }
+                    }
+                },
+                diaFin: {
+                    message: 'El valor no es valido.',
+                    validators: 
+                    {
+                        notEmpty: 
+                        {
+                            message: 'El día de fin no puede ser vacio. '
                         },
                         stringLength: 
                         {

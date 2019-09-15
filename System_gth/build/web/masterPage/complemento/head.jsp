@@ -40,6 +40,8 @@
         <script src="../../plugins/jQuery/jquery-3.4.1.min.js"></script>    
         <!-- bootstrap datepicker -->
         <link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">
+        <!--<link rel="stylesheet" type="text/css" href="../../plugins/tablaEditor/css/tablaEditor.css" />-->
+
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -97,13 +99,13 @@
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="../../folder_picture/<%=DatoUsuario.getFoto_Empleado()%>" class="user-image" alt="User Image">
+                                    <img src="../../folder_picture/../images/user.png" class="user-image" alt="User Image">
                                     <span class="hidden-xs"><%=DatoUsuario.getNombreCompleto()%></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="../../folder_picture/<%=DatoUsuario.getFoto_Empleado()%>" class="img-circle" alt="User Image">
+                                        <img src="../../folder_picture/../images/user.png" class="img-circle" alt="User Image">
 
                                         <p>
                                             <%=DatoUsuario.getNombreCompleto()%> - <%=DatoUsuario.getPerfil()%>

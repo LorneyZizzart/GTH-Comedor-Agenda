@@ -37,7 +37,7 @@
     <!-- /.row -->
     <!--Modal-->
     <div class="modal fade" id="formulario_registro">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-edit">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -73,7 +73,6 @@
       selectable: true,
       selectMirror: true,
       select: function(e) {          
-        $(".modal-dialog").width(400);
         $("#titleModal").html("Crear Reserva");
         $('#formulario_registro').modal('show');
         $(".cuerpo_registro").html('');
@@ -139,7 +138,6 @@
       },
       eventClick(e){
           console.log(e);
-        $(".modal-dialog").width(400);
         $("#titleModal").html("Editar Reserva");
         $('#formulario_registro').modal('show');
         $(".cuerpo_registro").html('');

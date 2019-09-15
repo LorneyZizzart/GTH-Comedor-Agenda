@@ -3,12 +3,14 @@
 <%
     C_TipoComensal tipoComensal = new C_TipoComensal();
     tipoComensal.setTipoComensal_id(Integer.parseInt(request.getParameter("id")));
+    
     tipoComensal.setNombreComensal(request.getParameter("nombre"));
     tipoComensal.setMinimoDias(1);
     tipoComensal.setDescuentoDesayuno(Double.parseDouble(request.getParameter("descuentoDesayuno")));
     tipoComensal.setDescuentoAlmuerzo(Double.parseDouble(request.getParameter("descuentoAlmuerzo")));
     tipoComensal.setDescuentoCena(Double.parseDouble(request.getParameter("descuentoCena")));
     tipoComensal.setDiaInicio(Integer.parseInt(request.getParameter("diaInicio")));
+    tipoComensal.setDiaFin(Integer.parseInt(request.getParameter("diaFin")));
     tipoComensal.setUsuarioCrea(Integer.parseInt(request.getParameter("idUsuario")));
     int estado = 0;
     try{

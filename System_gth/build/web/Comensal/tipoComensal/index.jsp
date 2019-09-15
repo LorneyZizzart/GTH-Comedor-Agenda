@@ -46,6 +46,7 @@
                                 <th>Descuento almuerzo</th>  
                                 <th>Descuento cena</th>  
                                 <th>Día inicio</th>     
+                                <th>Día fin</th>  
                                 <th>Usuario creado</th>                                
                                 <th>Fecha de registro</th>
                                 <th>Fecha de actualización</th>                                  
@@ -67,6 +68,7 @@
                                 <td><%= item.getDescuentoAlmuerzo()%> Bs.</td>
                                 <td><%= item.getDescuentoCena()%> Bs.</td>
                                 <td><%= item.getDiaInicio()%></td>
+                                <td><%= item.getDiaFin()%></td>
                                 <td><%= item.getUsuarioCrea()%></td>
                                 <td><%= item.getFechaRegistro()%></td>
                                 <td><%= item.getFechaActualizacion()%></td>
@@ -91,7 +93,8 @@
                                 <th>Descuento desayuno</th>  
                                 <th>Descuento almuerzo</th>  
                                 <th>Descuento cena</th>    
-                                <th>Día inicio</th>     
+                                <th>Día inicio</th>  
+                                <th>Día fin</th> 
                                 <th>Usuario creado</th>                                
                                 <th>Fecha de registro</th>
                                 <th>Fecha de actualización</th>                                   
@@ -111,7 +114,7 @@
     <!-- /.row -->
     <!--Modal-->
     <div class="modal fade" id="formulario_registro">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-edit">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

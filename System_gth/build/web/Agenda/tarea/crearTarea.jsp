@@ -1,19 +1,17 @@
 <%@page import="Entidad.A_EstadoTarea"%>
-<%@page import="Entidad.A_TipoTarea"%>
 <%@page import="Entidad.A_RepeticionTarea"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<jsp:useBean id="_tipoTarea" class="Controlador.A_TipoTareaController"/>
 <jsp:useBean id="_estadoTarea" class="Controlador.A_EstadoTareaController"/>
 <jsp:useBean id="_repeticionTarea" class="Controlador.A_RepeticionTareaController"/>
 <%
     String idUsuario = request.getParameter("id");    
     List<A_EstadoTarea> listaEstadoTarea = new ArrayList<A_EstadoTarea>();
-    List<A_TipoTarea> listaTipoTarea = new ArrayList<A_TipoTarea>();
+
     List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
     listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     listaEstadoTarea = _estadoTarea.getAllEstadoTarea();
-    listaTipoTarea = _tipoTarea.getAllTipoTarea();
+
 %>
 <form id="form_guardar" method="post" class="form_guardar">
     <input type="hidden" value="0" name="id" id="id">
@@ -24,72 +22,13 @@
                             <input type="text" class="form-control" id="titulo"  name="titulo">                            
                         </div>                         
                         <div class="form-group">
-                            <label>Color</label>
-
-                            <div class="input-group my-colorpicker2">
-                                <input type="text" class="form-control" name="color">
-                              <div class="input-group-addon">
-                                <i></i>
-                              </div>
-                            </div>
-                            <!-- /.input group -->
-                        </div>
-                        <div class="form-group">
                             <label>DescripciÛn</label>
                             <textarea class="form-control" rows="3" id="descripcion"  name="descripcion"></textarea>
                         </div>
-                        <div class="form-group col-md-6" style="padding-right: 0;padding-left: 0;">
-                            <label>Fecha incio:</label>
-                            <div class="input-group date">
-                              <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                              </div>
-                              <input type="text" class="form-control pull-right" name="fi" id="datepicker1">
-                            </div>
-                        </div>
-                        <div class="bootstrap-timepicker col-md-6" style="padding-right: 0;padding-left: 0;">
-                            <div class="form-group">
-                              <label>Hora</label>
-
-                              <div class="input-group">
-                                  <input type="text" class="form-control timepicker" name="horaInicio">
-
-                                <div class="input-group-addon">
-                                  <i class="fa fa-clock-o"></i>
-                                </div>
-                              </div>
-                              <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
-                        </div>
-                        <div class="form-group col-md-6" style="padding-right: 0;padding-left: 0;">
-                            <label>Fecha final</label>
-                            <div class="input-group date">
-                              <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                              </div>
-                              <input type="text" class="form-control pull-right" name="ff" id="datepicker2">
-                            </div>
-                        </div>
-                        <div class="bootstrap-timepicker col-md-6" style="padding-right: 0;padding-left: 0;">
-                            <div class="form-group">
-                              <label>Hora</label>
-
-                              <div class="input-group">
-                                <input type="text" class="form-control timepicker" name="horaFinal">
-
-                                <div class="input-group-addon">
-                                  <i class="fa fa-clock-o"></i>
-                                </div>
-                              </div>
-                              <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
-                        </div>
                         <div class="form-group">
                             <label>Repetir cada</label>
-                            <select name="idRepeticion"  class="form-control select2" style="width: 100%;">
-                              <option disabled selected="selected">Selecione una opciÛn</option>
+                            <select id="idRepeticion" name="idRepeticion"  class="form-control select2" style="width: 100%;">
+                                <option value="0" disabled selected="selected">Selecione una opciÛn</option>
                               <%
                                     for(A_RepeticionTarea item : listaRepeticionTarea){
                                         if(item.getEstadoRepeticion()== 1){
@@ -98,17 +37,60 @@
                                <% } } %>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Categoria</label>
-                            <select name="idCategoria"  class="form-control select2" style="width: 100%;">
-                              <option disabled selected="selected">Selecione una opciÛn</option>
-                              <%
-                                    for(A_TipoTarea item : listaTipoTarea){
-                                        if(item.getEstadoTipoTarea()== 1){
-                                            %>
-                                   <option value="<%=item.getIdTipoTarea()%>"><%=item.getNombreTarea()%></option>
-                               <% } } %>
-                            </select>
+                            <div id="fechaInicio" class="form-group" style="padding-right: 0;padding-left: 0;">
+                            <label>Fecha incio:</label>
+                            <div class="input-group date">
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control pull-right" name="fi" id="datepicker1" autocomplete="off">
+                            </div>
+                        </div>
+                            <div class="row row-days">
+                                <div class="form-group col-sm-1 col-day">
+                                    <label>D</label>
+                                    <input type="checkbox" name="D" id="D"  class="flat-red">
+                                </div>
+                                <div class="form-group col-sm-1 col-day">
+                                    <label>L</label>
+                                    <input type="checkbox" name="L" id="L"  class="flat-red">
+                                </div>
+                                <div class="form-group col-sm-1 col-day">
+                                    <label>M</label>
+                                    <input type="checkbox" name="Ma" id="Ma"  class="flat-red">
+                                </div>
+                                <div class="form-group col-sm-1 col-day">
+                                    <label>M</label>
+                                    <input type="checkbox" name="Mi" id="Mi"  class="flat-red">
+                                </div>
+                                <div class="form-group col-sm-1 col-day">
+                                    <label>J</label>
+                                    <input type="checkbox" name="J" id="J"  class="flat-red">
+                                </div>
+                                <div class="form-group col-sm-1 col-day">
+                                    <label>V</label>
+                                    <input type="checkbox" name="V" id="V"  class="flat-red">
+                                </div>
+                                <div class="form-group col-sm-1 col-day">
+                                    <label>S</label>
+                                    <input type="checkbox" name="S" id="S"  class="flat-red">
+                                </div>
+                            </div>
+                            
+                            <div id="horaInicio" class="bootstrap-timepicker" style="padding-right: 0;padding-left: 0;">
+                            <div class="form-group">
+                              <label>Hora</label>
+
+                              <div class="input-group">
+                                  <input type="text" class="form-control timepicker" name="horaInicio" autocomplete="off">
+
+                                <div class="input-group-addon">
+                                  <i class="fa fa-clock-o"></i>
+                                </div>
+                              </div>
+                              <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
                         </div>
                          <div class="form-group">
                             <label>Estado</label>
@@ -132,10 +114,12 @@
                 </form>
         <div id="mensaje"></div>
 <script type="text/javascript">
+    
     $(document).ready(function () {
         //Timepicker
     $(".timepicker").timepicker({
-      showInputs: false
+      showInputs: false,
+      defaultTime: false
     });
         //color picker with addon
     $(".my-colorpicker2").colorpicker();
@@ -146,10 +130,57 @@
             format: 'dd/mm/yyyy',
           autoclose: true
         });
-        $('#datepicker2').datepicker({
-            format: 'dd/mm/yyyy',
-          autoclose: true
+//        ocultar select multiple
+        $(".row-days").hide();
+        $("#fechaInicio").hide();
+        $("#horaInicio").hide();
+        $('#idRepeticion').on('change', function() {
+            
+            switch(this.value){
+                case '1':
+                    $(".row-days").hide();
+                    $("#fechaInicio").show();
+                    $("#horaInicio").hide();
+                    break;
+                case '2':
+                    $("#fechaInicio").show();
+                    $(".row-days").hide();
+                    $("#horaInicio").show();
+                    break;
+                case '3':
+                    $("#horaInicio").hide();
+                    $("#fechaInicio").show();
+                    $(".row-days").show();
+                    break;
+                case '4':
+                    $("#horaInicio").hide();
+                    $(".row-days").hide();
+                    $("#fechaInicio").show();
+                    break;
+                case '5':
+                    $("#horaInicio").hide();
+                    $(".row-days").hide();
+                    $("#fechaInicio").show();
+                    break;
+                case '6':
+                    $("#horaInicio").hide();
+                    $(".row-days").hide();
+                    $("#fechaInicio").show();
+                    break;
+                case '7':
+                    $("#horaInicio").hide();
+                    $(".row-days").hide();
+                    $("#fechaInicio").show();
+                    break;
+                default:
+                    $(".row-days").hide();
+                    $("#fechaInicio").hide();
+                    $("#horaInicio").hide();
+                    
+            }
+
         });
+//      -- ocultar select multiple   
         $('.form_guardar').bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
@@ -159,36 +190,19 @@
             },
             fields: {
                 titulo:{
-                    message: 'El nombre no es valido.',
+                    message: 'El titulo no es valido.',
                     validators: {
                         notEmpty: {
-                            message: 'El nombre no puede ser vacio. '
+                            message: 'El titulo no puede ser vacio. '
                         },
                         stringLength: {
-                            min: 6,
+                            min: 3,
                             max: 30,
-                            message: 'El nombre tiene que ser mas de 6 y menos de 30 caracteres'
+                            message: 'El titulo tiene que ser mas de 3 y menos de 30 caracteres'
                         },
                         regexp: {
                             regexp: /^([-a-z0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
-                            message: 'El nombre solo puede constar de letras, n˙meros y guiones bajos.'
-                        }
-                    }
-                },
-                color:{
-                    message: 'El color no es valido.',
-                    validators: {
-                        notEmpty: {
-                            message: 'El color no puede ser vacio.'
-                        },
-                        stringLength: {
-                            min: 7,
-                            max: 20,
-                            message: 'El color debe contener 7 a 20 caracteres.'
-                        },
-                        regexp: {
-                            regexp: /^([a-z0-9.,()#_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
-                            message: 'El color solo puede constar de n˙meros, #, (), comas, puntos y letras.'
+                            message: 'El titulo solo puede constar de letras, n˙meros y guiones bajos.'
                         }
                     }
                 },
@@ -206,30 +220,6 @@
                         regexp: {
                             regexp: /^([-a-z0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
                             message: 'El nombre de usuario solo puede constar de letras, n˙meros y guiones bajos.'
-                        }
-                    }
-                },
-                fi:{
-                    message: 'La fecha de inicio no es valido.',
-                    validators: {
-                        notEmpty: {
-                            message: 'La fecha de inicio no puede ser vacio.'
-                        }
-                    }
-                },
-                hoarInicio:{
-                    message: 'La hora no es valido.',
-                    validators: {
-                        notEmpty: {
-                            message: 'La hora no puede ser vacio.'
-                        }
-                    }
-                },
-                idCategoria:{
-                    message: 'La categoria no es valido.',
-                    validators: {
-                        notEmpty: {
-                            message: 'La categoria no puede ser vacio.'
                         }
                     }
                 },

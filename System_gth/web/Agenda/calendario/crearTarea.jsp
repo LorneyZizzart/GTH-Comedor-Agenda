@@ -1,5 +1,5 @@
 <%@page import="java.util.Calendar"%>
-<%@page import="Entidad.Empleado"%>
+
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>   
 <%@page import="Entidad.A_EstadoTarea"%>
@@ -8,7 +8,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <jsp:useBean id="_tipoTarea" class="Controlador.A_TipoTareaController"/>
-<jsp:useBean id="_empleado" class="Controlador.EmpleadoController" />
 <jsp:useBean id="_estadoTarea" class="Controlador.A_EstadoTareaController"/>
 <jsp:useBean id="_repeticionTarea" class="Controlador.A_RepeticionTareaController"/>
 <%
@@ -18,11 +17,10 @@
     List<A_EstadoTarea> listaEstadoTarea = new ArrayList<A_EstadoTarea>();
     List<A_TipoTarea> listaTipoTarea = new ArrayList<A_TipoTarea>();
     List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
-    List<Empleado> listaEmpleado = new ArrayList<Empleado>();
+
     listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     listaEstadoTarea = _estadoTarea.getAllEstadoTarea();
     listaTipoTarea = _tipoTarea.getAllTipoTarea();
-    listaEmpleado = _empleado.GetAllEmpleado();
     SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
     Calendar calendar = Calendar.getInstance();  
@@ -34,19 +32,11 @@
     dateEnd = parseador.parse(String.valueOf(calendar.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.YEAR)));
     
 %>
-<form id="form_guardar" method="post" class="form_guardar" enctype="multipart/form-data">
+<form id="form_guardar" method="post" class="form_guardar">
     <input type="hidden" value="0" name="id" id="id">
     <input type="hidden" value="<%=idUsuario%>" name="idUsuario" id="idUsuario">
     <input type="hidden" value="<%=formateador.format(dateEnd)%>" name="ff" id="ff">
-    
-    <div class="nav-tabs-custom" style="margin-bottom: 0px;">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab">Tab 1</a></li>
-              <li><a href="#tab_2" data-toggle="tab">Tab 2</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="tab_1">
-                <div class="box-body">
+    <div class="box-body" style="margin: 1% 2% 1% 2%;">
                         <div class="form-group" >
                             <label>TÌtulo</label>
                             <input type="text" class="form-control" id="titulo"  name="titulo">                            
@@ -65,7 +55,7 @@
                               <label>Hora</label>
 
                               <div class="input-group">
-                                  <input type="text" class="form-control timepicker" name="horaInicio">
+                                  <input type="text" class="form-control timepicker" name="horaInicio" id="horaInicio">
 
                                 <div class="input-group-addon">
                                   <i class="fa fa-clock-o"></i>
@@ -89,7 +79,7 @@
                               <label>Hora</label>
 
                               <div class="input-group">
-                                <input type="text" class="form-control timepicker" name="horaFinal">
+                                  <input type="text" class="form-control timepicker" name="horaFinal" id="horaFinal">
 
                                 <div class="input-group-addon">
                                   <i class="fa fa-clock-o"></i>
@@ -101,8 +91,8 @@
                         </div>
                         <div class="form-group">
                             <label>Repetir cada</label>
-                            <select name="idRepeticion"  class="form-control select2" style="width: 100%;">
-                              <option disabled selected="selected">Selecione una opciÛn</option>
+                            <select id="idRepeticion" name="idRepeticion"  class="form-control select2" style="width: 100%;">
+                              <option disabled selected="selected" value="0">Selecione una opciÛn</option>
                               <%
                                     for(A_RepeticionTarea item : listaRepeticionTarea){
                                         if(item.getEstadoRepeticion()== 1){
@@ -123,21 +113,10 @@
                                <% } } %>
                             </select>
                         </div>
-                        <div class="form-group frm-funcionario">
-                            <label>Funcionario(s)</label>
-                            <select name="funcionario" class="form-control select2" multiple="multiple" data-placeholder="Selecionar funcionario" style="width: 100%;">
-                              <%
-                                    for(Empleado item : listaEmpleado){
-                                        if(item.getEstado()== 1){
-                                            %>
-                                   <option value="<%=item.getEmpleado_id()%>"><%=item.getApellido_paterno()%> <%=item.getApellido_materno()%> <%=item.getNombre()%></option>
-                               <% } } %>
-                            </select>
-                        </div>
                          <div class="form-group">
                             <label>Estado</label>
-                            <select name="idEstado" class="form-control select2" style="width: 100%;">
-                              <option disabled selected="selected">Selecione una opciÛn</option>
+                            <select id="idEstado" name="idEstado" class="form-control select2" style="width: 100%;">
+                              <option disabled selected="selected" value="0">Selecione una opciÛn</option>
                               <%
                                     for(A_EstadoTarea item : listaEstadoTarea){
                                         if(item.getEstadoEstadoTarea()== 1){
@@ -146,66 +125,31 @@
                                <% } } %>
                             </select>
                         </div>
-                    </div>
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="tab_2">
-                  <div class="box-body">
-                <div class="form-group">
-                            <label>Color</label>
-
-                            <div class="input-group my-colorpicker2">
-                                <input type="text" class="form-control" name="color" value="#541686">
-                              <div class="input-group-addon">
-                                <i></i>
-                              </div>
-                            </div>
-                            <!-- /.input group -->
-                        </div>
-                        <div class="form-group">
-                            <label>DescripciÛn</label>
-                            <textarea class="form-control" rows="15" id="descripcion"  name="descripcion"></textarea>
-                        </div>
-                        <div class="form-group" >
-                            <label>Seleccionar archivo</label>
-                            <input type="file" id="file"  name="file"> 
-                        </div>
-                      </div>
-              </div>
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-                    
+       
                     <!-- /.box-body -->
-
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
-                        <button type="submit" class="btn-purple pull-right"><i class="fa fa-save"></i> Guardar</button>
-                    </div>
-                </form>
-        <div  id="mensaje" style="margin: 2%; padding-bottom: 0.1%;"></div>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+        <button type="submit" class="btn-purple pull-right"><i class="fa fa-save"></i> Guardar</button>
+        <a id="opciones" class="btn pull-right" style="margin-right: 1%; background: #ffffff; font-weight: 700;color: #333;">M·s opciones</a>  
+    </div>                
+    </form>
+    <div  id="mensaje" style="margin: 2%;"></div>
 <script type="text/javascript">
-
-    function cargarArchivo(elemento){
-        var file = elemento.files[0];
-        var objHidden = document.getElementsByName("nombreArchivo");
-        objHidden.value = file.name;
-        document.getElementsByName('#form_guardar').target = "null";
-        document.getElementsByName('#form_guardar').action = "procesoArchivo";
-        document.getElementsByName('#form_guardar').submit;
-//        console.log(objHidden.value);
-        alert("proceso terminado");
-    }
+    
+    $( "#opciones" ).click(function(event) {
+        $(this).attr("href", "procedimientoTarea.jsp?t="+document.getElementById("titulo").value+
+                                                   "&fi="+document.getElementById("datepicker1").value+
+                                                   "&hi="+document.getElementById("horaInicio").value+
+                                                   "&ff="+document.getElementById("datepicker2").value+
+                                                   "&hf="+document.getElementById("horaFinal").value+
+                                                   "&r="+document.getElementById("idRepeticion").value+
+                                                   "&c="+document.getElementById("idCategoria").value+
+                                                   "&e="+document.getElementById("idEstado").value
+                                                   );
+    });
 
     $(document).ready(function () {
-        $(".frm-funcionario").hide();
-        $('#idCategoria').on('change', function() {
-            if(this.value == '3')
-            $(".frm-funcionario").show();
-            else $(".frm-funcionario").hide();
-        });
 
         //Timepicker
     $(".timepicker").timepicker({
@@ -246,31 +190,6 @@
                         regexp: {
                             regexp: /^([-a-z0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
                             message: 'El nombre solo puede constar de letras, n˙meros y guiones bajos.'
-                        }
-                    }
-                },
-                color:{
-                    message: 'El color no es valido.',
-                    validators: {
-                        notEmpty: {
-                            message: 'El color no puede ser vacio.'
-                        },
-                        stringLength: {
-                            min: 7,
-                            max: 20,
-                            message: 'El color debe contener 7 a 20 caracteres.'
-                        },
-                        regexp: {
-                            regexp: /^([a-z0-9.,()#_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
-                            message: 'El color solo puede constar de n˙meros, #, (), comas, puntos y letras.'
-                        }
-                    }
-                },
-                descripcion:{
-                    message: 'La descripciÛn no es valido.',
-                    validators: {
-                        notEmpty: {
-                            message: 'La descripciÛn no puede ser vacio.'
                         }
                     }
                 },

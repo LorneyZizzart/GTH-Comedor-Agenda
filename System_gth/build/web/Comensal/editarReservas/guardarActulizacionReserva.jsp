@@ -12,7 +12,7 @@
         empleadoReserva.setDescuentoAdicional(Double.parseDouble(request.getParameter("descuentoAdicional")));
         resultado = _empleadoReserva.EditEmpleadoReservaById(Integer.parseInt(request.getParameter("idReserva")), empleadoReserva);
     }catch(Exception e){
-        resultado = "Se ha producido un problema en el sistema [1].";
+        resultado = "Se ha producido un error, no llegaron todos los atributos.";
     }    
     
     if(resultado.equalsIgnoreCase("Ok")){

@@ -21,12 +21,27 @@
     Calendar calendar = Calendar.getInstance();
     //variable para obtener la fecha de hoy
     Calendar dateNow = Calendar.getInstance();
+    Boolean repeticion = false;
+    
+    try{
+        if(request.getParameter("repetir").equalsIgnoreCase("on"))
+        repeticion = true;
+    }catch(Exception e){
+        System.out.print("No se marco repetir todo el mes. " + e);
+    }
+    
     try {        
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date dateStart = formatter.parse(request.getParameter("fechaInicio"));
         Date dateEnd = formatter.parse(request.getParameter("fechaFin"));
 //        System.out.print("dateStart "+dateStart);
-        int dias=(int) ((dateEnd.getTime()-dateStart.getTime())/86400000);
+        int dias = 0;
+        if(request.getParameter("fechaInicio").equals(request.getParameter("fechaFin"))){
+            dias = 1;
+        }else{
+            dias=(int) ((dateEnd.getTime()-dateStart.getTime())/86400000);
+        }
+        
 //        System.out.print("dias "+dias);   
         
         for(C_TipoComida tipoComida : listaTipoComida){
@@ -34,32 +49,47 @@
                 empleadoReserva.setIdTipoComida(tipoComida.getIdTipoComida());
                 empleadoReserva.setIdUser(Integer.parseInt(request.getParameter("idUsuario")));//OK
 //                se habilitara la opcion de cantidades cuando se registren la cantidad de miembros en la familia
-//                empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad"+tipoComida.getNombreComida())));
-                empleadoReserva.setCantidad(1);
-
+                empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad"+tipoComida.getNombreComida())));
+//                empleadoReserva.setCantidad(1);
+                
                 empleadoReserva.setObservacion(String.valueOf(request.getParameter("observacion")));
                 calendar.setTime(dateStart);
+//                System.out.print("ENTRO: "+dias);
                 for(int i = 1; i <= dias; i++){                    
                     for(C_TipoComensal item : listaComensal){
-                        if(calendar.get(Calendar.DATE) >= item.getDiaInicio() && item.getEstado() == 1){
+                        if(calendar.get(Calendar.DATE) >= item.getDiaInicio() && calendar.get(Calendar.DATE) <= item.getDiaFin() && item.getEstado() == 1){
                             empleadoReserva.setIdTipoComensal(item.getTipoComensal_id());
                         }
 //                        else if(dateNow.get(Calendar.MONTH) != calendar.get(Calendar.MONTH) && item.getEstado() == 1){
 //                            empleadoReserva.setIdTipoComensal(item.getTipoComensal_id());
 //                        }
+                        
                     }
 //                    System.out.print("fechas: "+calendar.getTime());
 //                    se suma un 1 al MONTH porque los meses de calendar inician con 0
 //                    System.out.print(i+" fechas: "+calendar.get(Calendar.YEAR)+"/"+Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)+1))+"/"+calendar.get(Calendar.DATE));
                     empleadoReserva.setFecha(calendar.get(Calendar.YEAR)+"/"+Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)+1))+"/"+calendar.get(Calendar.DATE));
                     resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
+//                    resultado = "Ok";
+                    if(repeticion == true){
+                        int monthInitial = calendar.get(Calendar.MONDAY);                        
+                        while(monthInitial == calendar.get(Calendar.MONDAY)){
+                            calendar.add(Calendar.DATE, 7);
+                            if(monthInitial == calendar.get(Calendar.MONDAY)){
+                                empleadoReserva.setFecha(calendar.get(Calendar.YEAR)+"/"+Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)+1))+"/"+calendar.get(Calendar.DATE));
+//                                System.out.print("Month: "+calendar.get(Calendar.MONDAY));
+                                resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
+//                                resultado = "Ok";
+                            }                            
+                        }
+                    }                    
                     calendar.add(Calendar.DATE, 1);
                 }
             }
         }   
     }catch(Exception e){
         resultado = "Se ha producido "+e+" un error al registrar la reserva.";
-        System.out.print("Error: Se ha producido un error al registrar la reserva. " + e);
+        System.out.print("Se ha producido un error al registrar la reserva." + e);
     }
     
     if(resultado.equalsIgnoreCase("Ok")){

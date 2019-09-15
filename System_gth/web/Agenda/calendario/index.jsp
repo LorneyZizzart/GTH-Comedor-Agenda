@@ -21,8 +21,8 @@
         </style>
 <section class="content-header">
     <h1>
-        Registro
-        <small> de Reservas</small>
+        Calendario
+        <small> de tareas</small>
     </h1>   
 </section>
 <section class="content">
@@ -38,7 +38,7 @@
     <!-- /.row -->
     <!--Modal-->
     <div class="modal fade" id="formulario_registro">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-edit">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -56,13 +56,7 @@
 </section>
 <%@ include file= "../../masterPage/complemento/footer.jsp" %> 
 <script type="text/javascript">   
-    <%
-//        for(A_Tarea item : listaTareas){
-    %>
-//        console.log('titulo: ',<%/*=item.getFechaInicio()*/%>);
-    <%
-//        }
-    %>
+
     document.addEventListener('DOMContentLoaded', function() {
     
     var calendarEl = document.getElementById('calendar');
@@ -82,7 +76,6 @@
       selectable: true,
       selectMirror: true,
       select: function(e) {       
-        $(".modal-dialog").width("40%");
         $("#titleModal").html("Crear tarea");
         $('#formulario_registro').modal('show');
         $(".cuerpo_registro").html('');
@@ -111,28 +104,6 @@
                 $(".cuerpo_registro").removeClass('loader');
                 $(".cuerpo_registro").html(alerta);
             });
-        
-//        var title = prompt('Event Title:');
-//        if (title) {
-//          calendar.addEvent({
-//            title: title,
-//            start: arg.start,
-//            end: arg.end,
-//            allDay: arg.allDay
-//          })
-//        }
-//        calendar.unselect();
-//        var inicioDate = FullCalendar.formatDate(e.start, {
-//                month: 'long',
-//                year: 'numeric',
-//                day: 'numeric',
-//                locale: 'es'
-//              });
-//        console.log('date incio: ' + FullCalendar.formatDate(e.start, {
-//
-//                day: 'numeric'
-//            }));
-//        console.log('date fin ' + e.end);
       },
       dayRender(date, cell) {
         let thisDate = moment(date.date);

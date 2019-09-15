@@ -3,15 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/JS/GTH/System_gth/web/Registro/empleado/index.jsp</file>
-            <file>file:/E:/JS/GTH/System_gth/web/Comensal/verReserva/crearReporte.jsp</file>
-            <file>file:/E:/JS/GTH/System_gth/src/java/Entidad/Empleado_cargo.java</file>
-            <file>file:/E:/JS/GTH/System_gth/web/Agenda/calendario/crearTarea.jsp</file>
-            <file>file:/E:/JS/GTH/System_gth/src/java/Entidad/Cuestionario_gestion.java</file>
-            <file>file:/E:/JS/GTH/System_gth/web/Agenda/calendario/guardarTarea.jsp</file>
-            <file>file:/E:/JS/GTH/System_gth/src/java/Entidad/A_Tarea.java</file>
-            <file>file:/E:/JS/GTH/System_gth/src/java/Entidad/Departamento.java</file>
-            <file>file:/E:/JS/GTH/System_gth/src/java/Entidad/Empleado.java</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/A_TareaController.java</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/listaTarea.jsp</file>
         </group>
     </open-files>
 </project-private>
