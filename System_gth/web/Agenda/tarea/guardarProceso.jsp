@@ -37,7 +37,6 @@
         $("#mensaje").hide(3000, function () {
             $('.form-group').removeClass('has-success');
             $('.glyphicon-ok').hide();
-            
         });
         $("#formGuardarProceso")[0].reset();
     });

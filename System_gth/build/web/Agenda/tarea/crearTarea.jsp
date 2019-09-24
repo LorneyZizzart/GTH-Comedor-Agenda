@@ -13,7 +13,7 @@
     listaEstadoTarea = _estadoTarea.getAllEstadoTarea();
 
 %>
-<form id="form_guardar" method="post" class="form_guardar">
+<form id="form_guardar" method="post" class="form_guardar" enctype="multipart/form-data">
     <input type="hidden" value="0" name="id" id="id">
     <input type="hidden" value="<%=idUsuario%>" name="idUsuario" id="idUsuario">
                     <div class="box-body">
@@ -37,7 +37,7 @@
                                <% } } %>
                             </select>
                         </div>
-                            <div id="fechaInicio" class="form-group" style="padding-right: 0;padding-left: 0;">
+                        <div id="fechaInicio" class="form-group" style="padding-right: 0;padding-left: 0;">
                             <label>Fecha incio:</label>
                             <div class="input-group date">
                               <div class="input-group-addon">
@@ -98,24 +98,30 @@
                               <option disabled selected="selected">Selecione una opciÛn</option>
                               <%
                                     for(A_EstadoTarea item : listaEstadoTarea){
+                                        String select = "";
+                                        if(item.getIdEstadoTarea() == 6)
+                                            select = "Selected";
                                         if(item.getEstadoEstadoTarea()== 1){
                                             %>
-                                   <option value="<%=item.getIdEstadoTarea()%>"><%=item.getNombreEstadoTarea()%></option>
+                                   <option value="<%=item.getIdEstadoTarea()%>" <%=select%>><%=item.getNombreEstadoTarea()%></option>
                                <% } } %>
                             </select>
                         </div>
+                       
                     </div>
                     <!-- /.box-body -->
 
                     <div class="box-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
-                        <button type="submit" class="btn-purple pull-right"><i class="fa fa-save"></i> Guardar</button>
+                        <button id="btnGuardar" type="submit" class="btn-purple pull-right"><i class="fa fa-save"></i> Guardar</button>
+                        <button id="btnProcess" type="button" class="btn-purple pull-right" data-dismiss="modal"><i class="fa fa-plus"></i> Agregar procesos</button>
                     </div>
                 </form>
         <div id="mensaje"></div>
 <script type="text/javascript">
     
     $(document).ready(function () {
+    $('#btnProcess').hide();
         //Timepicker
     $(".timepicker").timepicker({
       showInputs: false,
@@ -128,7 +134,7 @@
         //Date picker
         $('#datepicker1').datepicker({
             format: 'dd/mm/yyyy',
-          autoclose: true
+            autoclose: true
         });
 //        ocultar select multiple
         $(".row-days").hide();
@@ -218,7 +224,7 @@
                             message: 'La descripciÛn debe contener de 5 a 500 caracteres.'
                         },
                         regexp: {
-                            regexp: /^([-a-z0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
+                            regexp: /^([-a-z/()*%&$#ø?°!0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
                             message: 'El nombre de usuario solo puede constar de letras, n˙meros y guiones bajos.'
                         }
                     }
@@ -265,6 +271,31 @@
             });
         });
     });
-
+    
+    $("#btnProcess").click(function (e) {
+        
+        $(".modal-dialog-edit").width("40%");
+        $(".modal-dialog-edit").css('margin-right', "30%");
+        $(".modal-dialog-edit").css('margin-left', "30%");
+        $("#titleModal").html("Procesos");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+            $('#formulario_registro').modal('show');
+            $(".cuerpo_registro").html('');
+            $(".cuerpo_registro").addClass('loader');
+            
+            $.post('procesosTarea.jsp',
+            {id: localStorage.getItem("idTarea")},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            });
+    });
 
 </script>

@@ -26,12 +26,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author Invitado1
  */
 public class A_TareaController {
-    public List<A_Tarea> getAllTarea(int idUsuario, int idRepeticion) throws ParseException {        
+    public List<A_Tarea> getAllTarea(int idUsuario, int idRepeticion, String fIniio, String fFinal) throws ParseException {        
         A_TareaModel x = new A_TareaModel();
         String setenciaSql = null;
         Calendar calendar = Calendar.getInstance();
         Calendar calendarEnd = Calendar.getInstance();
-        SimpleDateFormat parseador = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
+        SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         calendar.setTime(date);
         calendarEnd.setTime(date);        
@@ -54,8 +54,8 @@ public class A_TareaController {
                 break; 
             case 4:
 //                Mensual = 4
-                calendar.add(Calendar.DATE, -(calendar.get(Calendar.DAY_OF_WEEK)-1));
-                calendarEnd.add(Calendar.MONTH, 1);
+                calendar.set(Calendar.DATE, calendar.getActualMinimum(Calendar.DATE));
+                calendarEnd.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
                 setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
                 break;
             case 5:
@@ -66,10 +66,14 @@ public class A_TareaController {
                 break;
             case 6:
 //                Anual = 6
-                calendar.add(Calendar.DATE, -(calendar.get(Calendar.DAY_OF_WEEK)-1));
-                calendarEnd.add(Calendar.YEAR, 1);
-                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/01/01' and '"+calendar.get(Calendar.YEAR)+"/12/31'";
                 break;  
+            case 7:
+//                Predeterminado = 6
+                calendar.setTime(parseador.parse(fIniio));
+                calendarEnd.setTime(parseador.parse(fFinal));
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
+                break; 
             default:
                 setenciaSql = "";
         }
@@ -78,9 +82,19 @@ public class A_TareaController {
         return x.getAllTarea(idUsuario, setenciaSql);
     }
     
+    public List<A_Tarea> getGroupTareaByUser(int idUsuario){
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getGroupTareaByUser(idUsuario);
+    }
+    
     public A_Tarea getTareaById(int idTarea) throws ParseException {
         A_TareaModel mod = new A_TareaModel();
         return mod.getTareaById(idTarea);
+    }
+    
+    public String getMaxIdTarea(){
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getMaxIdTarea();
     }
     
     public String UpdateTarea(A_Tarea tarea){
@@ -97,11 +111,14 @@ public class A_TareaController {
         A_TareaModel mod = new A_TareaModel();
         String resultado = null;
         Calendar calendarStart = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
         A_RepeticionTareaController _repeticionTarea = new A_RepeticionTareaController();
         List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
         listaRepeticionTarea =  _repeticionTarea.getAllRepeticionTarea();
         Date dateStart = parseador.parse(tarea.getFechaInicio());
+        Date date = new Date();
+        calendar.setTime(date);
         calendarStart.setTime(dateStart);
         for(A_RepeticionTarea r : listaRepeticionTarea){
             if(r.getIdRepeticionTarea() == tarea.getIdRepeticionTarea()){
@@ -110,7 +127,7 @@ public class A_TareaController {
                     if(r.getIdRepeticionTarea() == 3){
                         String[] strDays = new String[]{"Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
                         
-                        while (calendarStart.get(Calendar.YEAR) <= 2019) {
+                        while (calendarStart.get(Calendar.YEAR) <= calendar.get(Calendar.YEAR)) {
                             switch(strDays[calendarStart.get(Calendar.DAY_OF_WEEK) - 1]){
                                 case "Domingo" :
                                     if(tarea.getDomingo() == 1){
@@ -167,7 +184,7 @@ public class A_TareaController {
                        }
                         
                     }else if(r.getIdRepeticionTarea() == 2  || r.getIdRepeticionTarea() == 6 || r.getIdRepeticionTarea() == 4){
-                       while (calendarStart.get(Calendar.YEAR) <= 2019) {
+                       while (calendarStart.get(Calendar.YEAR) <= calendar.get(Calendar.YEAR)) {
                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
                            tarea.setFechaInicio(parseador.format(dateStart));
                            resultado = mod.SaveOrUpdate(tarea);

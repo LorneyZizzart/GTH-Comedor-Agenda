@@ -3,6 +3,11 @@ package org.apache.jsp.Agenda.tarea;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import org.apache.commons.fileupload.FileItem;
+import java.util.List;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import java.io.File;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import Entidad.A_Tarea;
 
 public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
@@ -42,7 +47,12 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write('\n');
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       Controlador.A_TareaController _tarea = null;
       synchronized (_jspx_page_context) {
         _tarea = (Controlador.A_TareaController) _jspx_page_context.getAttribute("_tarea", PageContext.PAGE_SCOPE);
@@ -62,7 +72,7 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
       }
       out.write('\n');
 
-    
+    String maxIdTarea = null;
     A_Tarea tarea = new A_Tarea();
     String resultado = null;
     try{
@@ -127,25 +137,57 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
     }catch(Exception e){
         tarea.setDomingo(0); 
     }
-    if(tarea.getIdTarea() == 0)
-    resultado = _tarea.SaveTarea(tarea);
-    else resultado = _tarea.UpdateTarea(tarea);
-    
-    if(resultado.equalsIgnoreCase("Ok")){
-
+    if(tarea.getIdTarea() == 0){
+//        resultado = "Ok";
+        resultado = _tarea.SaveTarea(tarea);
+        maxIdTarea = _tarea.getMaxIdTarea();
+        
+        
       out.write("\n");
-      out.write("<div class=\" text-center alert alert-success alert-dismissible\">\n");
-      out.write("    <h4><i class=\"icon fa fa-check\"></i> Guardado</h4>\n");
-      out.write("</div>\n");
-      out.write(" <script type=\"text/javascript\">\n");
-      out.write("    $(document).ready(function () {\n");
-      out.write("        $(\"#mensaje\").hide(3000, function () {\n");
-      out.write("            location.reload();\n");
-      out.write("        });\n");
-      out.write("        $(\"form\")[0].reset();\n");
-      out.write("    });\n");
-      out.write("</script>\n");
-}else{
+      out.write("    <div class=\" text-center alert alert-success alert-dismissible\">\n");
+      out.write("        <h4><i class=\"icon fa fa-check\"></i> Guardado</h4>\n");
+      out.write("    </div>\n");
+      out.write("     <script type=\"text/javascript\">\n");
+      out.write("        $(document).ready(function () {   \n");
+      out.write("            localStorage.setItem(\"idTarea\", ");
+      out.print(maxIdTarea);
+      out.write(");\n");
+      out.write("            $(\"#mensaje\").hide(3000, function () {\n");
+      out.write("                $('.form-group').removeClass('has-success');\n");
+      out.write("                $('.glyphicon-ok').hide();\n");
+      out.write("                $('#btnProcess').show();\n");
+      out.write("                $('#btnGuardar').hide();  \n");
+      out.write("\n");
+      out.write("            });\n");
+      out.write("            $(\"form\")[0].reset();\n");
+      out.write("        });    \n");
+      out.write("    </script>\n");
+      out.write("    ");
+
+        
+    }
+    else {
+        resultado = _tarea.UpdateTarea(tarea);
+        
+      out.write("\n");
+      out.write("        <div class=\" text-center alert alert-success alert-dismissible\">\n");
+      out.write("            <h4><i class=\"icon fa fa-check\"></i> Actualizado</h4>\n");
+      out.write("        </div>\n");
+      out.write("         <script type=\"text/javascript\">\n");
+      out.write("            $(document).ready(function () {\n");
+      out.write("                $(\"#mensaje\").hide(3000, function () {\n");
+      out.write("                    location.reload();\n");
+      out.write("                });\n");
+      out.write("                $(\"form\")[0].reset();\n");
+      out.write("            });   \n");
+      out.write("        </script>\n");
+      out.write("        ");
+
+    }
+    
+    if(!resultado.equals("Ok")){
+        
+
       out.write("\n");
       out.write("<div class=\"alert alert-danger alert-dismissible\">\n");
       out.write("    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n");

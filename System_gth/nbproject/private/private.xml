@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/java/Controlador/A_TareaController.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>96</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/A_TareaController.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/listaTarea.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/crearTarea.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/AFileUpload.java</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/uploadFile.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/saveFile.jsp</file>
         </group>
     </open-files>
 </project-private>

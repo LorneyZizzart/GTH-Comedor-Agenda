@@ -77,7 +77,7 @@ public final class crearTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
 
 
       out.write("\n");
-      out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
+      out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\" enctype=\"multipart/form-data\">\n");
       out.write("    <input type=\"hidden\" value=\"0\" name=\"id\" id=\"id\">\n");
       out.write("    <input type=\"hidden\" value=\"");
       out.print(idUsuario);
@@ -112,7 +112,7 @@ public final class crearTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                            </select>\n");
       out.write("                        </div>\n");
-      out.write("                            <div id=\"fechaInicio\" class=\"form-group\" style=\"padding-right: 0;padding-left: 0;\">\n");
+      out.write("                        <div id=\"fechaInicio\" class=\"form-group\" style=\"padding-right: 0;padding-left: 0;\">\n");
       out.write("                            <label>Fecha incio:</label>\n");
       out.write("                            <div class=\"input-group date\">\n");
       out.write("                              <div class=\"input-group-addon\">\n");
@@ -174,12 +174,17 @@ public final class crearTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                              ");
 
                                     for(A_EstadoTarea item : listaEstadoTarea){
+                                        String select = "";
+                                        if(item.getIdEstadoTarea() == 6)
+                                            select = "Selected";
                                         if(item.getEstadoEstadoTarea()== 1){
                                             
       out.write("\n");
       out.write("                                   <option value=\"");
       out.print(item.getIdEstadoTarea());
       out.write('"');
+      out.write(' ');
+      out.print(select);
       out.write('>');
       out.print(item.getNombreEstadoTarea());
       out.write("</option>\n");
@@ -188,18 +193,21 @@ public final class crearTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                            </select>\n");
       out.write("                        </div>\n");
+      out.write("                       \n");
       out.write("                    </div>\n");
       out.write("                    <!-- /.box-body -->\n");
       out.write("\n");
       out.write("                    <div class=\"box-footer\">\n");
       out.write("                        <button type=\"button\" class=\"btn btn-default pull-left\" data-dismiss=\"modal\"><i class=\"fa fa-close\"></i> Cancelar</button>\n");
-      out.write("                        <button type=\"submit\" class=\"btn-purple pull-right\"><i class=\"fa fa-save\"></i> Guardar</button>\n");
+      out.write("                        <button id=\"btnGuardar\" type=\"submit\" class=\"btn-purple pull-right\"><i class=\"fa fa-save\"></i> Guardar</button>\n");
+      out.write("                        <button id=\"btnProcess\" type=\"button\" class=\"btn-purple pull-right\" data-dismiss=\"modal\"><i class=\"fa fa-plus\"></i> Agregar procesos</button>\n");
       out.write("                    </div>\n");
       out.write("                </form>\n");
       out.write("        <div id=\"mensaje\"></div>\n");
       out.write("<script type=\"text/javascript\">\n");
       out.write("    \n");
       out.write("    $(document).ready(function () {\n");
+      out.write("    $('#btnProcess').hide();\n");
       out.write("        //Timepicker\n");
       out.write("    $(\".timepicker\").timepicker({\n");
       out.write("      showInputs: false,\n");
@@ -212,7 +220,7 @@ public final class crearTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        //Date picker\n");
       out.write("        $('#datepicker1').datepicker({\n");
       out.write("            format: 'dd/mm/yyyy',\n");
-      out.write("          autoclose: true\n");
+      out.write("            autoclose: true\n");
       out.write("        });\n");
       out.write("//        ocultar select multiple\n");
       out.write("        $(\".row-days\").hide();\n");
@@ -302,7 +310,7 @@ public final class crearTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            message: 'La descripción debe contener de 5 a 500 caracteres.'\n");
       out.write("                        },\n");
       out.write("                        regexp: {\n");
-      out.write("                            regexp: /^([-a-z0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
+      out.write("                            regexp: /^([-a-z/()*%&$#¿?¡!0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
       out.write("                            message: 'El nombre de usuario solo puede constar de letras, números y guiones bajos.'\n");
       out.write("                        }\n");
       out.write("                    }\n");
@@ -349,7 +357,32 @@ public final class crearTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            });\n");
       out.write("        });\n");
       out.write("    });\n");
-      out.write("\n");
+      out.write("    \n");
+      out.write("    $(\"#btnProcess\").click(function (e) {\n");
+      out.write("        \n");
+      out.write("        $(\".modal-dialog-edit\").width(\"40%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"30%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"30%\");\n");
+      out.write("        $(\"#titleModal\").html(\"Procesos\");\n");
+      out.write("        e.preventDefault();\n");
+      out.write("        e.stopImmediatePropagation();\n");
+      out.write("            $('#formulario_registro').modal('show');\n");
+      out.write("            $(\".cuerpo_registro\").html('');\n");
+      out.write("            $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("            \n");
+      out.write("            $.post('procesosTarea.jsp',\n");
+      out.write("            {id: localStorage.getItem(\"idTarea\")},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            });\n");
+      out.write("    });\n");
       out.write("\n");
       out.write("</script>");
     } catch (Throwable t) {

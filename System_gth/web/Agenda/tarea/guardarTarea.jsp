@@ -1,8 +1,13 @@
+<%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="java.util.List"%>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="java.io.File"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
 <%@page import="Entidad.A_Tarea"%>
 <jsp:useBean id="_tarea" class="Controlador.A_TareaController"/>
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%
-    
+    String maxIdTarea = null;
     A_Tarea tarea = new A_Tarea();
     String resultado = null;
     try{
@@ -67,24 +72,51 @@
     }catch(Exception e){
         tarea.setDomingo(0); 
     }
-    if(tarea.getIdTarea() == 0)
-    resultado = _tarea.SaveTarea(tarea);
-    else resultado = _tarea.UpdateTarea(tarea);
+    if(tarea.getIdTarea() == 0){
+//        resultado = "Ok";
+        resultado = _tarea.SaveTarea(tarea);
+        maxIdTarea = _tarea.getMaxIdTarea();
+        
+        %>
+    <div class=" text-center alert alert-success alert-dismissible">
+        <h4><i class="icon fa fa-check"></i> Guardado</h4>
+    </div>
+     <script type="text/javascript">
+        $(document).ready(function () {   
+            localStorage.setItem("idTarea", <%=maxIdTarea%>);
+            $("#mensaje").hide(3000, function () {
+                $('.form-group').removeClass('has-success');
+                $('.glyphicon-ok').hide();
+                $('#btnProcess').show();
+                $('#btnGuardar').hide();  
+
+            });
+            $("form")[0].reset();
+        });    
+    </script>
+    <%
+        
+    }
+    else {
+        resultado = _tarea.UpdateTarea(tarea);
+        %>
+        <div class=" text-center alert alert-success alert-dismissible">
+            <h4><i class="icon fa fa-check"></i> Actualizado</h4>
+        </div>
+         <script type="text/javascript">
+            $(document).ready(function () {
+                $("#mensaje").hide(3000, function () {
+                    location.reload();
+                });
+                $("form")[0].reset();
+            });   
+        </script>
+        <%
+    }
     
-    if(resultado.equalsIgnoreCase("Ok")){
+    if(!resultado.equals("Ok")){
+        
 %>
-<div class=" text-center alert alert-success alert-dismissible">
-    <h4><i class="icon fa fa-check"></i> Guardado</h4>
-</div>
- <script type="text/javascript">
-    $(document).ready(function () {
-        $("#mensaje").hide(3000, function () {
-            location.reload();
-        });
-        $("form")[0].reset();
-    });
-</script>
-<%}else{%>
 <div class="alert alert-danger alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <h4><i class="icon fa fa-ban"></i> Alerta!</h4>

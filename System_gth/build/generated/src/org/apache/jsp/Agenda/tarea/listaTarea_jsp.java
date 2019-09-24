@@ -68,8 +68,15 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
 
     int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
     int idRepeat = Integer.parseInt(request.getParameter("idRepeat"));
+    String dateStart =  request.getParameter("fi");
+    String dateEnd =  request.getParameter("ff");
     List<A_Tarea> lista = new ArrayList<A_Tarea>();
-    lista = _tarea.getAllTarea(idUsuario, idRepeat);
+    if(idRepeat == 8){
+       lista = _tarea.getGroupTareaByUser(idUsuario);
+    }else{
+       lista = _tarea.getAllTarea(idUsuario, idRepeat, dateStart, dateEnd);
+    }
+    
 
 
       out.write("\n");
@@ -90,23 +97,76 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            <tr>\n");
       out.write("                                <th style=\"width: 2%\">#</th>\n");
       out.write("                                <th style=\"width: 8%\">Titulo</th>\n");
+      out.write("                                ");
+
+                                    if(idRepeat==8){
+                                
+      out.write("\n");
+      out.write("                                <th style=\"width: 8%\">Repetición</th>\n");
+      out.write("                                <th style=\"width: 2%\">Fecha de registro</th>                                 \n");
+      out.write("                                ");
+
+                                    }else{
+                                
+      out.write("\n");
       out.write("                                <th>Descripción</th>\n");
       out.write("                                <th style=\"width: 8%\">Repetición</th>\n");
       out.write("                                <th style=\"width: 10%\">Fecha</th> \n");
       out.write("                                <th style=\"width: 5%\">Estado</th>\n");
-      out.write("                                <th style=\"width: 5%\">Opciones</th>\n");
+      out.write("                                <th style=\"width: 10%\">Opciones</th>\n");
+      out.write("                                ");
+
+                                    }
+                                
+      out.write("                                \n");
       out.write("                            </tr>\n");
       out.write("                        </thead>\n");
       out.write("                        <tbody>\n");
       out.write("                            ");
-
-                                int contador = 0;
-                                for (A_Tarea item : lista) {
-                                    contador++;
-
+  int contador = 0;
+                                  if(idRepeat==8){
+                                      for (A_Tarea item : lista) {
+                                          contador++;
                             
       out.write("\n");
-      out.write("                            <tr>\n");
+      out.write("                            <tr >\n");
+      out.write("                                <td>");
+      out.print(contador);
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print(item.getTitulo());
+      out.write("</td>   \n");
+      out.write("                                <td>");
+      out.print( item.getNombreRepeticion());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getFechaRegistroTarea());
+      out.write("</td>\n");
+      out.write("                            </tr>\n");
+      out.write("                            ");
+
+                                      }} else{
+                                    for (A_Tarea item : lista) {
+                                    contador++;
+                                    String color = "rgba(255, 235, 59, 0.3)";
+                                    if(item.getIdEstadoTarea() == 2 ){
+                                        color = "rgba(76, 175, 80, 0.3)";
+                                    }else if(item.getIdEstadoTarea() == 6){
+                                        color = "rgba(233, 30, 99, 0.3)";
+                                    }  
+                                    //posible
+//                                    String color = "rgba(255, 235, 59, 0.1)";
+//                                    if(item.getIdEstadoTarea() == 2 ){
+//                                        color = "rgba(76, 175, 80, 0.1)";
+//                                    }else if(item.getIdEstadoTarea() == 6){
+//                                        color = "rgba(233, 30, 99, 0.1)";
+//                                    } 
+                                    //--posible
+                            
+      out.write("\n");
+      out.write("                            <tr style=\"background: ");
+      out.print(color);
+      out.write("\">\n");
       out.write("                                <td>");
       out.print(contador);
       out.write("</td>\n");
@@ -133,6 +193,9 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print(item.getIdTarea());
       out.write("\" class=\"formProcess btn btn-xs btn-info edit_button\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Procesos\"><i class=\"fa fa-plus\"></i></a>     \n");
       out.write("                                        <a data-id=\"");
+      out.print(item.getIdTarea());
+      out.write("\" class=\"listUploadFile btn btn-xs btn-warning\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Archivos\"><i class=\"fa fa-folder\"></i></a>    \n");
+      out.write("                                        <a data-id=\"");
       out.print(_encript.ValorAEncriptar(Integer.toString(item.getIdTarea())));
       out.write("\" class=\"formEdit btn btn-xs btn-primary edit_button\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Editar\"><i class=\"fa fa-edit\"></i></a>                                \n");
       out.write("                                        <a data-id=\"");
@@ -142,8 +205,8 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                </td>\n");
       out.write("                            </tr>\n");
       out.write("                            ");
-
-                                }
+          
+                                  }}
                             
       out.write("\n");
       out.write("\n");
@@ -152,11 +215,28 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            <tr>\n");
       out.write("                                <th>#</th>\n");
       out.write("                                <th>Titulo</th>\n");
-      out.write("                                <th>Descripción</th> \n");
+      out.write("                                ");
+
+                                    if(idRepeat==8){
+                                
+      out.write("\n");
       out.write("                                <th>Repetición</th>\n");
-      out.write("                                <th>Fecha</th>\n");
-      out.write("                                <th>Estado</th>               \n");
+      out.write("                                <th>Fecha de registro</th>                                 \n");
+      out.write("                                ");
+
+                                    }else{
+                                
+      out.write("\n");
+      out.write("                                <th>Descripción</th>\n");
+      out.write("                                <th>Repetición</th>\n");
+      out.write("                                <th>Fecha</th> \n");
+      out.write("                                <th>Estado</th>\n");
       out.write("                                <th>Opciones</th>\n");
+      out.write("                                ");
+
+                                    }
+                                
+      out.write("\n");
       out.write("                            </tr>\n");
       out.write("                        </tfoot>\n");
       out.write("                    </table>\n");
@@ -303,6 +383,84 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            localStorage.setItem(\"idTarea\", $(this).attr('data-id'));\n");
       out.write("            \n");
       out.write("            $.post('procesosTarea.jsp',\n");
+      out.write("            {id: $(this).attr('data-id')},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            });\n");
+      out.write("    });\n");
+      out.write("    \n");
+      out.write("    $(\".listUploadFile\").click(function (e) {\n");
+      out.write("        $(\".modal-dialog-edit\").width(\"40%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"30%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"30%\");\n");
+      out.write("        $(\"#titleModal\").html(\"Archivos relacionados\");\n");
+      out.write("        e.preventDefault();\n");
+      out.write("        e.stopImmediatePropagation();\n");
+      out.write("            $('#formulario_registro').modal('show');\n");
+      out.write("            $(\".cuerpo_registro\").html('');\n");
+      out.write("            $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("            \n");
+      out.write("            localStorage.setItem(\"idTarea\", $(this).attr('data-id'));\n");
+      out.write("            \n");
+      out.write("            $.post('listFile.jsp',\n");
+      out.write("            {id: $(this).attr('data-id')},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            });\n");
+      out.write("    });\n");
+      out.write("    \n");
+      out.write("    \n");
+      out.write("    $(\".formFile\").click(function (e) {\n");
+      out.write("        $(\".modal-dialog-edit\").width(\"25%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"37.5%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"37.5%\");\n");
+      out.write("        $(\"#titleModal\").html(\"Crear tarea\");\n");
+      out.write("        e.preventDefault();\n");
+      out.write("        e.stopImmediatePropagation();\n");
+      out.write("            $('#formulario_registro').modal('show');\n");
+      out.write("            $(\".cuerpo_registro\").html('');\n");
+      out.write("            $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("            //$.post('lista_cuenta_duplicada.jsp',\n");
+      out.write("            $.post('uploadFile.jsp',\n");
+      out.write("            {id: $(this).attr('data-id')},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            });\n");
+      out.write("    });\n");
+      out.write("    \n");
+      out.write("    $(\".formUploadFile\").click(function (e) {\n");
+      out.write("        $(\".modal-dialog-edit\").width(\"25%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"37.5%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"37.5%\");\n");
+      out.write("        $(\"#titleModal\").html(\"Upload File\");\n");
+      out.write("        e.preventDefault();\n");
+      out.write("        e.stopImmediatePropagation();\n");
+      out.write("            $('#formulario_registro').modal('show');\n");
+      out.write("            $(\".cuerpo_registro\").html('');\n");
+      out.write("            $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("            //$.post('lista_cuenta_duplicada.jsp',\n");
+      out.write("            $.post('indexFile.jsp',\n");
       out.write("            {id: $(this).attr('data-id')},\n");
       out.write("                    function (html) {\n");
       out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");

@@ -167,8 +167,7 @@
     $(document).ready(function () {
     //Timepicker
     $(".timepicker").timepicker({
-      showInputs: false,
-      defaultTime: false
+      showInputs: false
     });
         //color picker with addon
     $(".my-colorpicker2").colorpicker();

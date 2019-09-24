@@ -47,6 +47,10 @@ box-shadow: 1px 11px 10px -2px rgba(148,132,148,0.78)
     color: #fff;
 }
 
+.btn-block:hover{
+    border-bottom-color: #3b0e5f;
+}
+
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
     background-color: #541686;
     border-color: #541686;

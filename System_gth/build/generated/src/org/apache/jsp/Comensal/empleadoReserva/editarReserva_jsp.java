@@ -89,6 +89,7 @@ public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
     String nombreReserva = request.getParameter("nombre");  
     String data = request.getParameter("fechaInicial");
     String dataNow = request.getParameter("fechaNow");
+    String[] CantidadPlatos = new String[]{"1", "2", "3"};
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 //    variable para obtener la fecha recibida
@@ -149,10 +150,30 @@ public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.print(nombreReserva);
       out.write("\n");
       out.write("                                </label>\n");
-      out.write("                                <div style=\"padding: 0\" class=\"col-md-7\">\n");
-      out.write("                                    <input disabled type=\"text\" class=\"form-control\" id=\"cantidad\" name=\"cantidad\" value=\"");
-      out.print(empleadoReserva.getCantidad());
-      out.write("\">    \n");
+      out.write("                                 <div class=\"form-group\">\n");
+      out.write("                                    <select ");
+      out.print(estado);
+      out.write(" class=\"form-control form-cantidad\" id=\"cantidad\" name=\"cantidad\">\n");
+      out.write("                                      <option disabled selected=\"selected\">Cantidad</option>\n");
+      out.write("                                      ");
+
+                                        for(String s : CantidadPlatos){
+                                            String select = "";
+                                            if(empleadoReserva.getCantidad() == Integer.parseInt(s))
+                                              select = "Selected";
+                                            
+      out.write("\n");
+      out.write("                                            <option ");
+      out.print(select);
+      out.write('>');
+      out.print(s);
+      out.write("</option>\n");
+      out.write("                                        ");
+
+                                        }
+                                      
+      out.write("\n");
+      out.write("                                    </select>\n");
       out.write("                                </div>\n");
       out.write("\n");
       out.write("                        </div>  <br>\n");

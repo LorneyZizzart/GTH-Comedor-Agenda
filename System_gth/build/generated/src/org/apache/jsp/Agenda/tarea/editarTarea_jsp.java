@@ -308,8 +308,7 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    $(document).ready(function () {\n");
       out.write("    //Timepicker\n");
       out.write("    $(\".timepicker\").timepicker({\n");
-      out.write("      showInputs: false,\n");
-      out.write("      defaultTime: false\n");
+      out.write("      showInputs: false\n");
       out.write("    });\n");
       out.write("        //color picker with addon\n");
       out.write("    $(\".my-colorpicker2\").colorpicker();\n");

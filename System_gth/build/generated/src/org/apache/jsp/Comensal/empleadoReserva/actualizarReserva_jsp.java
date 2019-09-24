@@ -59,7 +59,7 @@ public final class actualizarReserva_jsp extends org.apache.jasper.runtime.HttpJ
     try{
         idEmpleadoReserva = Integer.parseInt(request.getParameter("id"));
 
-        empleadoReserva.setCantidad(1);
+        empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
 
         empleadoReserva.setObservacion(request.getParameter("observacion"));
         

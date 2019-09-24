@@ -75,6 +75,33 @@ public class A_TareaModel {
         }
         return tareas;
     }
+//    ver tareas agrupadas
+    public List<A_Tarea> getGroupTareaByUser (int idUser) {
+        List<A_Tarea> tareas = new ArrayList<A_Tarea>();        
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro , rt.nombre\n" +
+                         "FROM ATarea ta, ARepeticionTarea rt\n" +
+                         "WHERE ta.idRepeticionTarea = rt.idRepeticionTarea\n" +
+                         "AND idUsuarioCrea = " + idUser + "\n" +
+                         "GROup by ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro, rt.nombre";
+            ResultSet res = db.consulta(sql);
+            while (res.next()) {
+                A_Tarea tarea = new A_Tarea();
+                tarea.setIdRepeticionTarea(res.getInt("idRepeticionTarea"));
+                tarea.setTitulo(res.getString("titulo"));
+                tarea.setFechaRegistroTarea(res.getDate("fechaRegistro"));
+                tarea.setNombreRepeticion(res.getString("nombre"));   
+                tareas.add(tarea);
+            }
+            db.cierraConexion();
+                      
+        } catch (SQLException e) {
+            System.out.println("Modelo.A_TareaModel.getGroupTareaByUser() " + e.getMessage());
+        }
+        return tareas;
+    }
     
     public A_Tarea getTareaById(int idTarea) throws ParseException {
         A_Tarea tarea = new A_Tarea();
@@ -128,6 +155,24 @@ public class A_TareaModel {
             System.out.println("Controlador.A_TareaModel.getTareaById() " + e.getMessage());
         }
         return tarea;
+    }
+    
+    public String getMaxIdTarea(){
+        String id = null;
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT MAX(idTarea) AS idTarea FROM ATarea";
+
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {                
+                id = res.getString("idTarea");
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Controlador.A_TareaModel.getMaxIdTarea() " + e.getMessage());
+        }
+        return id;
     }
     
     public List<A_Tarea> getAllTareaForProcess(String nombreProceso) {
@@ -224,6 +269,7 @@ public class A_TareaModel {
                     + "   SET titulo = '" + tarea.getTitulo()+ "' \n"
                     + "      ,descripcion = '" + tarea.getDescripcion()+ "' \n"
                     + "      ,idRepeticionTarea = " + tarea.getIdRepeticionTarea()+ " \n"
+                    + "      ,idEstadoTarea = " + tarea.getIdEstadoTarea()+ " \n"
                     + "      ,fechaInicio = '" + tarea.getFechaInicio()+ "' \n"
                     + "      ,horaInicio = '" + tarea.getHoraInicio()+ "' \n"
                     + "      ,domingo = " + tarea.getDomingo()+ " \n"
@@ -235,6 +281,7 @@ public class A_TareaModel {
                     + "      ,sabado = " + tarea.getSabado()+ " \n"
                     + "      ,fechaActualizacion = CONVERT(date, SYSDATETIME()) "
                     + " WHERE idTarea = " + tarea.getIdTarea();
+            System.out.print("sql:"+sql);
             db.actualizar(sql);
 
             db.cierraConexion();

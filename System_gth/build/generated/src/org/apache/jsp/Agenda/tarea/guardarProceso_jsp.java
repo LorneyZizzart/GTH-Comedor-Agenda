@@ -92,7 +92,6 @@ public final class guardarProceso_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("        $(\"#mensaje\").hide(3000, function () {\n");
       out.write("            $('.form-group').removeClass('has-success');\n");
       out.write("            $('.glyphicon-ok').hide();\n");
-      out.write("            \n");
       out.write("        });\n");
       out.write("        $(\"#formGuardarProceso\")[0].reset();\n");
       out.write("    });\n");

@@ -82,7 +82,7 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                              <div class=\"input-group-addon\">\n");
       out.write("                                <i class=\"fa fa-calendar\"></i>\n");
       out.write("                              </div>\n");
-      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"fi\" id=\"datepicker1\">\n");
+      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"fi\" id=\"datepicker1\" autocomplete=\"off\">\n");
       out.write("                            </div>\n");
       out.write("                        </div>  \n");
       out.write("                        <div class=\"form-group col-md-6\" style=\"padding-right: 0;padding-left: 0;\">\n");
@@ -91,7 +91,7 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                              <div class=\"input-group-addon\">\n");
       out.write("                                <i class=\"fa fa-calendar\"></i>\n");
       out.write("                              </div>\n");
-      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"ff\" id=\"datepicker2\">\n");
+      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"ff\" id=\"datepicker2\" autocomplete=\"off\">\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group row\">\n");

@@ -14,6 +14,7 @@
     String nombreReserva = request.getParameter("nombre");  
     String data = request.getParameter("fechaInicial");
     String dataNow = request.getParameter("fechaNow");
+    String[] CantidadPlatos = new String[]{"1", "2", "3"};
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 //    variable para obtener la fecha recibida
@@ -67,8 +68,20 @@
                                 <label class="col-md-5">
                                     <i class="fa fa-spoon"></i> <%=nombreReserva%>
                                 </label>
-                                <div style="padding: 0" class="col-md-7">
-                                    <input disabled type="text" class="form-control" id="cantidad" name="cantidad" value="<%=empleadoReserva.getCantidad()%>">    
+                                 <div class="form-group">
+                                    <select <%=estado%> class="form-control form-cantidad" id="cantidad" name="cantidad">
+                                      <option disabled selected="selected">Cantidad</option>
+                                      <%
+                                        for(String s : CantidadPlatos){
+                                            String select = "";
+                                            if(empleadoReserva.getCantidad() == Integer.parseInt(s))
+                                              select = "Selected";
+                                            %>
+                                            <option <%=select%>><%=s%></option>
+                                        <%
+                                        }
+                                      %>
+                                    </select>
                                 </div>
 
                         </div>  <br>
