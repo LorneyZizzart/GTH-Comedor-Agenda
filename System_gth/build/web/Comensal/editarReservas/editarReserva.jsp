@@ -1,10 +1,16 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="Entidad.C_TipoComensal"%>
 <%@page import="Entidad.C_Empleado_Reserva"%>
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <jsp:useBean id="_empleadoReserva" class="Controlador.C_EmpleadoReservaController"/>
+<jsp:useBean id="_tipoComensal" class="Controlador.C_TipoComensalesController"/>
 <%
     C_Empleado_Reserva empleadoReserva = new C_Empleado_Reserva();
     String idReserva = _encript.ValorADesencriptar(request.getParameter("id"));
     empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva));
+    List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
+    listaComensal = _tipoComensal.getAllTipoComensal();
 %>
 <form id="form_guardar" method="post" class="form_guardar">
             <input type="hidden" value="<%=idReserva%>" name="idReserva" id="idReserva">
@@ -17,6 +23,30 @@
                             <label>Teléfono</label>
                             <input disabled type="text" class="form-control" value="<%=empleadoReserva.getTelefono()%>">                            
                         </div>
+                        <div class="form-group">
+                                <label >Tipo de comensal:</label>
+                                   <select id="idTipoCo" name="idTipoCo" class="form-control selectComensal" data-placeholder="Selelcione una opción"
+                                        style="width: 100%;">
+                                  <%                                        
+                                    for(C_TipoComensal item : listaComensal){
+                                        String select = "";
+                                        String disabled = "";
+                                        if(item.getTipoComensal_id() == empleadoReserva.getIdTipoComensal()){ 
+                                            select = "Selected";
+                                        }
+                                        if(item.getEstado() == 0){
+                                            disabled = "disabled";
+                                        }
+                                        
+                                            %>
+                                   <option value="<%=item.getTipoComensal_id()%>" <%=select%> <%=disabled%>><%=item.getNombreComensal()%></option>
+                                    <%
+                                        
+                                    }
+                                  %>
+                                </select> 
+                                
+                              </div>
                         <div class="form-group">
                             <label>Observación</label>
                             <textarea class="form-control" rows="3" id="observacion"  name="observacion"><%=empleadoReserva.getObservacion()%></textarea>

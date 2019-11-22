@@ -35,8 +35,14 @@
                             <input type="text" class="form-control" id="hora"  name="hora" value="<%=tipoComida.getHora()%>">                            
                         </div>
                         <div class="form-group">
-                            <label>Color del item</label>
-                            <input type="text" class="form-control" id="color"  name="color" value="<%=tipoComida.getColor()%>">                           
+                            <label>Color</label> 
+                            <div class="input-group my-colorpicker2">
+                                <input type="text" id="color"  name="color" class="form-control "value="<%=tipoComida.getColor()%>">
+
+                                <div class="input-group-addon">
+                                  <i></i>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Horas de anticipación <span data-toggle="tooltip" title="Se restara a la hora de ingreso al comedor, debe ser un formato de HH:MM." class="badge">!</span></label>
@@ -68,6 +74,7 @@
         
     <script type="text/javascript">
     $(document).ready(function () {
+        $(".my-colorpicker2").colorpicker();
         $('.form_guardar').bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {

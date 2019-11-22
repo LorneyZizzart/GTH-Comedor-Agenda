@@ -1,4 +1,5 @@
 <%@page import="Entidad.Login_Entidad"%>
+<jsp:useBean id="__encript" class="Controlador.EncriptionController" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,7 +33,9 @@
         <!-- AdminLTE Skins. Choose a skin from the css/skins
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
-        <link rel="stylesheet" href="../../bootstrap/css/myStyle.css">
+        
+        <!-- bootstrap wysihtml5 - text editor -->
+        <link rel="stylesheet" href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
         <!-- Para Mostrar las alertas Toast-->
         <link rel="stylesheet" href="../../bootstrap/toast_alert/toastr.css" />
@@ -40,8 +43,10 @@
         <script src="../../plugins/jQuery/jquery-3.4.1.min.js"></script>    
         <!-- bootstrap datepicker -->
         <link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">
+        
+        <link rel="stylesheet" href="../../bootstrap/css/myStyle.css">
+    
         <!--<link rel="stylesheet" type="text/css" href="../../plugins/tablaEditor/css/tablaEditor.css" />-->
-
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -115,7 +120,7 @@
 
                                     <li class="user-footer">
                                         <div class="pull-left">
-                                            <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                            <a href="../../Funcionario/perfil/historialFuncionario.jsp?i=<%=__encript.ValorAEncriptar(Integer.toString(DatoUsuario.getEmpleado_id()))%>" class="btn btn-default btn-flat">Perfil</a>
                                         </div>
                                         <div class="pull-right">
                                             <a class="btn btn-default btn-flat btn_salir" id="btn_salir">Salir</a>

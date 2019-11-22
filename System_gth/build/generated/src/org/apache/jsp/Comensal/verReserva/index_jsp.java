@@ -3,6 +3,7 @@ package org.apache.jsp.Comensal.verReserva;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.C_TipoComida;
 import Entidad.C_TipoComensal;
 import Entidad.Login_Entidad;
 import Entidad.Opcion;
@@ -55,8 +56,18 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       out.write('\n');
-      out.write('\n');
+      Controlador.EncriptionController __encript = null;
+      synchronized (_jspx_page_context) {
+        __encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("__encript", PageContext.PAGE_SCOPE);
+        if (__encript == null){
+          __encript = new Controlador.EncriptionController();
+          _jspx_page_context.setAttribute("__encript", __encript, PageContext.PAGE_SCOPE);
+        }
+      }
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html>\n");
@@ -91,7 +102,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <!-- AdminLTE Skins. Choose a skin from the css/skins\n");
       out.write("             folder instead of downloading all of them to reduce the load. -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../dist/css/skins/_all-skins.min.css\">\n");
-      out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
+      out.write("        \n");
+      out.write("        <!-- bootstrap wysihtml5 - text editor -->\n");
+      out.write("        <link rel=\"stylesheet\" href=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css\">\n");
       out.write("\n");
       out.write("        <!-- Para Mostrar las alertas Toast-->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/toast_alert/toastr.css\" />\n");
@@ -99,8 +112,10 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>    \n");
       out.write("        <!-- bootstrap datepicker -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../plugins/datepicker/datepicker3.css\">\n");
+      out.write("        \n");
+      out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
+      out.write("    \n");
       out.write("        <!--<link rel=\"stylesheet\" type=\"text/css\" href=\"../../plugins/tablaEditor/css/tablaEditor.css\" />-->\n");
-      out.write("\n");
       out.write("\n");
       out.write("        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->\n");
       out.write("        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n");
@@ -184,7 +199,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                                    <li class=\"user-footer\">\n");
       out.write("                                        <div class=\"pull-left\">\n");
-      out.write("                                            <a href=\"#\" class=\"btn btn-default btn-flat\">Perfil</a>\n");
+      out.write("                                            <a href=\"../../Funcionario/perfil/historialFuncionario.jsp?i=");
+      out.print(__encript.ValorAEncriptar(Integer.toString(DatoUsuario.getEmpleado_id())));
+      out.write("\" class=\"btn btn-default btn-flat\">Perfil</a>\n");
       out.write("                                        </div>\n");
       out.write("                                        <div class=\"pull-right\">\n");
       out.write("                                            <a class=\"btn btn-default btn-flat btn_salir\" id=\"btn_salir\">Salir</a>\n");
@@ -299,15 +316,6 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
     }
 
       out.write('\n');
-      Controlador.C_EmpleadoReservaController _empleadoReserva = null;
-      synchronized (_jspx_page_context) {
-        _empleadoReserva = (Controlador.C_EmpleadoReservaController) _jspx_page_context.getAttribute("_empleadoReserva", PageContext.PAGE_SCOPE);
-        if (_empleadoReserva == null){
-          _empleadoReserva = new Controlador.C_EmpleadoReservaController();
-          _jspx_page_context.setAttribute("_empleadoReserva", _empleadoReserva, PageContext.PAGE_SCOPE);
-        }
-      }
-      out.write('\n');
       Controlador.EncriptionController _encript = null;
       synchronized (_jspx_page_context) {
         _encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("_encript", PageContext.PAGE_SCOPE);
@@ -317,9 +325,30 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
         }
       }
       out.write('\n');
+      Controlador.C_TipoComidaController _tipoComida = null;
+      synchronized (_jspx_page_context) {
+        _tipoComida = (Controlador.C_TipoComidaController) _jspx_page_context.getAttribute("_tipoComida", PageContext.PAGE_SCOPE);
+        if (_tipoComida == null){
+          _tipoComida = new Controlador.C_TipoComidaController();
+          _jspx_page_context.setAttribute("_tipoComida", _tipoComida, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
+      Controlador.C_TipoComensalesController _tipoComensal = null;
+      synchronized (_jspx_page_context) {
+        _tipoComensal = (Controlador.C_TipoComensalesController) _jspx_page_context.getAttribute("_tipoComensal", PageContext.PAGE_SCOPE);
+        if (_tipoComensal == null){
+          _tipoComensal = new Controlador.C_TipoComensalesController();
+          _jspx_page_context.setAttribute("_tipoComensal", _tipoComensal, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
-    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    listaReservas = _empleadoReserva.getAllReservaEmpleado();
+    String[] listaRe = new String[]{"Todo", "Hoy", "Predeterminado"};
+    List<C_TipoComida> listaTipoComida = new ArrayList<C_TipoComida>();
+    List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
+    listaTipoComida = _tipoComida.getAllTipoComida();
+    listaComensal = _tipoComensal.getAllTipoComensal();
 
       out.write("\n");
       out.write("<section class=\"content-header\">\n");
@@ -329,148 +358,145 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    </h1>\n");
       out.write("    <ol class=\"breadcrumb\">\n");
       out.write("        <li><a href=\"#\"><i class=\"fa fa-dashboard\"></i> Inicio</a></li>\n");
-      out.write("        <li class=\"active\">Lista de tipo de comidas</li>\n");
+      out.write("        <li class=\"active\">Lista de reservas</li>\n");
       out.write("    </ol>\n");
       out.write("</section>\n");
       out.write("\n");
       out.write("<section class=\"content\">\n");
-      out.write("    <div class=\"row\">\n");
-      out.write("        <div class=\"col-xs-12\">            \n");
-      out.write("\n");
-      out.write("            <div class=\"box box-purple\">\n");
-      out.write("                <div class=\"box-header\">\n");
-      out.write("                    <h3 class=\"box-title\">Lista de reservas</h3>\n");
-      out.write("                    <button type=\"button\" class=\"formNuevo btn-purple pull-right\" data-toggle=\"modal tooltip\" data-target=\"#modal-default\" data-placement=\"bottom\" title=\"Crear reporte\">\n");
-      out.write("                        <i class=\"fa fa-file-pdf-o\"></i> Crear reporte\n");
-      out.write("                    </button>\n");
-      out.write("                </div>\n");
-      out.write("                <!-- /.box-header -->\n");
-      out.write("                <div class=\"box-body table-responsive\">\n");
-      out.write("                    <table id=\"example1\" class=\"table table-bordered table-striped\">\n");
-      out.write("                        <thead>\n");
-      out.write("                            <tr>\n");
-      out.write("                                <th>#</th>\n");
-      out.write("                                <th>Nombre completo</th>\n");
-      out.write("                                <th>Tipo de alimento</th>\n");
-      out.write("                                <th>Fecha</th>\n");
-      out.write("                                <th>Cantidad</th>\n");
-      out.write("                                <th>Costo</th>\n");
-      out.write("                                <th>Descuento</th>\n");
-      out.write("                                <th>Descuento adicional</th>\n");
-      out.write("                                <th>Precio total</th>\n");
-      out.write("                                <th>Comensal</th>\n");
-      out.write("                            </tr>\n");
-      out.write("                        </thead>\n");
-      out.write("                        <tbody>\n");
-      out.write("                            ");
+      out.write("    <input type=\"hidden\" value=\"");
+      out.print(DatoUsuario.getUser_id());
+      out.write("\" name=\"idUsuario\" id=\"idUsuario\">\n");
+      out.write("    <div class=\"box box-purple\" >\n");
+      out.write("            <div class=\"box-header\">\n");
+      out.write("                <div class=\"row\">\n");
+      out.write("                    \n");
+      out.write("                    <div class=\"col-sm-12 col-md-6\">\n");
+      out.write("                         <div class=\"form-group\">\n");
+      out.write("                                <label class=\"col-md-3 control-label\" style=\"padding: 1% 0 0 0;\">Tipos de comensal:</label>\n");
+      out.write("                                <div class=\"col-md-9 col-xs-12 input-group\">\n");
+      out.write("                                   <select id=\"idTipoCo\" name=\"idTipoCo\" class=\"form-control selectComensal\" multiple=\"multiple\" data-placeholder=\"Selelcione una opción\"\n");
+      out.write("                                        style=\"width: 100%;\">\n");
+      out.write("                                       <option value=\"0\" selected>Todos</option>\n");
+      out.write("                                  ");
 
-                                int contador = 0;
-                                for (C_TipoComensal item : listaReservas) {
-                                    contador++;
-
-                            
+                                    for(C_TipoComensal item : listaComensal){
+                                        if(item.getEstado() == 1){
+                                            
       out.write("\n");
-      out.write("                            <tr>\n");
-      out.write("                                <td>");
-      out.print(contador);
-      out.write("</td>\n");
-      out.write("                                <td>");
-      out.print(item.getNombreEmpleado());
-      out.write("</td>                         \n");
-      out.write("                                <td>");
-      out.print( item.getNombreComida());
-      out.write("</td>\n");
-      out.write("                                <td>");
-      out.print( item.getFecha());
-      out.write("</td>\n");
-      out.write("                                <td>");
-      out.print( item.getCantidad());
-      out.write("</td>\n");
-      out.write("                                <td>");
-      out.print( item.getCosto());
-      out.write(" Bs.</td>\n");
-      out.write("                                ");
+      out.write("                                   <option value=\"");
+      out.print(item.getTipoComensal_id());
+      out.write('"');
+      out.write('>');
+      out.print(item.getNombreComensal());
+      out.write("</option>\n");
+      out.write("                                    ");
 
-                                   if(item.getIdTipoComida() == 1){
-                                      
-      out.write("<td>");
-      out.print( item.getDescuentoDesayuno());
-      out.write(" Bs.</td>");
- 
-                                   }else if(item.getIdTipoComida() == 2){
-                                      
-      out.write("<td>");
-      out.print( item.getDescuentoAlmuerzo());
-      out.write(" Bs.</td>");
- 
-                                   }else if(item.getIdTipoComida() == 3){
-                                      
-      out.write("<td>");
-      out.print( item.getDescuentoCena());
-      out.write(" Bs.</td>");
-  
-                                   }
-                                
+                                        }
+                                    }
+                                  
       out.write("\n");
-      out.write("                                <td>");
-      out.print( item.getDescuentoAdicional());
-      out.write(" Bs.</td>\n");
-      out.write("                                ");
+      out.write("                                </select> \n");
+      out.write("                                </div>                                \n");
+      out.write("                              </div>      \n");
+      out.write("                    </div>\n");
+      out.write("                    <div class=\"col-sm-12 col-md-6\">\n");
+      out.write("                        <div class=\"form-group\">\n");
+      out.write("                            <label class=\"col-md-3 control-label\" style=\"padding: 1% 0 0 0;\">Tipos de alimento:</label>\n");
+      out.write("                            <div class=\"col-md-9 col-xs-12 input-group\">\n");
+      out.write("                               <select id=\"idTipoAl\" name=\"idTipoAl\" class=\"form-control selectComida\" multiple=\"multiple\" data-placeholder=\"Selecione una opción\"\n");
+      out.write("                                        style=\"width: 100%;\">\n");
+      out.write("                                   <option value=\"0\" selected>Todos</option>\n");
+      out.write("                                  ");
 
-                                   if(item.getIdTipoComida() == 1){
-                                      
-      out.write("<td>");
-      out.print(((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad());
-      out.write(" Bs.</td>");
- 
-                                   }else if(item.getIdTipoComida() == 2){
-                                      
-      out.write("<td>");
-      out.print( ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad());
-      out.write(" Bs.</td>");
- 
-                                   }else if(item.getIdTipoComida() == 3){
-                                      
-      out.write("<td>");
-      out.print( ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad());
-      out.write(" Bs.</td>");
-  
-                                   }
-                                
+                                    for(C_TipoComida item : listaTipoComida){
+                                        if(item.getEstado() == 1){
+                                            
       out.write("\n");
-      out.write("                                <td>");
-      out.print( item.getNombreComensal());
-      out.write("</td>\n");
-      out.write("                            </tr>\n");
-      out.write("                            ");
+      out.write("                                   <option value=\"");
+      out.print(item.getIdTipoComida());
+      out.write('"');
+      out.write('>');
+      out.print(item.getNombreComida());
+      out.write("</option>\n");
+      out.write("                                    ");
 
-                                }
-                            
+                                        }
+                                    }
+                                  
       out.write("\n");
-      out.write("                        </tbody>\n");
-      out.write("                        <tfoot>\n");
-      out.write("                            <tr>\n");
-      out.write("                                <th>#</th>\n");
-      out.write("                                <th>Nombre completo</th>\n");
-      out.write("                                <th>Tipo de alimento</th>\n");
-      out.write("                                <th>Fecha</th>\n");
-      out.write("                                <th>Cantidad</th>\n");
-      out.write("                                <th>Costo</th>\n");
-      out.write("                                <th>Descuento</th>\n");
-      out.write("                                <th>Descuento adicional</th>\n");
-      out.write("                                <th>Precio total</th>\n");
-      out.write("                                <th>Comensal</th>\n");
-      out.write("                            </tr>\n");
-      out.write("                        </tfoot>\n");
-      out.write("                    </table>\n");
-      out.write("                         \n");
-      out.write("                </div>\n");
-      out.write("                <!-- /.box-body -->\n");
+      out.write("                                </select> \n");
+      out.write("                            </div>\n");
+      out.write("                                \n");
+      out.write("                              </div>      \n");
+      out.write("                    </div>\n");
+      out.write("                    \n");
+      out.write("                    <div class=\"col-sm-12 col-md-3\">\n");
+      out.write("                            <div id=\"sfi\" class=\"form-group\">\n");
+      out.write("                                <label class=\"col-md-2 control-label\" style=\"padding: 2% 0 0 0;\">Ver:</label>\n");
+      out.write("\n");
+      out.write("                            <div class=\"col-md-10 col-xs-12 input-group\">\n");
+      out.write("                              <select id=\"idRepeat\" name=\"idRepeat\"  class=\"form-control selectRepeticion\" style=\"width: 100%;\">\n");
+      out.write("                                  ");
+
+                                      int c = 0;
+                                      for(String r : listaRe){
+                                          String select = "";
+                                          if(c==1)
+                                              select = "Selected";
+                                          
+      out.write("\n");
+      out.write("                                          <option value=\"");
+      out.print(c);
+      out.write('"');
+      out.write(' ');
+      out.print(select);
+      out.write('>');
+      out.print(r);
+      out.write("</option>                            \n");
+      out.write("                                  ");
+ c++; }  
+      out.write("\n");
+      out.write("                              </select>\n");
+      out.write("                            </div>\n");
+      out.write("                            </div>\n");
+      out.write("                    </div>\n");
+      out.write("                    \n");
+      out.write("                    <div class=\"col-sm-12 col-md-3\">\n");
+      out.write("                        <div id=\"sfi\" class=\"form-group\">\n");
+      out.write("                            <label class=\"col-sm-4 control-label\" style=\"padding: 2% 0 0 0;\">Fecha incio:</label>\n");
+      out.write("                            <div class=\"input-group date col-sm-8\">\n");
+      out.write("                              <div class=\"input-group-addon\">\n");
+      out.write("                                <i class=\"fa fa-calendar\"></i>\n");
+      out.write("                              </div>\n");
+      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"fi\" id=\"dp1\" autocomplete=\"off\">\n");
+      out.write("                            </div>\n");
+      out.write("                        </div>       \n");
+      out.write("                    </div>\n");
+      out.write("                    <div class=\"col-sm-12 col-md-3\">\n");
+      out.write("                        <div id=\"sfi\" class=\"form-group\">\n");
+      out.write("                            <label class=\"col-sm-4 control-label\" style=\"padding: 2% 0 0 0;\">Fecha final:</label>\n");
+      out.write("                            <div class=\"input-group date col-sm-8\">\n");
+      out.write("                              <div class=\"input-group-addon\">\n");
+      out.write("                                <i class=\"fa fa-calendar\"></i>\n");
+      out.write("                              </div>\n");
+      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"fi\" id=\"dp2\" autocomplete=\"off\">\n");
+      out.write("                            </div>\n");
+      out.write("                        </div>       \n");
+      out.write("                    </div>                    \n");
+      out.write("                    \n");
+      out.write("                    <div class=\"col-xs-12 col-md-2 pull-right\">\n");
+      out.write("                        <button id=\"filtrarTarea\" type=\"button\" class=\"btn-purple btn-block\" ><i class=\"fa fa-search\"></i> Filtrar</button>   \n");
+      out.write("                        \n");
+      out.write("                    </div>\n");
+      out.write("                    \n");
+      out.write("                </div>  \n");
+      out.write("                \n");
       out.write("            </div>\n");
-      out.write("            <!-- /.box -->\n");
       out.write("        </div>\n");
-      out.write("        <!-- /.col -->\n");
-      out.write("    </div>\n");
+      out.write("    \n");
+      out.write("    <div id=\"tablaReservas\" class=\"row\"></div>\n");
+      out.write("    \n");
+      out.write("    \n");
       out.write("    <!-- /.row -->\n");
       out.write("    <!--Modal-->\n");
       out.write("    <div class=\"modal fade\" id=\"formulario_registro\">\n");
@@ -551,24 +577,20 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<!-- Para Mostrar las alertas Toast-->        \n");
       out.write("<script src=\"../../bootstrap/toast_alert/toastr.js\"></script>\n");
       out.write("<!-- bootstrap time picker -->\n");
-      out.write("<script src=\"../../plugins/timepicker/bootstrap-timepicker.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/timepicker/bootstrap-timepicker.js\"></script>\n");
       out.write("<!-- fullCalendar -->\n");
       out.write("\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/core/main.js'></script>\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/interaction/main.js'></script>\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/daygrid/main.js'></script>\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/timegrid/main.js'></script> \n");
-      out.write("<!--moment-->\n");
-      out.write("<!-- daterangepicker -->\n");
-      out.write("<!--<script src=\"https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js\"></script>\n");
-      out.write("<script src=\"../../plugins/daterangepicker/daterangepicker.js\"></script>-->\n");
-      out.write("\n");
       out.write("<!-- bootstrap datepicker -->\n");
       out.write("<script src=\"../../plugins/datepicker/bootstrap-datepicker.js\"></script>\n");
+      out.write("<!-- Bootstrap WYSIHTML5 -->\n");
+      out.write("<!--<script src=\"https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js\"></script>-->\n");
+      out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("\n");
-      out.write("<!--<script type=\"text/javascript\" src=\"http://www.prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js\"></script>-->\n");
-      out.write("<!--<script src='.. ../../plugins/tablaEditor/js/shieldui-lite-all.js'></script>--> \n");
-      out.write("<!--<script type=\"text/javascript\" src=\"http://www.prepbootstrap.com/Content/data/shortGridData.js\"></script>-->\n");
       out.write("<script src='../../dist/js/moment.js'></script>\n");
       out.write("<script type=\"text/javascript\" charset=\"utf-8\">\n");
       out.write("    $(\"#btn_salir\").click(function () {\n");
@@ -594,8 +616,38 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        \n");
       out.write("    $(function () {\n");
       out.write("        $(\"#example1\").DataTable();\n");
-      out.write("    });   \n");
-      out.write("    \n");
+      out.write("    });  \n");
+      out.write("    var fechaInicio  = \"\", fechaFinal = \"\";\n");
+      out.write("    $(document).ready(function() {\n");
+      out.write("        $('.selectComensal').select2();\n");
+      out.write("        $('.selectComida').select2();\n");
+      out.write("        $('.selectFuncionario').select2();\n");
+      out.write("        $('.formNuevo').tooltip({ boundary: 'window' });\n");
+      out.write("        $('#example').tooltip({ boundary: 'window' });\n");
+      out.write("        $('#dp1').datepicker({\n");
+      out.write("            format: 'dd/mm/yyyy',\n");
+      out.write("            autoclose: true\n");
+      out.write("        });\n");
+      out.write("        $('#dp2').datepicker({\n");
+      out.write("                format: 'dd/mm/yyyy',\n");
+      out.write("                autoclose: true\n");
+      out.write("        });\n");
+      out.write("        estadoDate(true);\n");
+      out.write("        renderTable($('#idUsuario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());\n");
+      out.write("        \n");
+      out.write("    });\n");
+      out.write("    $('#filtrarTarea').click(function (){\n");
+      out.write("        fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();\n");
+      out.write("        renderTable($('#idUsuario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());\n");
+      out.write("    })\n");
+      out.write("     $('#idRepeat').on('change', function() {       \n");
+      out.write("        if(this.value == '2'){\n");
+      out.write("            estadoDate(false);\n");
+      out.write("        }else{\n");
+      out.write("            estadoDate(true);\n");
+      out.write("            $('#dp1').val('');$('#dp2').val('');\n");
+      out.write("        }        \n");
+      out.write("    });\n");
       out.write("    $(\".formNuevo\").click(function (e) {\n");
       out.write("        $(\"#titleModal\").html(\"Generar reporte\");\n");
       out.write("        $(\".modal-dialog\").width(500);\n");
@@ -618,6 +670,24 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                $(\".cuerpo_registro\").html(alerta);\n");
       out.write("            });\n");
       out.write("    });\n");
+      out.write("    function estadoDate(valor){\n");
+      out.write("        $('#dp1').prop('disabled', valor);\n");
+      out.write("        $('#dp2').prop('disabled', valor);\n");
+      out.write("    }\n");
+      out.write("    function renderTable(idE, idR, fi, ff, co, al){\n");
+      out.write("        $.post('listaReserva.jsp',\n");
+      out.write("            {idUsuario:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\"#tablaReservas\").removeClass('loader');\n");
+      out.write("                    $(\"#tablaReservas\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("        {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\"#tablaReservas\").removeClass('loader');\n");
+      out.write("                $(\"#tablaReservas\").html(alerta);\n");
+      out.write("       }); \n");
+      out.write("    }\n");
       out.write("</script>\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){

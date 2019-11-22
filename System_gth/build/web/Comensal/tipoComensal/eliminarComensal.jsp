@@ -40,8 +40,8 @@
                             <input disabled type="text" class="form-control" id="descuentoCena"  name="descuentoCena" value="<%=entidad.getDescuentoCena()%>">                          
                         </div>
                         <div class="form-group" >
-                            <label>Día Inicio</label>
-                            <input disabled type="text" class="form-control" id="diaInicio"  name="diaInicio" value="<%=entidad.getDiaInicio()%>">                            
+                            <label>Días anticipacion</label>
+                            <input disabled type="text" class="form-control" value="<%=entidad.getDiasAnticipacion()%>">                            
                         </div>
                             <div class="form-group">
                                 <label>Estado</label>

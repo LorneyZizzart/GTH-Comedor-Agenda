@@ -99,10 +99,16 @@ public final class eliminarTipoComida_jsp extends org.apache.jasper.runtime.Http
       out.write("\">                            \n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group\">\n");
-      out.write("                            <label>Color del item</label>\n");
-      out.write("                            <input disabled type=\"text\" class=\"form-control\" id=\"color\"  name=\"color\" value=\"");
+      out.write("                            <label>Color del item</label> \n");
+      out.write("                            <div class=\"input-group my-colorpicker2\">\n");
+      out.write("                                <input disabled type=\"text\" id=\"color\"  name=\"color\" class=\"form-control \"value=\"");
       out.print(tipoComida.getColor());
-      out.write("\">                           \n");
+      out.write("\">\n");
+      out.write("\n");
+      out.write("                                <div class=\"input-group-addon\">\n");
+      out.write("                                  <i></i>\n");
+      out.write("                                </div>\n");
+      out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label>Horas de anticipación</label>\n");
@@ -143,6 +149,7 @@ public final class eliminarTipoComida_jsp extends org.apache.jasper.runtime.Http
       out.write("<script type=\"text/javascript\">\n");
       out.write("    \n");
       out.write("    $(document).ready(function () {\n");
+      out.write("        $(\".my-colorpicker2\").colorpicker();\n");
       out.write("        $(\".btn_eliminar\").click(function () {\n");
       out.write("            var id_menu = $(\"#id\").val();\n");
       out.write("            $(\"#mensaje\").show();\n");

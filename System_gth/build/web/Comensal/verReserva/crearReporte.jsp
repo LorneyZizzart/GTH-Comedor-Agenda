@@ -9,8 +9,10 @@
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     listaTipoComida = _tipoComida.getAllTipoComida();
     listaComensal = _tipoComensal.getAllTipoComensal();
+    int idEmpleado = Integer.parseInt(request.getParameter("e"));
 %>
          <form id="form_guardar" method="post" class="form_guardar">
+             <input type="hidden" value="<%=idEmpleado%>" name="e" id="e">
                     <div class="box-body">
                         <div class="form-group col-md-6" style="padding-right: 0;padding-left: 0;">
                             <label>Fecha incio:</label>
@@ -32,8 +34,8 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3">Ordenar :</label>
-                            <label class="col-md-4"><input type="checkbox" name="oA" id="oA"  class="flat-red"> Alfabéticamente</label>
-                            <label class="col-md-5"><input type="checkbox" name="oF" id="oF"  class="flat-red" checked> Fecha</label>
+                            <label class="col-md-5"><input type="checkbox" name="oA" id="oA"  class="flat-red"> Alfabéticamente</label>
+                            <label class="col-md-4"><input type="checkbox" name="oF" id="oF"  class="flat-red" checked> Fecha</label>
                         </div> 
                         <div class="form-group">
                                 <h4 style="color: #501482;" class="page-header"><i class="fa fa-user"></i> Tipos de comensal</h4>

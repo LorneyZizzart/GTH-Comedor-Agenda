@@ -124,6 +124,20 @@ public class LoginModel {
                 usuario.setNombreCompleto(res_datos.getString("NombreCompleto"));
                 usuario.setNombre(res_datos.getString("Nombre"));
             }
+
+            if (usuario.getUser_id() == 0) {
+                String sql_datosCliente = "select Cliente_id Empleado_id, Nombre Usuario, Correo email, Nombre NombreCompleto, Nombre\n"
+                        + "from Cliente where Cliente_id = '" + id_user + "'";
+                ResultSet res_datoss = db.consulta(sql_datosCliente);
+                if (res_datoss.next()) {
+                    usuario.setUser_id(res_datoss.getInt("Empleado_id"));
+                    usuario.setUsuario(res_datoss.getString("Usuario"));
+                    usuario.setCorreo(res_datoss.getString("email"));
+                    usuario.setNombreCompleto(res_datoss.getString("NombreCompleto"));
+                    usuario.setNombre(res_datoss.getString("Nombre"));
+                }
+            }
+
             db.cierraConexion();
         } catch (SQLException e) {
             System.out.println(" " + e.getMessage());

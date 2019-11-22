@@ -1,0 +1,71 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="Entidad.A_Tarea"%> 
+<jsp:useBean id="_proceso" class="Controlador.A_ProcedimientoTareaController" />
+<jsp:useBean id="_encript" class="Controlador.EncriptionController" />
+<%
+    String[] id = request.getParameter("id").split("%"); 
+    List<A_Tarea> listaP = new ArrayList<A_Tarea>();
+    listaP = _proceso.getAllProcedimientoTarea(id[0],Integer.parseInt(id[1]));
+%>
+<div class="box-header" style="padding: 0 0 2% 0">
+        <h3 class="box-title">Lista de Procesos</h3>
+    </div>
+<div class="box-body table-responsive" style="padding: 0px 5px 30px 5px;">
+                    <table id="example1" class="display table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 2%">#</th>
+                                <th style="width: 30%">Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                int contador = 0;
+                                for (A_Tarea p : listaP) {
+                                    contador++;
+
+                            %>
+                            <tr>
+                                <td><%=contador%></td>
+                                <td><a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>"class="formEditProcess" style="cursor:pointer;"><%=p.getNombreProcedimiento()%> </a>      </td>                  
+                            </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                         
+                </div>
+<script>
+    $(document).ready(function() {
+    $('.formNewProcess').tooltip({ boundary: 'window' })
+    $('.formEditProcess').tooltip({ boundary: 'window' })
+    $('.formDeletProcess').tooltip({ boundary: 'window' })
+
+} );
+    
+     $(".formEditProcess").click(function (e){
+         $("#formulario_registro #modelViewTarea").addClass('modelViewTarea');
+        $(".modal-dialog").addClass("modalTarea");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $("#titleModal").html("Editar tarea");
+        $('#formulario_registro').modal('show');
+        $(".cuerpo_registro").html('');
+        $(".cuerpo_registro").addClass('loader');
+        $.post('verProceso.jsp',
+            {id: $(this).attr('data-id')},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            }); 
+        
+    });
+</script>

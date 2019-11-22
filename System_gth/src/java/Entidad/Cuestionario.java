@@ -32,13 +32,23 @@ public class Cuestionario {
     private String Color_pintar;
     private String Desempeno;
 
+    private List<View_Empleado_Encuesta> View_Empleado_Encuesta;
+
+    public List<View_Empleado_Encuesta> getView_Empleado_Encuesta() {
+        return View_Empleado_Encuesta;
+    }
+
+    public void setView_Empleado_Encuesta(List<View_Empleado_Encuesta> View_Empleado_Encuesta) {
+        this.View_Empleado_Encuesta = View_Empleado_Encuesta;
+    }
+
     public String getDesempeno() {
         return Desempeno;
     }
 
     public void setDesempeno(String Desempeno) {
         this.Desempeno = Desempeno;
-    }        
+    }
 
     public int getPromedio_entero() {
         return Promedio_entero;

@@ -52,15 +52,15 @@ public final class deleteTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write('\n');
 
     String respuesta = "";
-    int id = 0;
+    String[] id = null;
     try {
-        id = Integer.parseInt(request.getParameter("id"));
-        respuesta = _tarea.DeleteTareaById(id);
+        id = request.getParameter("id").split("%"); 
+        respuesta = _tarea.DeleteTareaById(id[0], Integer.parseInt(id[1]));
     }catch (Exception e) {
-        id = 0;
+        System.out.print("ERROR: "+e);
     }
     
-    if(respuesta.equalsIgnoreCase("Ok"))
+    if(respuesta.equals("Ok"))
 {
 
       out.write("\n");

@@ -23,7 +23,7 @@ public class C_TipoComensalModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT Id, Nombre, MinimiDias, Estado, fechaRegistro, UsuarioCrea, fechaActualizacion, diaInicio, diaFin, descuentoDesayuno, descuentoAlmuerzo, descuentoCena"
+            String sql = "SELECT Id, Nombre, MinimiDias, Estado, fechaRegistro, UsuarioCrea, fechaActualizacion, diasAnticipacion, descuentoDesayuno, descuentoAlmuerzo, descuentoCena"
                         + " FROM CTipoComensal "
                         + " WHERE Estado <> 6";
             ResultSet res = db.consulta(sql);
@@ -36,8 +36,7 @@ public class C_TipoComensalModel {
                 tipoComensal.setFechaRegistro(res.getDate("fechaRegistro"));
                 tipoComensal.setUsuarioCrea(res.getInt("UsuarioCrea"));
                 tipoComensal.setFechaActualiza(res.getDate("fechaActualizacion"));
-                tipoComensal.setDiaInicio((res.getInt("diaInicio")));
-                tipoComensal.setDiaFin(res.getInt("diaFin"));
+                tipoComensal.setDiasAnticipacion((res.getInt("diasAnticipacion")));
                 tipoComensal.setDescuentoDesayuno((res.getDouble("descuentoDesayuno")));
                 tipoComensal.setDescuentoAlmuerzo((res.getDouble("descuentoAlmuerzo")));
                 tipoComensal.setDescuentoCena((res.getDouble("descuentoCena")));
@@ -55,7 +54,7 @@ public class C_TipoComensalModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT Id, Nombre, MinimiDias, Estado, UsuarioCrea, fechaRegistro, fechaActualizacion, diaInicio, diaFin, descuentoDesayuno, descuentoAlmuerzo, descuentoCena "
+            String sql = "SELECT Id, Nombre, MinimiDias, Estado, UsuarioCrea, fechaRegistro, fechaActualizacion, diasAnticipacion, descuentoDesayuno, descuentoAlmuerzo, descuentoCena "
                         + " FROM CTipoComensal "
                         + "  WHERE Id = " + idTipoComensal;
             ResultSet res = db.consulta(sql);
@@ -67,8 +66,7 @@ public class C_TipoComensalModel {
                 tipoComensal.setFechaRegistro(res.getDate("fechaRegistro"));
                 tipoComensal.setFechaActualiza(res.getDate("fechaActualizacion"));
                 tipoComensal.setUsuarioCrea(res.getInt("UsuarioCrea"));
-                tipoComensal.setDiaInicio(res.getInt("diaInicio"));
-                tipoComensal.setDiaFin(res.getInt("diaFin"));
+                tipoComensal.setDiasAnticipacion(res.getInt("diasAnticipacion"));
                 tipoComensal.setDescuentoDesayuno((res.getDouble("descuentoDesayuno")));
                 tipoComensal.setDescuentoAlmuerzo((res.getDouble("descuentoAlmuerzo")));
                 tipoComensal.setDescuentoCena((res.getDouble("descuentoCena")));
@@ -102,9 +100,9 @@ public class C_TipoComensalModel {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
             String sql = "INSERT INTO CTipoComensal\n"
-                    + "           (Nombre, MinimiDias, Estado, fechaRegistro, UsuarioCrea, fechaActualizacion, diaInicio, diaFin, descuentoDesayuno, descuentoAlmuerzo, descuentoCena)\n"
+                    + "           (Nombre, MinimiDias, Estado, fechaRegistro, UsuarioCrea, fechaActualizacion, diasAnticipacion, descuentoDesayuno, descuentoAlmuerzo, descuentoCena)\n"
                     + "     VALUES\n"
-                    + "           ('" + tipoComensal.getNombreComensal()+ "',"+ tipoComensal.getMinimoDias()+","  + tipoComensal.getEstado() + ", CONVERT(date, SYSDATETIME()), " + tipoComensal.getUsuarioCrea() + ", CONVERT(date, SYSDATETIME()),"+tipoComensal.getDiaInicio()+","+tipoComensal.getDiaFin()+",'"+tipoComensal.getDescuentoDesayuno()+"','"+tipoComensal.getDescuentoAlmuerzo()+"','"+tipoComensal.getDescuentoCena()+"')";
+                    + "           ('" + tipoComensal.getNombreComensal()+ "',"+ tipoComensal.getMinimoDias()+","  + tipoComensal.getEstado() + ", CONVERT(date, SYSDATETIME()), " + tipoComensal.getUsuarioCrea() + ", CONVERT(date, SYSDATETIME()),"+tipoComensal.getDiasAnticipacion()+",'"+tipoComensal.getDescuentoDesayuno()+"','"+tipoComensal.getDescuentoAlmuerzo()+"','"+tipoComensal.getDescuentoCena()+"')";
             db.insertar(sql);
             db.cierraConexion();
         } catch (SQLException e) {
@@ -124,8 +122,7 @@ public class C_TipoComensalModel {
                     + "      ,descuentoDesayuno = '" + tipoComensal.getDescuentoDesayuno()+ "' \n"
                     + "      ,descuentoAlmuerzo = '" + tipoComensal.getDescuentoAlmuerzo()+ "' \n"
                     + "      ,descuentoCena = '" + tipoComensal.getDescuentoCena()+ "' \n"
-                    + "      ,diaInicio = " + tipoComensal.getDiaInicio()+ " \n"
-                    + "      ,diaFin = " + tipoComensal.getDiaFin()+ " \n"
+                    + "      ,diasAnticipacion = " + tipoComensal.getDiasAnticipacion()+ " \n"
                     + "      ,Estado = '" + tipoComensal.getEstado() + "' \n"
                     + "      ,fechaActualizacion = CONVERT(date, SYSDATETIME()) \n"
                     + " WHERE Id  = " + tipoComensal.getTipoComensal_id();

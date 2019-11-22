@@ -19,9 +19,27 @@
     $(document).ready(function () {
         $('.btn_eliminar').hide();
         $("#mensaje").hide(3000, function () {
-           
+           $('#formulario_registro').modal('show');
+            $("#titleModal").html("Procesos");
+            $(".cuerpo_registro").html('');
+            $(".cuerpo_registro").addClass('loader');
+            
+            $.post('procesosTarea.jsp',
+            {id: localStorage.getItem("idTarea")},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            });
         });
         $("form")[0].reset();
+        
+         
     });
 </script>
 <%}else{%>

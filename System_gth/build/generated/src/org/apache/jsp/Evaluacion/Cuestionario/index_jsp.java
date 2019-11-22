@@ -60,6 +60,15 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write('\n');
+      Controlador.EncriptionController __encript = null;
+      synchronized (_jspx_page_context) {
+        __encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("__encript", PageContext.PAGE_SCOPE);
+        if (__encript == null){
+          __encript = new Controlador.EncriptionController();
+          _jspx_page_context.setAttribute("__encript", __encript, PageContext.PAGE_SCOPE);
+        }
+      }
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html>\n");
@@ -94,7 +103,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <!-- AdminLTE Skins. Choose a skin from the css/skins\n");
       out.write("             folder instead of downloading all of them to reduce the load. -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../dist/css/skins/_all-skins.min.css\">\n");
-      out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
+      out.write("        \n");
+      out.write("        <!-- bootstrap wysihtml5 - text editor -->\n");
+      out.write("        <link rel=\"stylesheet\" href=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css\">\n");
       out.write("\n");
       out.write("        <!-- Para Mostrar las alertas Toast-->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/toast_alert/toastr.css\" />\n");
@@ -102,8 +113,10 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>    \n");
       out.write("        <!-- bootstrap datepicker -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../plugins/datepicker/datepicker3.css\">\n");
+      out.write("        \n");
+      out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
+      out.write("    \n");
       out.write("        <!--<link rel=\"stylesheet\" type=\"text/css\" href=\"../../plugins/tablaEditor/css/tablaEditor.css\" />-->\n");
-      out.write("\n");
       out.write("\n");
       out.write("        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->\n");
       out.write("        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n");
@@ -187,7 +200,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                                    <li class=\"user-footer\">\n");
       out.write("                                        <div class=\"pull-left\">\n");
-      out.write("                                            <a href=\"#\" class=\"btn btn-default btn-flat\">Perfil</a>\n");
+      out.write("                                            <a href=\"../../Funcionario/perfil/historialFuncionario.jsp?i=");
+      out.print(__encript.ValorAEncriptar(Integer.toString(DatoUsuario.getEmpleado_id())));
+      out.write("\" class=\"btn btn-default btn-flat\">Perfil</a>\n");
       out.write("                                        </div>\n");
       out.write("                                        <div class=\"pull-right\">\n");
       out.write("                                            <a class=\"btn btn-default btn-flat btn_salir\" id=\"btn_salir\">Salir</a>\n");
@@ -550,24 +565,20 @@ String idEncripta = _encript.ValorAEncriptar(Integer.toString(item.getCuestionar
       out.write("<!-- Para Mostrar las alertas Toast-->        \n");
       out.write("<script src=\"../../bootstrap/toast_alert/toastr.js\"></script>\n");
       out.write("<!-- bootstrap time picker -->\n");
-      out.write("<script src=\"../../plugins/timepicker/bootstrap-timepicker.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/timepicker/bootstrap-timepicker.js\"></script>\n");
       out.write("<!-- fullCalendar -->\n");
       out.write("\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/core/main.js'></script>\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/interaction/main.js'></script>\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/daygrid/main.js'></script>\n");
       out.write("<script src='../../dist/fullcalendar-4.2.0/packages/timegrid/main.js'></script> \n");
-      out.write("<!--moment-->\n");
-      out.write("<!-- daterangepicker -->\n");
-      out.write("<!--<script src=\"https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js\"></script>\n");
-      out.write("<script src=\"../../plugins/daterangepicker/daterangepicker.js\"></script>-->\n");
-      out.write("\n");
       out.write("<!-- bootstrap datepicker -->\n");
       out.write("<script src=\"../../plugins/datepicker/bootstrap-datepicker.js\"></script>\n");
+      out.write("<!-- Bootstrap WYSIHTML5 -->\n");
+      out.write("<!--<script src=\"https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js\"></script>-->\n");
+      out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("\n");
-      out.write("<!--<script type=\"text/javascript\" src=\"http://www.prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js\"></script>-->\n");
-      out.write("<!--<script src='.. ../../plugins/tablaEditor/js/shieldui-lite-all.js'></script>--> \n");
-      out.write("<!--<script type=\"text/javascript\" src=\"http://www.prepbootstrap.com/Content/data/shortGridData.js\"></script>-->\n");
       out.write("<script src='../../dist/js/moment.js'></script>\n");
       out.write("<script type=\"text/javascript\" charset=\"utf-8\">\n");
       out.write("    $(\"#btn_salir\").click(function () {\n");

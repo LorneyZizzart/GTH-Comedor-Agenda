@@ -1,5 +1,6 @@
-
 <%@page import="Entidad.C_TipoComensal"%>
+<%@page import="Entidad.C_TipoComida"%>
+<%@page import="Entidad.Usuario"%>
 <%@ include file= "../../masterPage/complemento/head.jsp" %> 
 <%    HttpSession sesionmenus = request.getSession();
     if (sesionmenus.getAttribute("USUARIO") != null) {
@@ -7,11 +8,21 @@
 <%@ include file= "../../masterPage/complemento/menu.jsp" %> 
 <%    }
 %>
-<jsp:useBean id="_empleadoReserva" class="Controlador.C_EmpleadoReservaController" />
+
+<jsp:useBean id="consultaUser" class="Controlador.UsuarioController" />
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
+<jsp:useBean id="_tipoComida" class="Controlador.C_TipoComidaController"/>
+<jsp:useBean id="_tipoComensal" class="Controlador.C_TipoComensalesController"/>
 <%
-    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    listaReservas = _empleadoReserva.getAllReservaEmpleado();
+
+    List<Usuario> Usuarios = new ArrayList<Usuario>();
+    Usuarios = consultaUser.GetAllUser();
+    List<C_TipoComida> listaTipoComida = new ArrayList<C_TipoComida>();
+    List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
+    listaTipoComida = _tipoComida.getAllTipoComida();
+    listaComensal = _tipoComensal.getAllTipoComensal();
+
+    String[] listaRe = new String[]{"Todo", "Hoy", "Predeterminado"};
 %>
 <section class="content-header">
     <h1>
@@ -20,213 +31,189 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li class="active">Lista de tipo de comidas</li>
+        <li class="active">Lista de reservas</li>
     </ol>
 </section>
 
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">            
+    <input type="hidden" value="<%=_encript.ValorAEncriptar(Integer.toString(DatoUsuario.getUser_id()))%>%>" name="idUsuario" id="idUsuario">
+    <div class="box box-purple" >
+            <div class="box-header">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                         <div class="form-group">
+                                <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de comensal:</label>
+                                <div class="col-md-9 col-xs-12 input-group">
+                                   <select id="idTipoCo" name="idTipoCo" class="form-control selectComensal" multiple="multiple" data-placeholder="Selelcione una opción"
+                                        style="width: 100%;">
+                                       <option value="0" selected>Todos</option>
+                                  <%
+                                    for(C_TipoComensal item : listaComensal){
+                                        if(item.getEstado() == 1){
+                                            %>
+                                   <option value="<%=item.getTipoComensal_id()%>"><%=item.getNombreComensal()%></option>
+                                    <%
+                                        }
+                                    }
+                                  %>
+                                </select> 
+                                </div>
+                                
+                              </div>      
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de alimento:</label>
+                            <div class="col-md-9 col-xs-12 input-group">
+                               <select id="idTipoAl" name="idTipoAl" class="form-control selectComida" multiple="multiple" data-placeholder="Selecione una opción"
+                                        style="width: 100%;">
+                                   <option value="0" selected>Todos</option>
+                                  <%
+                                    for(C_TipoComida item : listaTipoComida){
+                                        if(item.getEstado() == 1){
+                                            %>
+                                   <option value="<%=item.getIdTipoComida()%>"><%=item.getNombreComida()%></option>
+                                    <%
+                                        }
+                                    }
+                                  %>
+                                </select> 
+                            </div>
+                                
+                              </div>      
+                    </div>
+                    <div class="col-sm-12 col-md-3">
+                        <div class="form-group">
+                        <label class="col-md-3 control-label" style="padding: 2% 0 0 0;">Comensal:</label>
+                        <div class="col-md-9 col-xs-12 input-group">
+                          <select id="idEmpleado" name="idEmpleado" class="form-control selectFuncionario" style="width: 100%;">
+                              <option value="0" selected>Todos</option>
+                          <%
+                                    for(Usuario item : Usuarios){
+                                        if(item.getEstado() == 1){
+                                            %>
+                                   <option value="<%=item.getEmpleado_id()%>"><%=item.getNombre()%></option>
+                                    <%
+                                        }
+                                    }
+                         %>
+                        </select>  
+                        </div>                        
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-12 col-md-3">
+                            <div id="sfi" class="form-group">
+                                <label class="col-md-2 control-label" style="padding: 2% 0 0 0;">Ver:</label>
 
-            <div class="box box-purple">
-                <div class="box-header">
-                    <h3 class="box-title">Lista de reservas</h3>
-                    <button type="button" class="formNuevo btn-purple pull-right" data-toggle="modal tooltip" data-target="#modal-default" data-placement="bottom" title="Crear reporte">
-                        <i class="fa fa-file-pdf-o"></i> Crear reporte
-                    </button>
-                    <input type="hidden" value="<%=_encript.ValorAEncriptar(Integer.toString(DatoUsuario.getUser_id()))%>%>" name="idUsuario" id="idUsuario">
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre completo</th>
-                                <th>Tipo de alimento</th>
-                                <th style="width: 8%">Fecha</th>
-                                <th>Cantidad</th>
-                                <th>Observaciones</th>
-                                <th>Costo</th>
-                                <th style="width: 10%">Descuento de comensal</th>
-                                <th style="width: 10%">Descuento de adicional</th>
-                                <th style="width: 6%">Precio total</th>
-                                <th>Comensal</th>
-                                <th style="width: 8%">Fecha de registro</th>
-                                <th style="width: 8%">Fecha de actualizacion</th>
-                                <th style="width: 1%">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%
-                                int contador = 0;
-                                for (C_TipoComensal item : listaReservas) {
-                                    contador++;
-
-                            %>
-                            <tr>
-                                <td><%=contador%></td>
-                                <td><%=item.getNombreEmpleado()%></td>                         
-                                <td><%= item.getNombreComida()%></td>
-                                <td><%= item.getFecha()%></td>
-                                <td><%= item.getCantidad()%></td>
-                                <td><%= item.getObservacion()%></td>
-                                <td><%= item.getCosto()%> Bs.</td>                                
-                                <%
-                                   if(item.getIdTipoComida() == 1){
-                                      %><td><%= item.getDescuentoDesayuno()%> Bs.</td><% 
-                                   }else if(item.getIdTipoComida() == 2){
-                                      %><td><%= item.getDescuentoAlmuerzo()%> Bs.</td><% 
-                                   }else if(item.getIdTipoComida() == 3){
-                                      %><td><%= item.getDescuentoCena()%> Bs.</td><%  
-                                   }
-                                %>
-                                <td><%= item.getDescuentoAdicional()%> Bs.</td>
-                                <%
-                                   if(item.getIdTipoComida() == 1){
-                                      %><td><%=((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
-                                   }else if(item.getIdTipoComida() == 2){
-                                      %><td><%= ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
-                                   }else if(item.getIdTipoComida() == 3){
-                                      %><td><%= ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><%  
-                                   }
-                                %>
-                                <td><%= item.getNombreComensal()%></td>
-                                <td><%= item.getFechaRegistro()%></td>
-                                <td><%= item.getFechaActualizacion()%></td>
-                                <td class="text-center">
-                                    <div class="btn-group ">
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
-                                    </div>
-                                </td>
-                            </tr>
-                            <%
-                                }
-                            %>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre completo</th>
-                                <th>Tipo de alimento</th>
-                                <th>Fecha</th>
-                                <th>Cantidad</th>
-                                <th>Observaciones</th>
-                                <th>Costo</th>
-                                <th>Descuento de comensal</th>
-                                <th>Descuento de adicional</th>
-                                <th>Precio total</th>
-                                <th>Comensal</th>
-                                <th>Fecha de registro</th>
-                                <th>Fecha de actualizacion</th>
-                                <th>Opciones</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                         
-                </div>
-                <!-- /.box-body -->
+                            <div class="col-md-10 col-xs-12 input-group">
+                              <select id="idRepeat" name="idRepeat"  class="form-control selectRepeticion" style="width: 100%;">
+                                  <%
+                                      int c = 0;
+                                      for(String r : listaRe){
+                                          String select = "";
+                                          if(c==1)
+                                              select = "Selected";
+                                          %>
+                                          <option value="<%=c%>" <%=select%>><%=r%></option>                            
+                                  <% c++; }  %>
+                              </select>
+                            </div>
+                            </div>
+                    </div>
+                    
+                    <div class="col-sm-12 col-md-3">
+                        <div id="sfi" class="form-group">
+                            <label class="col-sm-4 control-label" style="padding: 2% 0 0 0;">Fecha incio:</label>
+                            <div class="input-group date col-sm-8">
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control pull-right" name="fi" id="dp1" autocomplete="off">
+                            </div>
+                        </div>       
+                    </div>
+                    <div class="col-sm-12 col-md-3">
+                        <div id="sfi" class="form-group">
+                            <label class="col-sm-4 control-label" style="padding: 2% 0 0 0;">Fecha final:</label>
+                            <div class="input-group date col-sm-8">
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control pull-right" name="fi" id="dp2" autocomplete="off">
+                            </div>
+                        </div>       
+                    </div>
+                    
+                    <div class="col-xs-12 col-md-2 pull-right">
+                        <button id="filtrarTarea" type="button" class="btn-purple btn-block" ><i class="fa fa-search"></i> Filtrar</button>   
+                        
+                    </div>
+                </div>  
+                
             </div>
-            <!-- /.box -->
         </div>
-        <!-- /.col -->
-    </div>
+    
+    <div id="tablaReservas" class="row"></div>
     <!-- /.row -->
     <!--Modal-->
-    <div class="modal fade" id="formulario_registro">
-        <div class="modal-dialog modal-dialog-edit">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 id="titleModal" class="modal-title">title</h4>
-                </div>
-                <div class="modal-body cuerpo_registro"></div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
+    
 </section>
 <%@ include file= "../../masterPage/complemento/footer.jsp" %> 
 <script>
-    $('.formNuevo').tooltip({ boundary: 'window' })
-    $('#example').tooltip({ boundary: 'window' })
-        
-    $(function () {
-        $("#example1").DataTable();
-    });   
-    
-    $(".formNuevo").click(function (e) {
-        $("#titleModal").html("Generar reporte");
-        $(".modal-dialog").width(500);
-        e.preventDefault();
-        e.stopImmediatePropagation();
-            $('#formulario_registro').modal('show');
-            $(".cuerpo_registro").html('');
-            $(".cuerpo_registro").addClass('loader');
-            //$.post('lista_cuenta_duplicada.jsp',
-            $.post('crearReporte.jsp',
-            {id: $(this).attr('data-id')},
-                    function (html) {
-                    $(".cuerpo_registro").removeClass('loader');
-                    $(".cuerpo_registro").html(html);
-                    }
-             ).fail(function (jqXHR, textStatus, errorThrown)
-            {
-                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
-                $(".cuerpo_registro").removeClass('loader');
-                $(".cuerpo_registro").html(alerta);
-            });
-    });
-    
-     //Form para editar 
-    $(".formEdit").click(function (e){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        $("#titleModal").html("Editar reserva");
-        $(".modal-dialog").width(400);
-        $('#formulario_registro').modal('show');
-        $(".cuerpo_registro").html('');
-        $(".cuerpo_registro").addClass('loader');
-        $.post('editarReserva.jsp',
-            {id: $(this).attr('data-id')},
-                    function (html) {
-                    $(".cuerpo_registro").removeClass('loader');
-                    $(".cuerpo_registro").html(html);
-                    }
-             ).fail(function (jqXHR, textStatus, errorThrown)
-            {
-                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
-                $(".cuerpo_registro").removeClass('loader');
-                $(".cuerpo_registro").html(alerta);
-            }); 
+    var fechaInicio  = "", fechaFinal = "";
+    $(document).ready(function() {
+        $('.selectComensal').select2();
+        $('.selectComida').select2();
+        $('.selectFuncionario').select2();
+        $('.formNuevo').tooltip({ boundary: 'window' });
+        $('#example').tooltip({ boundary: 'window' });
+        $('#dp1').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        });
+        $('#dp2').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true
+        });
+        estadoDate(true);
+        renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());
         
     });
     
-    //Form para eliminar 
-    $(".formEliminar").click(function (e){
-        $("#titleModal").html("Eliminar reserva");
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        
-        $('#formulario_registro').modal('show');
-        $(".cuerpo_registro").html('');
-        $(".cuerpo_registro").addClass('loader');
-        
-        $.post('eliminarReserva.jsp',
-            {id: $(this).attr('data-id')},
+    $('#filtrarTarea').click(function (){
+        fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();
+        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());
+    })
+    
+    function estadoDate(valor){
+        $('#dp1').prop('disabled', valor);
+        $('#dp2').prop('disabled', valor);
+    }
+    $('#idRepeat').on('change', function() {       
+        if(this.value == '2'){
+            estadoDate(false);
+        }else{
+            estadoDate(true);
+            $('#dp1').val('');$('#dp2').val('');
+        }        
+    });
+    function renderTable(idE, idR, fi, ff, co, al){
+        $.post('listaReserva.jsp',
+            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al},
                     function (html) {
-                    $(".cuerpo_registro").removeClass('loader');
-                    $(".cuerpo_registro").html(html);
+                    $("#tablaReservas").removeClass('loader');
+                    $("#tablaReservas").html(html);
                     }
              ).fail(function (jqXHR, textStatus, errorThrown)
-            {
+        {
                 var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
-                $(".cuerpo_registro").removeClass('loader');
-                $(".cuerpo_registro").html(alerta);
-            });
+                $("#tablaReservas").removeClass('loader');
+                $("#tablaReservas").html(alerta);
+       }); 
+    }
         
-    });
+    
+    
+    
 </script>

@@ -1,19 +1,19 @@
 <%
-    String idTarea = request.getParameter("id");    
+    String[] id = request.getParameter("id").split("%"); 
 %>
 <form id="formGuardarProceso" method="post" class="formGuardarProceso">
-    <input type="hidden" value="<%=idTarea%>" name="id" id="id">
+    <input type="hidden" value="insert" name="proceso" id="proceso">
+    <input type="hidden" value="<%=request.getParameter("id")%>" name="id" id="id">
                     <div class="box-body">
                         <div class="form-group" >
                             <label>Nombre</label>
                             <input type="text" class="form-control" id="nombre"  name="nombre">                            
                         </div>                         
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <textarea class="form-control" rows="3" id="descripcion"  name="descripcion"></textarea>
+                            <label>Descripción </label>
+                            <textarea class="textarea"  id="descripcion"  name="descripcion" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                         </div>
                     </div>
-                    <!-- /.box-body -->
 
                     <div class="box-footer">
                         <button type="button" class="btn btn-default pull-left btn-cProcess" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Volver</button>
@@ -24,6 +24,8 @@
 <script type="text/javascript">
     
     $(document).ready(function () {
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
 //      -- ocultar select multiple   
         $('.formGuardarProceso').bootstrapValidator({
             message: 'This value is not valid',
@@ -62,7 +64,7 @@
                             message: 'La descripción debe contener de 5 a 500 caracteres.'
                         },
                         regexp: {
-                            regexp: /^([-a-z0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛİàáâãèéìíñòóùúûü-\s])+$/i,
+                            regexp: /^([-a-z/()*.,%&$#¿?¡!0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛİàáâãèéìíñòóùúûü-\s])+$/i,
                             message: 'El nombre de usuario solo puede constar de letras, números y guiones bajos.'
                         }
                     }
@@ -96,9 +98,9 @@
     
     $(".btn-cProcess").click(function (e) {
         
-        $(".modal-dialog-edit").width("40%");
-        $(".modal-dialog-edit").css('margin-right', "30%");
-        $(".modal-dialog-edit").css('margin-left', "30%");
+        $(".modal-dialog-edit").width("60%");
+        $(".modal-dialog-edit").css('margin-right', "20%");
+        $(".modal-dialog-edit").css('margin-left', "20%");
         $("#titleModal").html("Procesos");
         e.preventDefault();
         e.stopImmediatePropagation();

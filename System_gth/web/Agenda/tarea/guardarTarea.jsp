@@ -7,16 +7,13 @@
 <jsp:useBean id="_tarea" class="Controlador.A_TareaController"/>
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%
-    String maxIdTarea = null;
     A_Tarea tarea = new A_Tarea();
     String resultado = null;
     try{
         tarea.setIdTarea(Integer.parseInt(request.getParameter("id")));
-        
-        if(tarea.getIdTarea() == 0)
         tarea.setIdUserCrea(Integer.parseInt(request.getParameter("idUsuario")));
-        tarea.setTitulo(String.valueOf(request.getParameter("titulo")));
-        tarea.setDescripcion(String.valueOf(request.getParameter("descripcion")));        
+        tarea.setTitulo(request.getParameter("titulo"));
+        tarea.setDescripcion(request.getParameter("descripcion"));        
         tarea.setIdRepeticionTarea(Integer.parseInt(request.getParameter("idRepeticion")));
         tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));
         tarea.setFechaInicio(String.valueOf(request.getParameter("fi")));
@@ -72,34 +69,35 @@
     }catch(Exception e){
         tarea.setDomingo(0); 
     }
-    if(tarea.getIdTarea() == 0){
-//        resultado = "Ok";
-        resultado = _tarea.SaveTarea(tarea);
-        maxIdTarea = _tarea.getMaxIdTarea();
-        
+    if(request.getParameter("proceso").equalsIgnoreCase("insert")){
+        resultado = "Ok";
+//        resultado = _tarea.SaveTarea(tarea);
+        if(resultado.equalsIgnoreCase("Ok")){
         %>
+        <input type="hidden" value="<%=request.getParameter("titulo")%>" name="gTitulo" id="gTitulo">
+        <input type="hidden" value="<%=request.getParameter("idUsuario")%>" name="gIdUsuario" id="gIdUsuario">
     <div class=" text-center alert alert-success alert-dismissible">
         <h4><i class="icon fa fa-check"></i> Guardado</h4>
     </div>
      <script type="text/javascript">
-        $(document).ready(function () {   
-            localStorage.setItem("idTarea", <%=maxIdTarea%>);
-            $("#mensaje").hide(3000, function () {
+        $(document).ready(function () {  
+            localStorage.setItem("idTarea", $('#gTitulo').val()+"%"+$('#gIdUsuario').val());
+            $("#mensaje").hide(3000, function () {                
                 $('.form-group').removeClass('has-success');
                 $('.glyphicon-ok').hide();
                 $('#btnProcess').show();
                 $('#btnGuardar').hide();  
-
             });
-            $("form")[0].reset();
         });    
     </script>
     <%
         
-    }
+    }}
     else {
-        resultado = _tarea.UpdateTarea(tarea);
+        resultado = _tarea.UpdateTarea(tarea, request.getParameter("titulo"));
+        if(resultado.equalsIgnoreCase("Ok")){
         %>
+        
         <div class=" text-center alert alert-success alert-dismissible">
             <h4><i class="icon fa fa-check"></i> Actualizado</h4>
         </div>
@@ -112,7 +110,7 @@
             });   
         </script>
         <%
-    }
+    }}
     
     if(!resultado.equals("Ok")){
         

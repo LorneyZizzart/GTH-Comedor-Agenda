@@ -72,9 +72,13 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     listaTipoComida = _tipoComida.getAllTipoComida();
     listaComensal = _tipoComensal.getAllTipoComensal();
+    int idEmpleado = Integer.parseInt(request.getParameter("e"));
 
       out.write("\n");
       out.write("         <form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
+      out.write("             <input type=\"hidden\" value=\"");
+      out.print(idEmpleado);
+      out.write("\" name=\"e\" id=\"e\">\n");
       out.write("                    <div class=\"box-body\">\n");
       out.write("                        <div class=\"form-group col-md-6\" style=\"padding-right: 0;padding-left: 0;\">\n");
       out.write("                            <label>Fecha incio:</label>\n");
@@ -96,8 +100,8 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group row\">\n");
       out.write("                            <label class=\"col-md-3\">Ordenar :</label>\n");
-      out.write("                            <label class=\"col-md-4\"><input type=\"checkbox\" name=\"oA\" id=\"oA\"  class=\"flat-red\"> Alfabéticamente</label>\n");
-      out.write("                            <label class=\"col-md-5\"><input type=\"checkbox\" name=\"oF\" id=\"oF\"  class=\"flat-red\" checked> Fecha</label>\n");
+      out.write("                            <label class=\"col-md-5\"><input type=\"checkbox\" name=\"oA\" id=\"oA\"  class=\"flat-red\"> Alfabéticamente</label>\n");
+      out.write("                            <label class=\"col-md-4\"><input type=\"checkbox\" name=\"oF\" id=\"oF\"  class=\"flat-red\" checked> Fecha</label>\n");
       out.write("                        </div> \n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                                <h4 style=\"color: #501482;\" class=\"page-header\"><i class=\"fa fa-user\"></i> Tipos de comensal</h4>\n");

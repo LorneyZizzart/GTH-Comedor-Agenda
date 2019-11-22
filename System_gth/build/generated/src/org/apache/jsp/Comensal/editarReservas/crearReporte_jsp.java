@@ -3,6 +3,7 @@ package org.apache.jsp.Comensal.editarReservas;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import Entidad.C_TipoComida;
@@ -49,6 +50,7 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
       Controlador.C_TipoComidaController _tipoComida = null;
       synchronized (_jspx_page_context) {
         _tipoComida = (Controlador.C_TipoComidaController) _jspx_page_context.getAttribute("_tipoComida", PageContext.PAGE_SCOPE);
@@ -67,15 +69,51 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
         }
       }
       out.write('\n');
+      Controlador.UsuarioController consultaUser = null;
+      synchronized (_jspx_page_context) {
+        consultaUser = (Controlador.UsuarioController) _jspx_page_context.getAttribute("consultaUser", PageContext.PAGE_SCOPE);
+        if (consultaUser == null){
+          consultaUser = new Controlador.UsuarioController();
+          _jspx_page_context.setAttribute("consultaUser", consultaUser, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
  
     List<C_TipoComida> listaTipoComida = new ArrayList<C_TipoComida>();
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     listaTipoComida = _tipoComida.getAllTipoComida();
     listaComensal = _tipoComensal.getAllTipoComensal();
+    List<Usuario> Usuarios = new ArrayList<Usuario>();
+    Usuarios = consultaUser.GetAllUser();
 
       out.write("\n");
       out.write("         <form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
-      out.write("                    <div class=\"box-body\">\n");
+      out.write("             <div class=\"box-body\" style=\"padding-top: 0;\">\n");
+      out.write("                        <div class=\"form-group\">\n");
+      out.write("                                <h4 style=\"color: #501482;\" class=\"page-header\"><i class=\"fa fa-user\"></i> Comensal: </h4>\n");
+      out.write("                                <select name=\"idComensal\" class=\"form-control selectComensal\" data-placeholder=\"Selelcione una opción\"\n");
+      out.write("                                        style=\"width: 100%;\">\n");
+      out.write("                                     <option value=\"0\" selected>Todos</option>\n");
+      out.write("                                  ");
+
+                                    for(Usuario item : Usuarios){
+                                        if(item.getEstado() == 1){
+                                            
+      out.write("\n");
+      out.write("                                   <option value=\"");
+      out.print(item.getEmpleado_id());
+      out.write('"');
+      out.write('>');
+      out.print(item.getNombre());
+      out.write("</option>\n");
+      out.write("                                    ");
+
+                                        }
+                                    }
+                         
+      out.write("\n");
+      out.write("                                </select>\n");
+      out.write("                        </div>\n");
       out.write("                        <div class=\"form-group col-md-6\" style=\"padding-right: 0;padding-left: 0;\">\n");
       out.write("                            <label>Fecha incio:</label>\n");
       out.write("                            <div class=\"input-group date\">\n");
@@ -95,12 +133,12 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group row\">\n");
-      out.write("                            <label class=\"col-md-3\">Ordenar :</label>\n");
-      out.write("                            <label class=\"col-md-4\"><input type=\"checkbox\" name=\"oA\" id=\"oA\"  class=\"flat-red\"> Alfabéticamente</label>\n");
-      out.write("                            <label class=\"col-md-5\"><input type=\"checkbox\" name=\"oF\" id=\"oF\"  class=\"flat-red\" checked> Fecha</label>\n");
+      out.write("                            <label class=\"col-md-3 \" style=\"padding-right: 0;\">Ordenar :</label>\n");
+      out.write("                            <label class=\"col-md-5 \"><input type=\"checkbox\" name=\"oA\" id=\"oA\"  class=\"flat-red\"> Alfabéticamente</label>\n");
+      out.write("                            <label class=\"col-md-4 \"><input type=\"checkbox\" name=\"oF\" id=\"oF\"  class=\"flat-red\" checked> Fecha</label>\n");
       out.write("                        </div> \n");
       out.write("                        <div class=\"form-group\">\n");
-      out.write("                                <h4 style=\"color: #501482;\" class=\"page-header\"><i class=\"fa fa-user\"></i> Tipos de comensal</h4>\n");
+      out.write("                                <h4 style=\"color: #501482;\" class=\"page-header\"><i class=\"fa fa-object-ungroup\"></i> Tipos de comensal</h4>\n");
       out.write("                                <select name=\"c\" class=\"form-control selectComensal\" multiple=\"multiple\" data-placeholder=\"Selelcione una opción\"\n");
       out.write("                                        style=\"width: 100%;\">\n");
       out.write("                                  ");
@@ -182,6 +220,14 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                validating: 'glyphicon glyphicon-refresh'\n");
       out.write("            },\n");
       out.write("            fields: {\n");
+      out.write("                idComensal:{\n");
+      out.write("                    message: 'El campo no es valido.',\n");
+      out.write("                    validators: {\n");
+      out.write("                        notEmpty: {\n");
+      out.write("                            message: 'El campo no puede ser vacio. '\n");
+      out.write("                        }\n");
+      out.write("                    }\n");
+      out.write("                },\n");
       out.write("                fi:{\n");
       out.write("                    message: 'El campo no es valido.',\n");
       out.write("                    validators: {\n");

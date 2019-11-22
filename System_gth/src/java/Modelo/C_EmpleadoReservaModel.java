@@ -48,14 +48,14 @@ public class C_EmpleadoReservaModel {
             db.conectar();
             String sql = "SELECT IdEmpleadoReserva, IdEmpleado, tc.IdTipoComida, IdTipoComensal, Fecha, Cantidad, er.Estado, Observacion, Cancelar, FechaCancelacion, er.fechaRegistro, er.fechaActulizacion, er.descuento,\n" +
                         "tc.Nombre as NombreComida, tc.Costo as CostoComida, tc.Hora as HoraComida, tc.color as ColorComida, tc.Detalles as DetalleComida, tc.horasAnticipacion as HorasAnticipacionComida,\n" +
-                        "tco.Nombre as NombreComensal, tco.descuentoDesayuno, tco.descuentoAlmuerzo, tco.descuentoCena, tco.diaInicio as DiaInicioComensal,\n" +
+                        "tco.Nombre as NombreComensal, tco.descuentoDesayuno, tco.descuentoAlmuerzo, tco.descuentoCena, \n" +
                         "em.Apellido_paterno, em.Apellido_materno, em.Nombre as NombreEmpleado, em.Telefono\n" +
                         "FROM CEmpleado_Reserva er, CTipoComida tc, CTipoComensal tco, Empleado em\n" +
                         "WHERE er.IdTipoComida = tc.IdTipoComida\n" +
                         "AND er.IdTipoComensal = tco.Id\n" +
                         "AND er.IdEmpleado = em.Empleado_id\n" +
                         "AND er.Estado <> 6 " + parameter;
-            System.out.print("sql: "+sql);
+
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 C_TipoComensal r = new C_TipoComensal();
@@ -76,7 +76,6 @@ public class C_EmpleadoReservaModel {
                 r.setFechaRegistro(res.getDate("fechaRegistro"));
                 r.setFechaActualizacion(res.getDate("fechaActulizacion"));
                 r.setNombreComensal(res.getString("NombreComensal"));
-                r.setDiaInicio(res.getInt("DiaInicioComensal"));
                 r.setNombreEmpleado(res.getString("Apellido_paterno")+" "+res.getString("Apellido_materno")+" "+res.getString("NombreEmpleado"));
                 r.setTelefono(res.getInt("Telefono"));
                 r.setDescuentoAdicional(res.getDouble("descuento"));
@@ -92,19 +91,21 @@ public class C_EmpleadoReservaModel {
         return  listaReservaEmpleado;
     }
 //    se utiliza la entidad C_TipoComensal porque es la clase que hereda a las demas clases que necesitamos
-    public List<C_TipoComensal> getAllReservaEmpleado(){
+    public List<C_TipoComensal> getAllReservaEmpleado(String auxReq){
         List<C_TipoComensal> listaReservaEmpleado = new ArrayList<C_TipoComensal>();
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
+            
             String sql = "SELECT IdEmpleadoReserva, IdEmpleado, tc.IdTipoComida, IdTipoComensal, Fecha, Cantidad, er.Estado, Observacion, Cancelar, FechaCancelacion, er.fechaRegistro, er.fechaActulizacion, er.descuento,\n" +
                         "tc.Nombre as NombreComida, tc.Costo as CostoComida, tc.Hora as HoraComida, tc.color as ColorComida, tc.Detalles as DetalleComida, tc.horasAnticipacion as HorasAnticipacionComida,\n" +
-                        "tco.Nombre as NombreComensal, tco.descuentoDesayuno, tco.descuentoAlmuerzo, tco.descuentoCena, tco.diaInicio as DiaInicioComensal,\n" +
+                        "tco.Nombre as NombreComensal, tco.descuentoDesayuno, tco.descuentoAlmuerzo, tco.descuentoCena,\n" +
                         "em.Apellido_paterno, em.Apellido_materno, em.Nombre as NombreEmpleado, em.Telefono\n" +
                         "FROM CEmpleado_Reserva er, CTipoComida tc, CTipoComensal tco, Empleado em\n" +
                         "WHERE er.IdTipoComida = tc.IdTipoComida\n" +
                         "AND er.IdTipoComensal = tco.Id\n" +
                         "AND er.IdEmpleado = em.Empleado_id\n" +
+                        " " + auxReq + " " +
                         "AND er.Estado <> 6 ORDER BY er.Fecha ASC";
 
             ResultSet res = db.consulta(sql);
@@ -127,7 +128,6 @@ public class C_EmpleadoReservaModel {
                 r.setFechaRegistro(res.getDate("fechaRegistro"));
                 r.setFechaActualizacion(res.getDate("fechaActulizacion"));
                 r.setNombreComensal(res.getString("NombreComensal"));
-                r.setDiaInicio(res.getInt("DiaInicioComensal"));
                 r.setNombreEmpleado(res.getString("Apellido_paterno")+" "+res.getString("Apellido_materno")+" "+res.getString("NombreEmpleado"));
                 r.setTelefono(res.getInt("Telefono"));
                 r.setDescuentoAdicional(res.getDouble("descuento"));
@@ -232,7 +232,7 @@ public class C_EmpleadoReservaModel {
             db.conectar();
             String sql = "SELECT IdEmpleadoReserva, IdEmpleado, tc.IdTipoComida, IdTipoComensal, Fecha, Cantidad, er.Estado, Observacion, Cancelar, FechaCancelacion, er.fechaRegistro, er.fechaActulizacion, er.descuento, \n" +
                          "tc.Nombre as NombreComida, tc.Costo as CostoComida, tc.Hora as HoraComida, tc.color as ColorComida, tc.Detalles as DetalleComida, tc.horasAnticipacion as HorasAnticipacionComida,\n" +
-                         "tco.Nombre as NombreComensal, tco.descuento as DescuentoComensal, tco.diaInicio as DiaInicioComensal, " +
+                         "tco.Nombre as NombreComensal, tco.descuento as DescuentoComensal, " +
                          "em.Apellido_paterno, em.Apellido_materno, em.Nombre as NombreEmpleado, em.Telefono\n" 
                         + "FROM CEmpleado_Reserva er, CTipoComida tc, CTipoComensal tco, Empleado em\n "
                         + "WHERE er.IdTipoComida = tc.IdTipoComida\n" +
@@ -296,6 +296,7 @@ public class C_EmpleadoReservaModel {
             db.conectar();
             String sql = "UPDATE CEmpleado_Reserva \n"
                     + "   SET Cantidad = "+reservaEmpleado.getCantidad()+","
+                    + "       IdTipoComensal = "+reservaEmpleado.getIdTipoComensal()+ ","
                     + "       Observacion = '"+reservaEmpleado.getObservacion() + "',"
                     + "       descuento = "+reservaEmpleado.getDescuentoAdicional()+ ","
                     + "       fechaActulizacion = CONVERT(date, SYSDATETIME())"

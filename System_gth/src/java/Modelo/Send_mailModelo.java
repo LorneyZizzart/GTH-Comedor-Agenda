@@ -157,4 +157,91 @@ public class Send_mailModelo {
         return mensaje;
     }
 
+    public String Enviar_Un_email_a_evaluador(int Cuestionario_gestion_id, int A_empleado_id, int Evalua_empleado_id, String Tipo) {
+        Controlador.EncriptionController encripta = new EncriptionController();
+
+        String mensaje = "Ok";
+        try {
+            //String boton_click = "http://192.168.12.233:8080/System_gth/Respuesta/respuesta/index.jsp?id=";
+
+            List<View_Envia_Correo_Datos> ListaMandarCorreo = new ArrayList<View_Envia_Correo_Datos>();
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "";
+            if (Tipo.equalsIgnoreCase("Cliente")) {
+                sql = "Select ce.Cuestionario_evalua_id, ce.Evalua_empleado_id, ce.A_empleado_id, (e.Nombre) Evaluador,\n"
+                        + "		(select (Apellido_paterno+' '+Apellido_materno+' '+ Nombre) Nombre from Empleado where Empleado_id = ce.A_empleado_id) Evaluado, \n"
+                        + "		cg.Mensaje_correo, e.Correo email, cg.Titulo_correo \n"
+                        + "from Cuestioario_evalua ce\n"
+                        + "	inner join Cuestionario_gestion cg\n"
+                        + "	on cg.Cuestionario_gestion_id = ce.Cuestionario_gestion_id\n"
+                        + "	inner join Cliente e\n"
+                        + "	on e.Cliente_id = ce.Evalua_empleado_id \n"
+                        + "where  cg.Cuestionario_gestion_id = '" + Cuestionario_gestion_id + "' and ce.A_empleado_id = '" + A_empleado_id + "' and ce.Tipo = '" + Tipo + "' and ce.Evalua_empleado_id = '" + Evalua_empleado_id + "' ";
+            } else {
+
+                sql = "Select ce.Cuestionario_evalua_id, ce.Evalua_empleado_id, ce.A_empleado_id, (e.Apellido_paterno+' '+e.Apellido_materno+' '+ e.Nombre) Evaluador,\n"
+                        + "		(select (Apellido_paterno+' '+Apellido_materno+' '+ Nombre) Nombre from Empleado where Empleado_id = ce.A_empleado_id) Evaluado, cg.Mensaje_correo, e.email, cg.Titulo_correo \n"
+                        + "from Cuestioario_evalua ce\n"
+                        + "	inner join Cuestionario_gestion cg\n"
+                        + "	on cg.Cuestionario_gestion_id = ce.Cuestionario_gestion_id\n"
+                        + "	inner join Empleado e\n"
+                        + "	on e.Empleado_id = ce.Evalua_empleado_id\n"
+                        + "where  cg.Cuestionario_gestion_id = '" + Cuestionario_gestion_id + "' and ce.A_empleado_id = '" + A_empleado_id + "' and ce.Tipo = '" + Tipo + "' and ce.Evalua_empleado_id = '" + Evalua_empleado_id + "' ";
+            }
+            System.out.println(" Lista de personas a que se enviara el correo : " + sql);
+            ResultSet res = db.consulta(sql);
+            while (res.next()) {
+                String id_ecriptado = encripta.ValorAEncriptar(res.getString("Cuestionario_evalua_id"));
+                String html_boton = "<center>\n"
+                        + "<div style=\"width:200px\">\n"
+                        + "<a href=\"http://200.58.75.218:8080/gth_web/Respuesta/respuesta/index.jsp?iasdfsdfasdf121as2dd1f21sf12d=" + id_ecriptado + "\" style=\"text-decoration:none;color:#ffffff\" target=\"_blank\">\n"
+                        + "              <p style=\"background-color:#541686;color:#ffffff;font-family:'Open Sans',Arial,sans-serif;font-size:16px;font-weight:50;line-height:24px;text-decoration:none;text-transform:none;border-radius:4px;margin:0;padding:16px 0\">\n"
+                        + "             Haga clic para comenzar.\n"
+                        + "              </p></a>\n"
+                        + "              </div>\n"
+                        + "              </center>";
+
+                View_Envia_Correo_Datos enviar = new View_Envia_Correo_Datos();
+                String mensaje_ = res.getString("Mensaje_correo");
+                String evaluador_ = res.getString("Evaluador");
+                String evaluado_ = res.getString("Evaluado");
+
+                String new_mensaje = mensaje_.replace("--Evaluador--", evaluador_);
+                new_mensaje = new_mensaje.replace("--Evaluado--", evaluado_);
+
+                enviar.setCuestionario_evalua_id(res.getInt("Cuestionario_evalua_id"));
+                enviar.setEvalua_empleado_id(res.getInt("Evalua_empleado_id"));
+                enviar.setA_empleado_id(res.getInt("A_empleado_id"));
+                enviar.setEvaluador(res.getString("Evaluador"));
+                enviar.setEvaluado(res.getString("Evaluado"));
+                enviar.setMensaje_correo(new_mensaje + html_boton);
+                enviar.setEmail(res.getString("email"));
+                enviar.setCorreo_titulo(res.getString("Titulo_correo"));
+
+                ListaMandarCorreo.add(enviar);
+
+            }
+
+            for (View_Envia_Correo_Datos item : ListaMandarCorreo) {
+                Send_MailGmail.send_mailView view = new send_mailView();
+                String respuesta = view.Envia_correo_evaluacion(item.getEmail(), item.getMensaje_correo(), item.getCorreo_titulo());
+                if (respuesta.equalsIgnoreCase("Ok")) {
+                    String sqlActualizaEstado = "UPDATE Cuestioario_evalua \n"
+                            + "   SET  Envio_correo = '1',\n"
+                            + "		Fecha_envio_correo = CONVERT(date, SYSDATETIME())\n"
+                            + " WHERE Cuestionario_evalua_id = '" + item.getCuestionario_evalua_id() + "' ";
+                    System.out.println("-- Actualiza correo -- " + item.getEvaluador());
+                    db.actualizar(sqlActualizaEstado);
+                }
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            mensaje = ("Modelo.Send_mailModelo.Enviar_Un_email_a_evaluador() " + e.getMessage());
+            System.out.println(mensaje);
+        }
+        return mensaje; 
+
+    }
+
 }

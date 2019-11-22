@@ -4,13 +4,13 @@
 <jsp:useBean id="_proceso" class="Controlador.A_ProcedimientoTareaController" />
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%
-    String idTarea = request.getParameter("id");
+    String[] id = request.getParameter("id").split("%"); 
     List<A_Tarea> listaP = new ArrayList<A_Tarea>();
-    listaP = _proceso.getAllProcedimiento(Integer.parseInt(idTarea));
+    listaP = _proceso.getAllProcedimientoTarea(id[0],Integer.parseInt(id[1]));
 %>
 <div class="box-header" style="padding: 0 0 2% 0">
         <h3 class="box-title">Lista de Procesos</h3>
-         <a data-id="<%=idTarea%>" style="cursor:pointer;" class="formNewProcess btn-purple pull-right" data-toggle="modal tooltip" data-target="#modal-default" data-placement="bottom" title="Añadir proceso">
+        <a data-id="<%=request.getParameter("id")%>" style="cursor:pointer;" class="formNewProcess btn-purple pull-right" data-toggle="modal tooltip" data-target="#modal-default" data-placement="bottom" title="Añadir proceso">
                         <i class="fa fa-plus"></i>
          </a>
     </div>
@@ -19,9 +19,9 @@
                         <thead>
                             <tr>
                                 <th style="width: 2%">#</th>
-                                <th style="width: 20%">Nombre</th>
-                                <th>Descripción</th>
-                                <th style="width: 5%">Opciones</th>
+                                <th style="width: 30%">Nombre</th>
+                                <!-- /<th style="width: 20%">Descripción</th>-->
+                                <th class="text-center" style="width: 5%">Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,8 +33,7 @@
                             %>
                             <tr>
                                 <td><%=contador%></td>
-                                <td><%=p.getNombreProcedimiento()%></td>                         
-                                <td><%=p.getDescripcionProcedimiento()%></td>
+                                <td><a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>"class="verProceso" style="cursor:pointer;"><%=p.getNombreProcedimiento()%> </a>    </td>                    
                                 <td class="text-center">
                                     <div class="btn-group ">
                                         <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>" class="formEditProcess btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
@@ -57,10 +56,8 @@
 
 } );
     
-     $(".formEditProcess").click(function (e){
-        $(".modal-dialog-edit").width("25%");
-        $(".modal-dialog-edit").css('margin-right', "37.5%");
-        $(".modal-dialog-edit").css('margin-left', "37.5%");
+    $(".formEditProcess").click(function (e){
+        $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
         e.preventDefault();
         e.stopImmediatePropagation();
         $("#titleModal").html("Editar tarea");
@@ -81,11 +78,32 @@
             }); 
         
     });
+    
+    $(".verProceso").click(function (e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $("#titleModal").html("Proceso");
+        $("#formulario_registro #modelViewTarea").addClass('modelViewTarea');
+        $('#formulario_registro').modal('show');
+        $(".cuerpo_registro").html('');
+        $(".cuerpo_registro").addClass('loader');
+        $.post('verProceso.jsp',
+            {id: $(this).attr('data-id')},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            }); 
+        
+    });
 
     $(".formNewProcess").click(function (e) {
-        $(".modal-dialog-edit").width("25%");
-        $(".modal-dialog-edit").css('margin-right', "37.5%");
-        $(".modal-dialog-edit").css('margin-left', "37.5%");
+        $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
         $("#titleModal").html("Nuevo proceso");
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -93,7 +111,10 @@
             $(".cuerpo_registro").html('');
             $(".cuerpo_registro").addClass('loader');
             //$.post('lista_cuenta_duplicada.jsp',
+            var id = $(this).attr('data-id').split("%");
+            //console.log("title: ", id(0));
             $.post('crearProceso.jsp',
+            
             {id: $(this).attr('data-id')},
                     function (html) {
                     $(".cuerpo_registro").removeClass('loader');
@@ -108,9 +129,7 @@
     });
     
     $(".formDeletProcess").click(function (e){
-        $(".modal-dialog-edit").width("25%");
-        $(".modal-dialog-edit").css('margin-right', "37.5%");
-        $(".modal-dialog-edit").css('margin-left', "37.5%");
+        $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
         $("#titleModal").html("Eliminar proceso");
         e.preventDefault();
         e.stopImmediatePropagation();

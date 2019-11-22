@@ -30,8 +30,14 @@
                             <input disabled type="text" class="form-control" id="hora"  name="hora" value="<%=tipoComida.getHora()%>">                            
                         </div>
                         <div class="form-group">
-                            <label>Color del item</label>
-                            <input disabled type="text" class="form-control" id="color"  name="color" value="<%=tipoComida.getColor()%>">                           
+                            <label>Color del item</label> 
+                            <div class="input-group my-colorpicker2">
+                                <input disabled type="text" id="color"  name="color" class="form-control "value="<%=tipoComida.getColor()%>">
+
+                                <div class="input-group-addon">
+                                  <i></i>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Horas de anticipación</label>
@@ -64,6 +70,7 @@
 <script type="text/javascript">
     
     $(document).ready(function () {
+        $(".my-colorpicker2").colorpicker();
         $(".btn_eliminar").click(function () {
             var id_menu = $("#id").val();
             $("#mensaje").show();

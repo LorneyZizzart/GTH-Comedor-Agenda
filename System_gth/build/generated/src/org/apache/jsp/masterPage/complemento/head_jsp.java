@@ -42,6 +42,15 @@ public final class head_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+      out.write('\n');
+      Controlador.EncriptionController __encript = null;
+      synchronized (_jspx_page_context) {
+        __encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("__encript", PageContext.PAGE_SCOPE);
+        if (__encript == null){
+          __encript = new Controlador.EncriptionController();
+          _jspx_page_context.setAttribute("__encript", __encript, PageContext.PAGE_SCOPE);
+        }
+      }
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html>\n");
@@ -76,7 +85,9 @@ public final class head_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <!-- AdminLTE Skins. Choose a skin from the css/skins\n");
       out.write("             folder instead of downloading all of them to reduce the load. -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../dist/css/skins/_all-skins.min.css\">\n");
-      out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
+      out.write("        \n");
+      out.write("        <!-- bootstrap wysihtml5 - text editor -->\n");
+      out.write("        <link rel=\"stylesheet\" href=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css\">\n");
       out.write("\n");
       out.write("        <!-- Para Mostrar las alertas Toast-->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/toast_alert/toastr.css\" />\n");
@@ -84,8 +95,10 @@ public final class head_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>    \n");
       out.write("        <!-- bootstrap datepicker -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../plugins/datepicker/datepicker3.css\">\n");
+      out.write("        \n");
+      out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
+      out.write("    \n");
       out.write("        <!--<link rel=\"stylesheet\" type=\"text/css\" href=\"../../plugins/tablaEditor/css/tablaEditor.css\" />-->\n");
-      out.write("\n");
       out.write("\n");
       out.write("        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->\n");
       out.write("        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n");
@@ -169,7 +182,9 @@ public final class head_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                                    <li class=\"user-footer\">\n");
       out.write("                                        <div class=\"pull-left\">\n");
-      out.write("                                            <a href=\"#\" class=\"btn btn-default btn-flat\">Perfil</a>\n");
+      out.write("                                            <a href=\"../../Funcionario/perfil/historialFuncionario.jsp?i=");
+      out.print(__encript.ValorAEncriptar(Integer.toString(DatoUsuario.getEmpleado_id())));
+      out.write("\" class=\"btn btn-default btn-flat\">Perfil</a>\n");
       out.write("                                        </div>\n");
       out.write("                                        <div class=\"pull-right\">\n");
       out.write("                                            <a class=\"btn btn-default btn-flat btn_salir\" id=\"btn_salir\">Salir</a>\n");

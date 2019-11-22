@@ -115,9 +115,9 @@ public final class eliminarComensal_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\">                          \n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group\" >\n");
-      out.write("                            <label>Día Inicio</label>\n");
-      out.write("                            <input disabled type=\"text\" class=\"form-control\" id=\"diaInicio\"  name=\"diaInicio\" value=\"");
-      out.print(entidad.getDiaInicio());
+      out.write("                            <label>Días anticipacion</label>\n");
+      out.write("                            <input disabled type=\"text\" class=\"form-control\" value=\"");
+      out.print(entidad.getDiasAnticipacion());
       out.write("\">                            \n");
       out.write("                        </div>\n");
       out.write("                            <div class=\"form-group\">\n");

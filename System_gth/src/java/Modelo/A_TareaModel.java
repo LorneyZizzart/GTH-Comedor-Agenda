@@ -41,6 +41,7 @@ public class A_TareaModel {
                         "AND us.Empleado_id = em.Empleado_id\n" +
                         "AND ta.estado <> 6  " +
                         "AND ta.idUsuarioCrea = " + idUser + " " +sentencia;
+//            System.out.print("sql: "+sql);
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 A_Tarea tarea = new A_Tarea();
@@ -81,11 +82,12 @@ public class A_TareaModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro , rt.nombre\n" +
+            String sql = "SELECT ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro , rt.nombre,  ta.descripcion\n" +
                          "FROM ATarea ta, ARepeticionTarea rt\n" +
                          "WHERE ta.idRepeticionTarea = rt.idRepeticionTarea\n" +
+                        "AND ta.estado <> 6 " + 
                          "AND idUsuarioCrea = " + idUser + "\n" +
-                         "GROup by ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro, rt.nombre";
+                         "GROup by ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro, rt.nombre, ta.descripcion";
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 A_Tarea tarea = new A_Tarea();
@@ -93,6 +95,7 @@ public class A_TareaModel {
                 tarea.setTitulo(res.getString("titulo"));
                 tarea.setFechaRegistroTarea(res.getDate("fechaRegistro"));
                 tarea.setNombreRepeticion(res.getString("nombre"));   
+                tarea.setDescripcion(res.getString("descripcion"));
                 tareas.add(tarea);
             }
             db.cierraConexion();
@@ -157,25 +160,85 @@ public class A_TareaModel {
         return tarea;
     }
     
-    public String getMaxIdTarea(){
-        String id = null;
+    public A_Tarea getTareaByTitulo(String titulo, int idUser) throws ParseException{
+        A_Tarea tarea = new A_Tarea();
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT MAX(idTarea) AS idTarea FROM ATarea";
+            String sql = "SELECT ta.idTarea,  ta.idEstadoTarea, ta.idRepeticionTarea, ta.idUsuarioCrea, ta.titulo, ta.descripcion, ta.fechaInicio, ta.fechaRegistro, ta.fechaActualizacion, ta.horaInicio, ta.estado, ta.domingo, ta.lunes, ta.martes, ta.miercoles, ta.jueves, ta.viernes, ta.sabado, \n" +
+"                        et.nombre as nombreEstado,\n" +
+"                        rt.nombre as nombreRepeticion, rt.sumarDias, rt.sumarMes, rt.sumarYear,\n" +
+"                        em.Empleado_id, em.Apellido_paterno, em.Apellido_materno, em.Nombre as nombreEmpleado, em.Telefono, em.Foto\n" +
+"                        FROM ATarea ta, AEstadoTarea et, Usuario us, Empleado em, ARepeticionTarea rt \n" +
+"                        WHERE ta.idEstadoTarea = rt.idRepeticionTarea\n" +
+"                        AND ta.idUsuarioCrea = us.User_id\n" +
+"                        AND us.Empleado_id = em.Empleado_id\n" +
+"                        AND ta.estado <> 6  \n" +
+"                        AND ta.titulo = '" + titulo + "'\n" +
+"			 AND ta.idUsuarioCrea = " + idUser;
 
             ResultSet res = db.consulta(sql);
             if (res.next()) {                
-                id = res.getString("idTarea");
+                tarea.setIdTarea(res.getInt("idTarea"));
+                tarea.setIdEstadoTarea(res.getInt("idEstadoTarea"));
+                tarea.setIdUserCrea(res.getInt("idUsuarioCrea"));
+                tarea.setIdRepeticionTarea(res.getInt("idRepeticionTarea"));
+                tarea.setTitulo(res.getString("titulo"));
+                tarea.setDescripcion(res.getString("descripcion"));
+                tarea.setFechaInicio(this.ConvertDate(res.getString("fechaInicio")));
+                tarea.setEstadoTarea(res.getInt("estado"));
+                tarea.setFechaRegistroTarea(res.getDate("fechaRegistro"));
+                tarea.setFechaActualizacion(res.getDate("fechaActualizacion"));
+                tarea.setNombreEstadoTarea(res.getString("nombreEstado"));
+                tarea.setIdEmpleado(res.getInt("Empleado_id"));
+                tarea.setNombreEmpleado(res.getString("Apellido_paterno")+" "+res.getString("Apellido_materno")+" "+res.getString("nombreEmpleado"));
+                tarea.setTelefono(res.getInt("Telefono"));
+                tarea.setFoto(res.getString("Foto"));
+                tarea.setHoraInicio(res.getString("horaInicio"));
+                tarea.setNombreRepeticion(res.getString("nombreRepeticion"));
+                tarea.setSumarDias(res.getInt("sumarDias"));
+                tarea.setSumarMes(res.getInt("sumarMes"));
+                tarea.setSumarYear(res.getInt("sumarYear"));  
+                tarea.setDomingo(res.getInt("domingo"));
+                tarea.setLunes(res.getInt("lunes"));
+                tarea.setMartes(res.getInt("martes"));
+                tarea.setMiercoles(res.getInt("miercoles"));
+                tarea.setJueves(res.getInt("jueves"));
+                tarea.setViernes(res.getInt("viernes"));
+                tarea.setSabado(res.getInt("sabado"));
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Controlador.A_TareaModel.getTareaByTitulo() " + e.getMessage());
+        }
+        return tarea;
+    }
+    
+    public A_Tarea getMaxIdTarea(){
+        A_Tarea tarea = new A_Tarea();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT idTarea, titulo, idUsuarioCrea  \n" +
+                        "FROM ATarea \n" +
+                        "WHERE idTarea = (SELECT MAX(idTarea) FROM ATarea)\n" +
+                        "GROUP BY idTarea, titulo, idUsuarioCrea";
+
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {       
+                tarea.setIdTarea(res.getInt("idTarea"));
+                tarea.setTitulo(res.getString("titulo"));
+                tarea.setIdUserCrea(res.getInt("idUsuarioCrea"));
             }
             db.cierraConexion();
         } catch (SQLException e) {
             System.out.println("Controlador.A_TareaModel.getMaxIdTarea() " + e.getMessage());
         }
-        return id;
+        return tarea;
     }
     
-    public List<A_Tarea> getAllTareaForProcess(String nombreProceso) {
+    
+    public List<A_Tarea> getAllTareaForProcess(A_Tarea t) {
         List<A_Tarea> tareas = new ArrayList<A_Tarea>();        
         try {
             ConectaSqlServer db = new ConectaSqlServer();
@@ -190,7 +253,7 @@ public class A_TareaModel {
                         "AND ta.idUsuarioCrea = us.User_id\n" +
                         "AND us.Empleado_id = em.Empleado_id\n" +
                         "AND ta.estado <> 6  " +
-                        "AND ta.titulo = '" + nombreProceso + "'";
+                        "AND ta.titulo = '" + t.getTitulo() + "' AND ta.idUsuarioCrea = " + t.getIdUserCrea();
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 A_Tarea tarea = new A_Tarea();                
@@ -224,15 +287,15 @@ public class A_TareaModel {
         return tareas;
     }
     
-    public String SaveOrUpdate(A_Tarea tarea) {
+    public String SaveOrUpdate(A_Tarea tarea, String titulo) {
         String respuesta = null;
         try {
-            if (tarea.getIdTarea() == 0) {
+            if (tarea.getIdTarea() == 0 && titulo == null) {
                 //insertar
                 respuesta = SaveTarea(tarea);
             } else {
                 // Actualizar
-                respuesta = ActualizarTarea(tarea);
+                respuesta = ActualizarTarea(tarea, titulo);
             }
 
         } catch (Exception e) {
@@ -240,18 +303,37 @@ public class A_TareaModel {
         return respuesta;
     }
     
-    private String SaveTarea(A_Tarea tarea) {
-        String respuesta = "Ok";
+    public String searchTarea(String titulo, int idUsuario){
+        String resultado = null;
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "INSERT INTO ATarea\n"
-                    + "  (titulo, descripcion, idRepeticionTarea, idEstadoTarea, fechaInicio, horaInicio, domingo, lunes, martes, miercoles, jueves, viernes, sabado, fechaRegistro, fechaActualizacion, idUsuarioCrea, estado)"
-                    + "  VALUES\n"
-                    + "  ('"+tarea.getTitulo()+"','"+tarea.getDescripcion()+"',"+tarea.getIdRepeticionTarea()+","+tarea.getIdEstadoTarea()+",'"+tarea.getFechaInicio()+"','"+tarea.getHoraInicio()+"',"+tarea.getDomingo()+"," + tarea.getLunes()+"," + tarea.getMartes()+ ","+tarea.getMiercoles()+","+tarea.getJueves()+","+tarea.getViernes()+","+tarea.getSabado()+",CONVERT(date, SYSDATETIME()),CONVERT(date, SYSDATETIME()),"+tarea.getIdUserCrea()+",1)";
-            
-            db.insertar(sql);
+            String sql = "SELECT COUNT( idTarea) AS cantidad FROM ATarea WHERE titulo = '"+titulo+"' AND estado <> 6 AND idUsuarioCrea = " + idUsuario;
+
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {                
+                resultado = res.getString("cantidad");
+            }
             db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Controlador.A_TareaModel.getMaxIdTarea() " + e.getMessage());
+        }
+        return resultado;
+    }
+    
+    
+    private String SaveTarea(A_Tarea tarea) {
+        String respuesta = "Ok";
+        try {
+                ConectaSqlServer db = new ConectaSqlServer();
+                db.conectar();
+                String sql = "INSERT INTO ATarea\n"
+                        + "  (titulo, descripcion, idRepeticionTarea, idEstadoTarea, fechaInicio, horaInicio, domingo, lunes, martes, miercoles, jueves, viernes, sabado, fechaRegistro, fechaActualizacion, idUsuarioCrea, estado)"
+                        + "  VALUES\n"
+                        + "  ('"+tarea.getTitulo()+"','"+tarea.getDescripcion()+"',"+tarea.getIdRepeticionTarea()+","+tarea.getIdEstadoTarea()+",'"+tarea.getFechaInicio()+"','"+tarea.getHoraInicio()+"',"+tarea.getDomingo()+"," + tarea.getLunes()+"," + tarea.getMartes()+ ","+tarea.getMiercoles()+","+tarea.getJueves()+","+tarea.getViernes()+","+tarea.getSabado()+",CONVERT(date, SYSDATETIME()),CONVERT(date, SYSDATETIME()),"+tarea.getIdUserCrea()+",1)";
+
+                db.insertar(sql);
+                db.cierraConexion();
                        
         } catch (SQLException e) {
             respuesta = "Modelo.A_TareaModel.SaveTarea() " + e.getMessage();
@@ -259,7 +341,7 @@ public class A_TareaModel {
         return respuesta;
     }  
     
-    private String ActualizarTarea(A_Tarea tarea) {
+    private String ActualizarTarea(A_Tarea tarea, String titulo) {
         String respuesta = "Ok";
         try {
             ConectaSqlServer db = new ConectaSqlServer();
@@ -280,10 +362,11 @@ public class A_TareaModel {
                     + "      ,viernes = " + tarea.getViernes()+ " \n"
                     + "      ,sabado = " + tarea.getSabado()+ " \n"
                     + "      ,fechaActualizacion = CONVERT(date, SYSDATETIME()) "
-                    + " WHERE idTarea = " + tarea.getIdTarea();
-            System.out.print("sql:"+sql);
+                    + " WHERE titulo = '" + titulo + "' AND idUsuarioCrea = " + tarea.getIdUserCrea();
+            
+//            System.err.println("sql: "+ sql);
             db.actualizar(sql);
-
+            
             db.cierraConexion();
         } catch (SQLException e) {
             respuesta = "Modelo.A_TareaModel.ActualizarTarea() " + e.getMessage();
@@ -291,15 +374,51 @@ public class A_TareaModel {
         return respuesta;
     }
     
-    public String DeleteTarea(int idTarea) {
+    public String CambiarEstadoTarea(int idTarea, int idEstado) {
+        String respuesta = "Ok";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+
+            String sql = "UPDATE ATarea \n"
+                    + "   SET idEstadoTarea = " + idEstado+ " \n"
+                    + "      ,fechaActualizacion = CONVERT(date, SYSDATETIME()) "
+                    + " WHERE idTarea = " + idTarea;
+            db.actualizar(sql);
+
+            db.cierraConexion();
+        } catch (SQLException e) {
+            respuesta = "Modelo.A_TareaModel.CambiarEstadoTarea() " + e.getMessage();
+        }
+        return respuesta;
+    }
+//    falta trabajar
+    public String getCantidadProcesos(int idTarea) {
+        String respuesta = "0";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+
+            String sql = "SELECT COUNT(idTarea) AS cantidad FROM AProcedimientoTarea WHERE idTarea = " + idTarea;
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {  
+                respuesta = res.getString("cantidad");
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Controlador.A_TareaModel.getTareaByTitulo() " + e.getMessage());
+        }
+        return respuesta;
+    }
+    
+    public String DeleteTarea(String titulo, int idUser) {
         String respuesta = "Ok";
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
             String sql = "UPDATE ATarea \n"
                     + "   SET estado = 6 \n"
-                    + " WHERE idTarea = " + idTarea ;
-
+                    + " WHERE titulo = '" + titulo + "' AND idUsuarioCrea = " + idUser;
             db.actualizar(sql);
             db.cierraConexion();
         } catch (SQLException e) {

@@ -88,19 +88,23 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       }
       out.write('\n');
 
-    String id = _encript.ValorADesencriptar(request.getParameter("id")); 
+    String[] id = request.getParameter("id").split("%"); 
     List<A_EstadoTarea> listaEstadoTarea = new ArrayList<A_EstadoTarea>();
     List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
     listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     A_Tarea tarea = new A_Tarea();
-    tarea = _tarea.getTareaById(Integer.parseInt(id));
+    tarea = _tarea.getTareaByTitulo(id[0], Integer.parseInt(id[1]));
     listaEstadoTarea = _estadoTarea.getAllEstadoTarea();
 
       out.write("\n");
       out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
       out.write("    <input type=\"hidden\" value=\"");
-      out.print(id);
-      out.write("\" name=\"id\" id=\"id\">\n");
+      out.print(id[0]);
+      out.write("\" name=\"proceso\" id=\"proceso\">\n");
+      out.write("    <input type=\"hidden\" value=\"1\" name=\"id\" id=\"id\">\n");
+      out.write("    <input type=\"hidden\" value=\"");
+      out.print(id[1]);
+      out.write("\" name=\"idUsuario\" id=\"idUsuario\">\n");
       out.write("                    <div class=\"box-body\">\n");
       out.write("                        <div class=\"form-group\" >\n");
       out.write("                            <label>Título</label>\n");
@@ -109,8 +113,8 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\">                            \n");
       out.write("                        </div>                         \n");
       out.write("                        <div class=\"form-group\">\n");
-      out.write("                            <label>Descripción</label>\n");
-      out.write("                            <textarea class=\"form-control\" rows=\"3\" id=\"descripcion\"  name=\"descripcion\">");
+      out.write("                            <label>Descripción </label>\n");
+      out.write("                            <textarea class=\"textarea\"  id=\"descripcion\"  name=\"descripcion\" style=\"width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;\">");
       out.print(tarea.getDescripcion());
       out.write("</textarea>\n");
       out.write("                        </div>\n");
@@ -122,9 +126,12 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
 
                                     for(A_RepeticionTarea item : listaRepeticionTarea){
                                         String select = "";
+                                        String disabled = "";
                                         if(tarea.getIdRepeticionTarea() == item.getIdRepeticionTarea())
                                             select = "Selected";
                                         if(item.getEstadoRepeticion()== 1){
+                                            disabled = "disabled";
+                                        }                                       
                                             
       out.write("\n");
       out.write("                                   <option value=\"");
@@ -132,11 +139,13 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write('"');
       out.write(' ');
       out.print(select);
+      out.write(' ');
+      out.print(disabled);
       out.write('>');
       out.print(item.getNombreRepeticion());
       out.write("</option>\n");
       out.write("                               ");
- } } 
+ } 
       out.write("\n");
       out.write("                            </select>\n");
       out.write("                        </div>\n");
@@ -306,6 +315,8 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <div id=\"mensaje\"></div>\n");
       out.write("<script type=\"text/javascript\">\n");
       out.write("    $(document).ready(function () {\n");
+      out.write("    //bootstrap WYSIHTML5 - text editor\n");
+      out.write("    $(\".textarea\").wysihtml5();\n");
       out.write("    //Timepicker\n");
       out.write("    $(\".timepicker\").timepicker({\n");
       out.write("      showInputs: false\n");
@@ -426,8 +437,8 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        },\n");
       out.write("                        stringLength: {\n");
       out.write("                            min: 3,\n");
-      out.write("                            max: 30,\n");
-      out.write("                            message: 'El titulo tiene que ser mas de 3 y menos de 30 caracteres'\n");
+      out.write("                            max: 100,\n");
+      out.write("                            message: 'El titulo tiene que ser mas de 3 y menos de 100 caracteres'\n");
       out.write("                        },\n");
       out.write("                        regexp: {\n");
       out.write("                            regexp: /^([-a-z0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
@@ -447,7 +458,7 @@ public final class editarTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            message: 'La descripción debe contener de 5 a 500 caracteres.'\n");
       out.write("                        },\n");
       out.write("                        regexp: {\n");
-      out.write("                            regexp: /^([-a-z0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
+      out.write("                            regexp: /^([-a-z/()*.,%&$#¿?¡!0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
       out.write("                            message: 'El nombre de usuario solo puede constar de letras, números y guiones bajos.'\n");
       out.write("                        }\n");
       out.write("                    }\n");

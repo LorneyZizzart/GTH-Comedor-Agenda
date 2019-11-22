@@ -9,8 +9,7 @@
     tipoComensal.setDescuentoDesayuno(Double.parseDouble(request.getParameter("descuentoDesayuno")));
     tipoComensal.setDescuentoAlmuerzo(Double.parseDouble(request.getParameter("descuentoAlmuerzo")));
     tipoComensal.setDescuentoCena(Double.parseDouble(request.getParameter("descuentoCena")));
-    tipoComensal.setDiaInicio(Integer.parseInt(request.getParameter("diaInicio")));
-    tipoComensal.setDiaFin(Integer.parseInt(request.getParameter("diaFin")));
+    tipoComensal.setDiasAnticipacion(Integer.parseInt(request.getParameter("diasAnticipacion")));
     tipoComensal.setUsuarioCrea(Integer.parseInt(request.getParameter("idUsuario")));
     int estado = 0;
     try{

@@ -21,8 +21,8 @@ import java.util.List;
 public class A_ProcedimientoTareaController {
     A_ProcedimientoTareaModel mod = new A_ProcedimientoTareaModel();
     
-    public List<A_Tarea> getAllProcedimiento(int idTarea) {
-        return this.mod.getAllProcedimientoTarea(idTarea);
+    public List<A_Tarea> getAllProcedimientoTarea(String titulo, int idUsuario) {
+        return this.mod.getAllProcedimientoTarea(titulo, idUsuario);
     }
     
     public A_ProcedimientoTarea getProcedimientoById(int idProcedimiento){
@@ -32,9 +32,9 @@ public class A_ProcedimientoTareaController {
     public String SaveProcedimiento(A_Tarea procesoTarea) throws ParseException {        
         A_TareaModel modT = new A_TareaModel();
         List<A_Tarea> listaTarea = new ArrayList<A_Tarea>();
-        A_Tarea tarea = new A_Tarea();
-        tarea = modT.getTareaById(procesoTarea.getIdTarea());
-        listaTarea = modT.getAllTareaForProcess(tarea.getTitulo());
+//        A_Tarea tarea = new A_Tarea();
+//        tarea = modT.getTareaById(procesoTarea.getIdTarea());
+        listaTarea = modT.getAllTareaForProcess(procesoTarea);
         String resultado = null;
         for(A_Tarea t : listaTarea){
             procesoTarea.setIdTarea(t.getIdTarea());

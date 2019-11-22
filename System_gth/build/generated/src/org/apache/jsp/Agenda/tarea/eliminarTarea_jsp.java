@@ -88,18 +88,18 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       }
       out.write('\n');
 
-    String id = _encript.ValorADesencriptar(request.getParameter("id")); 
+    String[] id = request.getParameter("id").split("%"); 
     List<A_EstadoTarea> listaEstadoTarea = new ArrayList<A_EstadoTarea>();
     List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
     listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     A_Tarea tarea = new A_Tarea();
-    tarea = _tarea.getTareaById(Integer.parseInt(id));
+    tarea = _tarea.getTareaByTitulo(id[0], Integer.parseInt(id[1]));
     listaEstadoTarea = _estadoTarea.getAllEstadoTarea();
 
       out.write("\n");
       out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
       out.write("    <input type=\"hidden\" value=\"");
-      out.print(id);
+      out.print(request.getParameter("id"));
       out.write("\" name=\"id\" id=\"id\">\n");
       out.write("                    <div class=\"box-body\">\n");
       out.write("                        <div class=\"form-group\" >\n");
@@ -107,10 +107,10 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("                            <input disabled type=\"text\" class=\"form-control\" id=\"titulo\"  name=\"titulo\" value=\"");
       out.print(tarea.getTitulo());
       out.write("\">                            \n");
-      out.write("                        </div>                         \n");
+      out.write("                        </div>  \n");
       out.write("                        <div class=\"form-group\">\n");
-      out.write("                            <label>Descripción</label>\n");
-      out.write("                            <textarea disabled class=\"form-control\" rows=\"3\" id=\"descripcion\"  name=\"descripcion\">");
+      out.write("                            <label>Descripción </label>\n");
+      out.write("                            <textarea disabled class=\"textarea\"  id=\"descripcion\"  name=\"descripcion\" style=\"width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;\">");
       out.print(tarea.getDescripcion());
       out.write("</textarea>\n");
       out.write("                        </div>\n");
@@ -306,7 +306,8 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("        <div id=\"mensaje\"></div>\n");
       out.write("<script type=\"text/javascript\">\n");
       out.write("    $(document).ready(function () {\n");
-      out.write("\n");
+      out.write("        //bootstrap WYSIHTML5 - text editor\n");
+      out.write("        $(\".textarea\").wysihtml5();\n");
       out.write("        switch($('#idRepeticion').val()){\n");
       out.write("            case '1':\n");
       out.write("                    $(\".row-days\").hide();\n");

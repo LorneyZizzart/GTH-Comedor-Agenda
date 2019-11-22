@@ -11217,7 +11217,7 @@ wysihtml5.commands.formatCode = {
     return wysihtml5.commands.insertList.state(composer, command, "UL");
   }
 };
-;wysihtml5.commands.insertList = (function(wysihtml5) {
+wysihtml5.commands.insertList = (function(wysihtml5) {
 
   var isNode = function(node, name) {
     if (node && node.nodeName) {

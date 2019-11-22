@@ -107,29 +107,29 @@
             );
     });
     
-    function downloadLink(url) {
-    	var ajaxOptions = {
-    		url: url
+    function descargarArchivo(contenidoEnBlob, nombreArchivo) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var save = document.createElement('a');
+            save.href = event.target.result;
+            save.target = '_blank';
+            save.download = nombreArchivo || 'archivo.dat';
+            var clicEvent = new MouseEvent('click', {
+                'view': window,
+                    'bubbles': true,
+                    'cancelable': true
+            });
+            save.dispatchEvent(clicEvent);
+            (window.URL || window.webkitURL).revokeObjectURL(save.href);
         };
-        
-        var res = $.ajax(ajaxOptions);
-        
-        function onAjaxDone(data) {          
-        		location.href = url
-        }
-        
-        function onAjaxFail() {
-        	alert('Error al descargar');
-        }
-        
-        res.done(onAjaxDone).fail(onAjaxFail);
-    }
+        reader.readAsDataURL(contenidoEnBlob);
+    };
     
     $(".DownloadFile").click(function (e) {
         var url = $(this).attr('data-id');
-    	e.preventDefault();
-        downloadLink(url);
-    
+        var cmd = "explorer.exe /e,"+url;
+    	RegWsh = new ActiveXObject("WScript.Shell");
+        RegWsh.Run(cmd);
     });
                             
 </script>

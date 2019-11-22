@@ -8,24 +8,24 @@
 <jsp:useBean id="_repeticionTarea" class="Controlador.A_RepeticionTareaController"/>
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%
-    String id = _encript.ValorADesencriptar(request.getParameter("id")); 
+    String[] id = request.getParameter("id").split("%"); 
     List<A_EstadoTarea> listaEstadoTarea = new ArrayList<A_EstadoTarea>();
     List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
     listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     A_Tarea tarea = new A_Tarea();
-    tarea = _tarea.getTareaById(Integer.parseInt(id));
+    tarea = _tarea.getTareaByTitulo(id[0], Integer.parseInt(id[1]));
     listaEstadoTarea = _estadoTarea.getAllEstadoTarea();
 %>
 <form id="form_guardar" method="post" class="form_guardar">
-    <input type="hidden" value="<%=id%>" name="id" id="id">
+    <input type="hidden" value="<%=request.getParameter("id")%>" name="id" id="id">
                     <div class="box-body">
                         <div class="form-group" >
                             <label>Título</label>
                             <input disabled type="text" class="form-control" id="titulo"  name="titulo" value="<%=tarea.getTitulo()%>">                            
-                        </div>                         
+                        </div>  
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <textarea disabled class="form-control" rows="3" id="descripcion"  name="descripcion"><%=tarea.getDescripcion()%></textarea>
+                            <label>Descripción </label>
+                            <textarea disabled class="textarea"  id="descripcion"  name="descripcion" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><%=tarea.getDescripcion()%></textarea>
                         </div>
                         <div class="form-group">
                             <label>Repetir cada</label>
@@ -165,7 +165,8 @@
         <div id="mensaje"></div>
 <script type="text/javascript">
     $(document).ready(function () {
-
+        //bootstrap WYSIHTML5 - text editor
+        $(".textarea").wysihtml5();
         switch($('#idRepeticion').val()){
             case '1':
                     $(".row-days").hide();

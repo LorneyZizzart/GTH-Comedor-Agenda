@@ -21,19 +21,12 @@ public class C_TipoComensal extends C_Empleado_Reserva{
     private Date FechaActualiza;
     private int MinimoDias;
     private String Descuento;
-    private int DiaInicio;
-    private int DiaFin;
+    private int DiasAnticipacion;
     private Double DescuentoDesayuno;
     private Double DescuentoAlmuerzo;
     private Double DescuentoCena;
     
-    public int getDiaFin(){
-        return DiaFin;
-    }
     
-    public void setDiaFin(int diaFin){
-        this.DiaFin = diaFin;
-    }
     
     public Double getDescuentoCena(){
         return DescuentoCena;
@@ -59,12 +52,12 @@ public class C_TipoComensal extends C_Empleado_Reserva{
         this.DescuentoDesayuno = descuentoDesayuno;
     }
     
-    public int getDiaInicio(){
-        return DiaInicio;
+    public int getDiasAnticipacion(){
+        return DiasAnticipacion;
     }
     
-    public void setDiaInicio(int diaInicio){
-        this.DiaInicio = diaInicio;
+    public void setDiasAnticipacion(int DiasAnticipacion){
+        this.DiasAnticipacion = DiasAnticipacion;
     }
     
     public String getDescuento(){

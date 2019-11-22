@@ -3,6 +3,10 @@ package org.apache.jsp.Agenda.tarea;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.*;
+import com.itextpdf.text.pdf.codec.Base64;
 
 public final class guardarFile_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -41,6 +45,11 @@ public final class guardarFile_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       Modelo.AFileUploadHandler _upFile = null;
       synchronized (_jspx_page_context) {
         _upFile = (Modelo.AFileUploadHandler) _jspx_page_context.getAttribute("_upFile", PageContext.PAGE_SCOPE);
@@ -50,9 +59,42 @@ public final class guardarFile_jsp extends org.apache.jasper.runtime.HttpJspBase
         }
       }
       out.write('\n');
+      Controlador.EncriptionController _encript = null;
+      synchronized (_jspx_page_context) {
+        _encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("_encript", PageContext.PAGE_SCOPE);
+        if (_encript == null){
+          _encript = new Controlador.EncriptionController();
+          _jspx_page_context.setAttribute("_encript", _encript, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
-   _upFile.doPost(request, response);
+//   _upFile.doPost(request, response);
+    String idTarea = request.getParameter("id");
+    byte[] image = Base64.decode(request.getParameter("path"));
+//    String path =  Base64.parseBase64Binary(request.getParameter("path"));
+    String base64Message = _encript.ValorAEncriptar(request.getParameter("path"));
+    InputStream i =  new FileInputStream(request.getParameter("path"));
+    
+    String resultado = _upFile.savePathTarea(idTarea, "", i);
+//    String resultado = "Ok";
 
+    if(resultado.equalsIgnoreCase("Ok")){
+ 
+      out.write("\n");
+      out.write("<div class=\" text-center alert alert-success alert-dismissible\">\n");
+      out.write("    <h4><i class=\"icon fa fa-check\"></i> Ok</h4>\n");
+      out.write("</div>    \n");
+}else{
+      out.write("\n");
+      out.write("<div class=\"alert alert-danger alert-dismissible\">\n");
+      out.write("    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n");
+      out.write("    <h4><i class=\"icon fa fa-ban\"></i> Alerta!</h4>\n");
+      out.write("    ");
+      out.print(resultado);
+      out.write("\n");
+      out.write("</div>\n");
+}
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

@@ -79,10 +79,10 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("                            <input disabled type=\"text\" class=\"form-control\" id=\"nombre\"  name=\"nombre\" value=\"");
       out.print(procedimiento.getNombreProcedimiento());
       out.write("\">                            \n");
-      out.write("                        </div>                         \n");
+      out.write("                        </div>   \n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label>Descripción</label>\n");
-      out.write("                            <textarea disabled class=\"form-control\" rows=\"3\" id=\"descripcion\"  name=\"descripcion\">");
+      out.write("                            <textarea disabled class=\"textarea\"  id=\"descripcion\"  name=\"descripcion\" style=\"width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;\">");
       out.print(procedimiento.getDescripcionProcedimiento());
       out.write("</textarea>\n");
       out.write("                        </div>\n");
@@ -96,6 +96,7 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("                </form>\n");
       out.write("        <div id=\"mensaje\"></div>\n");
       out.write("<script type=\"text/javascript\">\n");
+      out.write("    $(\".textarea\").wysihtml5();\n");
       out.write("    \n");
       out.write("        $(\".btn_eliminar\").click(function () {\n");
       out.write("            var id_menu = $(\"#idProceso\").val();\n");
@@ -111,10 +112,6 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("        });\n");
       out.write("        \n");
       out.write("        $(\".btn-cProcess\").click(function (e) {\n");
-      out.write("        \n");
-      out.write("        $(\".modal-dialog-edit\").width(\"40%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"30%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"30%\");\n");
       out.write("        $(\"#titleModal\").html(\"Procesos\");\n");
       out.write("        e.preventDefault();\n");
       out.write("        e.stopImmediatePropagation();\n");

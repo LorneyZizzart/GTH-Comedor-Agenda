@@ -55,7 +55,7 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
     int id = 0;
     try {
         id = Integer.parseInt(request.getParameter("id"));
-        respuesta = _tarea.DeleteTareaById(id);
+//        respuesta = _tarea.DeleteTareaById(id);
     }catch (Exception e) {
         id = 0;
     }

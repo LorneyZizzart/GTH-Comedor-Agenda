@@ -8,6 +8,7 @@ package Modelo;
 import Conexion.ConectaSqlServer;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -77,7 +78,9 @@ public class AFileUploadHandler extends HttpServlet{
         
         
         }
-        String result = this.savePathTarea(id, file_name, path);
+//        String result = this.savePathTarea(id, file_name, path);
+        String result = "Ok";
+
         if(result.equals("Ok")){
             System.out.print("Archivo almacenado correctamente");
         }else{
@@ -93,15 +96,16 @@ public class AFileUploadHandler extends HttpServlet{
         }
     }
     
-    public String savePathTarea(String idTarea, String nameFile, String pathFile){
+    public String savePathTarea(String idTarea, String nameFile, InputStream pathFile){
         String respuesta = "Ok";
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
             String sql = "INSERT INTO APath\n"
-                    + "  (idTarea, nombre, path)"
+                    + "  (idTarea, path)"
                     + "  VALUES\n"
-                    + "  ("+idTarea+",'"+nameFile+"','"+pathFile+"')";
+                    + "  ("+idTarea+",CAST('"+pathFile+"' AS VARBINARY(MAX)))";
+            System.out.println("sql: "+ sql);
             db.insertar(sql);
             db.cierraConexion();
                        

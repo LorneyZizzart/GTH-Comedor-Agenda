@@ -98,29 +98,33 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
     //para enviar la fecha y revise si existe registros
     String fecha[] = dataStart.split("/");
     //variable para obtener la fecha de hoy
-    Calendar dateNow = Calendar.getInstance();
+    Calendar fechaAnticipacion = Calendar.getInstance();
+    Date dateNow = formatter.parse(fechaAnticipacion.get(Calendar.DATE)+"/"+(fechaAnticipacion.get(Calendar.MONTH)+1)+"/"+fechaAnticipacion.get(Calendar.YEAR));
+    fechaAnticipacion.setTime(dateNow);
+//    System.out.print("fecha now: "+fechaAnticipacion.get(Calendar.DATE)+"/"+fechaAnticipacion.get(Calendar.MONTH)+"/"+fechaAnticipacion.get(Calendar.YEAR));
     //variable para almacenar la fecha de inicio
-    Calendar Month = Calendar.getInstance();
+    Calendar auxDateStart = Calendar.getInstance();
     //variable para obtener la hora de hoy
     Date dateHora = new Date();
     String horaNow[] = dateFormat.format(dateHora).split(":");
     Date dateStart = formatter.parse(dataStart);
-    Month.setTime(dateStart);
+    auxDateStart.setTime(dateStart);
+    
     List<C_Empleado_Reserva> reservasNow = new ArrayList<C_Empleado_Reserva>();
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     List<C_TipoComida> listaTipoComida = new ArrayList<C_TipoComida>();
     listaComensal = _tipoComensal.getAllTipoComensal();
     listaTipoComida = _tipoComida.getAllTipoComida();
     reservasNow = _empleadoReserva.getReservaByIdDate(Integer.parseInt(idUsuario), fecha[2]+"/"+fecha[1]+"/"+fecha[0]);
-    
-    for(C_TipoComensal item : listaComensal){
-        if(Integer.parseInt(diaInicio) >= item.getDiaInicio() && Integer.parseInt(diaInicio) <= item.getDiaFin() && item.getEstado() == 1){
-            tipoComensal = item.getNombreComensal();
-        }
-//        else if(dateNow.get(Calendar.MONTH) != Month.get(Calendar.MONTH)&& item.getEstado() == 1){
-//            tipoComensal = item.getNombreComensal();
-//        }
-    }
+//    System.out.print("fecha now "+fechaAnticipacion.getTime());    
+    fechaAnticipacion.add(Calendar.DATE, listaComensal.get(1).getDiasAnticipacion());
+//    System.out.print("fecha reserva: "+auxDateStart.getTime());
+//    System.out.print("dias anticipación: "+fechaAnticipacion.getTime());
+    if(auxDateStart.after(fechaAnticipacion) || auxDateStart.equals(fechaAnticipacion)){
+        tipoComensal = listaComensal.get(1).getNombreComensal();
+    }else{
+        tipoComensal = listaComensal.get(0).getNombreComensal();
+    }   
 
 
       out.write("\n");
@@ -138,15 +142,16 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.print(dataEnd);
       out.write("\" name=\"fechaFin\" id=\"fechaFin\">\n");
       out.write("                    <div class=\"box-body\">\n");
-      out.write("                        <div class=\"form-group\">\n");
-      out.write("                            <p class=\" col-sm-6\">Comensal: <span class=\"badge bg-purple\">");
+      out.write("                        <div class=\"form-group col-md-12\">\n");
+      out.write("                            <div class=\" col-sm-6\"><p >Comensal: <span class=\"badge bg-purple\">");
       out.print(tipoComensal);
-      out.write("</span>  </p>    \n");
-      out.write("                            <label class=\"col-sm-6\"> <input  id=\"repetir\" name=\"repetir\" type=\"checkbox\" class=\"minimal\"> Repetir en el mes </label>\n");
+      out.write("</span>  </p> </div>   \n");
+      out.write("                            <div class=\" col-sm-6\"><label> <input  id=\"repetir\" name=\"repetir\" type=\"checkbox\" class=\"minimal\"> Repetir en el mes </label></div>   \n");
+      out.write("                            \n");
       out.write("                        </div> \n");
-      out.write("                        <br>\n");
-      out.write("                        <h4 style=\"color: #501482\" class=\"page-header\">Tipos de alimentos</h4>\n");
-      out.write("                        <div class=\"form-group groupTipoAlimento\">\n");
+      out.write("                        \n");
+      out.write("                        <div class=\"form-group col-md-12\">\n");
+      out.write("                            <h4 style=\"color: #501482\" class=\"page-header\">Tipos de alimentos</h4>\n");
       out.write("                            ");
 
                                 int contador = 0;    
@@ -173,7 +178,7 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
                                         
                                 
       out.write("\n");
-      out.write("                                <label class=\"col-md-5\">\n");
+      out.write("                                <label class=\"col-md-5 \">\n");
       out.write("                                    <input ");
       out.print(estado);
       out.write(" id=\"posicion\" type=\"checkbox\" class=\"minimal posicion");

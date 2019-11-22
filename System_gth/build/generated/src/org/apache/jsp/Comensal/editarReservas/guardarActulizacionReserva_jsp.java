@@ -58,9 +58,8 @@ public final class guardarActulizacionReserva_jsp extends org.apache.jasper.runt
     
     try{
         empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
-        
+        empleadoReserva.setIdTipoComensal(Integer.parseInt(request.getParameter("idTipoCo")));
         empleadoReserva.setObservacion(request.getParameter("observacion"));
-        System.out.print("entro");
         empleadoReserva.setDescuentoAdicional(Double.parseDouble(request.getParameter("descuentoAdicional")));
         resultado = _empleadoReserva.EditEmpleadoReservaById(Integer.parseInt(request.getParameter("idReserva")), empleadoReserva);
     }catch(Exception e){

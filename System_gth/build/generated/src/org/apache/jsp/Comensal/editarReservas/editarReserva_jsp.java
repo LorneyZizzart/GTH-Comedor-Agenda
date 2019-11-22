@@ -3,6 +3,9 @@ package org.apache.jsp.Comensal.editarReservas;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import java.util.ArrayList;
+import java.util.List;
+import Entidad.C_TipoComensal;
 import Entidad.C_Empleado_Reserva;
 
 public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBase
@@ -42,7 +45,10 @@ public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write('\n');
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       Controlador.EncriptionController _encript = null;
       synchronized (_jspx_page_context) {
         _encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("_encript", PageContext.PAGE_SCOPE);
@@ -61,10 +67,21 @@ public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
         }
       }
       out.write('\n');
+      Controlador.C_TipoComensalesController _tipoComensal = null;
+      synchronized (_jspx_page_context) {
+        _tipoComensal = (Controlador.C_TipoComensalesController) _jspx_page_context.getAttribute("_tipoComensal", PageContext.PAGE_SCOPE);
+        if (_tipoComensal == null){
+          _tipoComensal = new Controlador.C_TipoComensalesController();
+          _jspx_page_context.setAttribute("_tipoComensal", _tipoComensal, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
     C_Empleado_Reserva empleadoReserva = new C_Empleado_Reserva();
     String idReserva = _encript.ValorADesencriptar(request.getParameter("id"));
     empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva));
+    List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
+    listaComensal = _tipoComensal.getAllTipoComensal();
 
       out.write("\n");
       out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
@@ -84,6 +101,43 @@ public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.print(empleadoReserva.getTelefono());
       out.write("\">                            \n");
       out.write("                        </div>\n");
+      out.write("                        <div class=\"form-group\">\n");
+      out.write("                                <label >Tipo de comensal:</label>\n");
+      out.write("                                   <select id=\"idTipoCo\" name=\"idTipoCo\" class=\"form-control selectComensal\" data-placeholder=\"Selelcione una opción\"\n");
+      out.write("                                        style=\"width: 100%;\">\n");
+      out.write("                                  ");
+                                        
+                                    for(C_TipoComensal item : listaComensal){
+                                        String select = "";
+                                        String disabled = "";
+                                        if(item.getTipoComensal_id() == empleadoReserva.getIdTipoComensal()){ 
+                                            select = "Selected";
+                                        }
+                                        if(item.getEstado() == 0){
+                                            disabled = "disabled";
+                                        }
+                                        
+                                            
+      out.write("\n");
+      out.write("                                   <option value=\"");
+      out.print(item.getTipoComensal_id());
+      out.write('"');
+      out.write(' ');
+      out.print(select);
+      out.write(' ');
+      out.print(disabled);
+      out.write('>');
+      out.print(item.getNombreComensal());
+      out.write("</option>\n");
+      out.write("                                    ");
+
+                                        
+                                    }
+                                  
+      out.write("\n");
+      out.write("                                </select> \n");
+      out.write("                                \n");
+      out.write("                              </div>\n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label>Observación</label>\n");
       out.write("                            <textarea class=\"form-control\" rows=\"3\" id=\"observacion\"  name=\"observacion\">");

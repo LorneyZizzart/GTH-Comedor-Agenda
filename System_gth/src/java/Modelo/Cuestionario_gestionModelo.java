@@ -606,7 +606,7 @@ public class Cuestionario_gestionModelo {
                 / Autoevaluacion 
                  */
                 View_Empleado_Encuesta auto_eva = new View_Empleado_Encuesta();
-                String sql_Auto = "select (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
+                String sql_Auto = "select e.Empleado_id, (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
                         + "from Cuestioario_evalua ce \n"
                         + "inner join Empleado e\n"
                         + "on e.Empleado_id = ce.Evalua_empleado_id \n"
@@ -614,6 +614,7 @@ public class Cuestionario_gestionModelo {
                 System.err.println(" Auto Evaluacion : " + sql_Auto);
                 ResultSet res_auto = db.consulta(sql_Auto);
                 if (res_auto.next()) {
+                    auto_eva.setEmpleado_id(res_auto.getInt("Empleado_id"));
                     auto_eva.setNombre_empleado(res_auto.getString("Nombre_evaluador"));
                     auto_eva.setCorreo_electonico(res_auto.getString("email"));
                     auto_eva.setCuestionario_evalua_id(res_auto.getInt("Cuestionario_evalua_id"));
@@ -626,7 +627,7 @@ public class Cuestionario_gestionModelo {
                 / Jefes
                  */
                 List<View_Empleado_Encuesta> Jefe_eva = new ArrayList<View_Empleado_Encuesta>();
-                String sql_jefes = "select (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
+                String sql_jefes = "select e.Empleado_id, (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
                         + "from Cuestioario_evalua ce \n"
                         + "inner join Empleado e\n"
                         + "on e.Empleado_id = ce.Evalua_empleado_id \n"
@@ -634,11 +635,12 @@ public class Cuestionario_gestionModelo {
                 ResultSet res_jefe = db.consulta(sql_jefes);
                 while (res_jefe.next()) {
                     View_Empleado_Encuesta jefe = new View_Empleado_Encuesta();
+                    jefe.setEmpleado_id(res_jefe.getInt("Empleado_id"));
                     jefe.setNombre_empleado(res_jefe.getString("Nombre_evaluador"));
                     jefe.setCorreo_electonico(res_jefe.getString("email"));
                     jefe.setCuestionario_evalua_id(res_jefe.getInt("Cuestionario_evalua_id"));
-                    jefe.setEnvio_correo(res_auto.getInt("envio_correo"));
-                    jefe.setLleno_cuestionario(res_auto.getInt("LLeno_cuestionario"));
+                    jefe.setEnvio_correo(res_jefe.getInt("envio_correo"));
+                    jefe.setLleno_cuestionario(res_jefe.getInt("LLeno_cuestionario"));
                     Jefe_eva.add(jefe);
                 }
                 correo_enviar.setLista_jefes(Jefe_eva);
@@ -647,7 +649,7 @@ public class Cuestionario_gestionModelo {
                 / Pares
                  */
                 List<View_Empleado_Encuesta> Pares_eva = new ArrayList<View_Empleado_Encuesta>();
-                String sql_pares = "select (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
+                String sql_pares = "select e.Empleado_id, (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
                         + "from Cuestioario_evalua ce \n"
                         + "inner join Empleado e\n"
                         + "on e.Empleado_id = ce.Evalua_empleado_id \n"
@@ -655,11 +657,12 @@ public class Cuestionario_gestionModelo {
                 ResultSet res_pares = db.consulta(sql_pares);
                 while (res_pares.next()) {
                     View_Empleado_Encuesta par = new View_Empleado_Encuesta();
+                    par.setEmpleado_id(res_pares.getInt("Empleado_id"));
                     par.setNombre_empleado(res_pares.getString("Nombre_evaluador"));
                     par.setCorreo_electonico(res_pares.getString("email"));
                     par.setCuestionario_evalua_id(res_pares.getInt("Cuestionario_evalua_id"));
-                    par.setEnvio_correo(res_auto.getInt("envio_correo"));
-                    par.setLleno_cuestionario(res_auto.getInt("LLeno_cuestionario"));
+                    par.setEnvio_correo(res_pares.getInt("envio_correo"));
+                    par.setLleno_cuestionario(res_pares.getInt("LLeno_cuestionario"));
                     Pares_eva.add(par);
                 }
                 correo_enviar.setLista_pares(Pares_eva);
@@ -668,7 +671,7 @@ public class Cuestionario_gestionModelo {
                 / Bajos
                  */
                 List<View_Empleado_Encuesta> Pares_bajos = new ArrayList<View_Empleado_Encuesta>();
-                String sql_bajos = "select (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
+                String sql_bajos = "select  e.Empleado_id, (e.Apellido_paterno +' '+e.Apellido_materno+' '+e.Nombre) Nombre_evaluador, e.email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
                         + "from Cuestioario_evalua ce \n"
                         + "inner join Empleado e\n"
                         + "on e.Empleado_id = ce.Evalua_empleado_id \n"
@@ -676,11 +679,12 @@ public class Cuestionario_gestionModelo {
                 ResultSet res_bajos = db.consulta(sql_bajos);
                 while (res_bajos.next()) {
                     View_Empleado_Encuesta bajo = new View_Empleado_Encuesta();
+                    bajo.setEmpleado_id(res_bajos.getInt("Empleado_id"));
                     bajo.setNombre_empleado(res_bajos.getString("Nombre_evaluador"));
                     bajo.setCorreo_electonico(res_bajos.getString("email"));
                     bajo.setCuestionario_evalua_id(res_bajos.getInt("Cuestionario_evalua_id"));
-                    bajo.setEnvio_correo(res_auto.getInt("envio_correo"));
-                    bajo.setLleno_cuestionario(res_auto.getInt("LLeno_cuestionario"));
+                    bajo.setEnvio_correo(res_bajos.getInt("envio_correo"));
+                    bajo.setLleno_cuestionario(res_bajos.getInt("LLeno_cuestionario"));
                     Pares_bajos.add(bajo);
                 }
                 correo_enviar.setLista_bajos(Pares_bajos);
@@ -689,19 +693,22 @@ public class Cuestionario_gestionModelo {
                 / Cliente
                  */
                 List<View_Empleado_Encuesta> envia_cliente = new ArrayList<View_Empleado_Encuesta>();
-                String sql_cliente = "select e.Nombre Nombre_evaluador, e.Correo email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
+                String sql_cliente = "select ce.evalua_empleado_id,e.Nombre Nombre_evaluador, e.Correo email, ce.Cuestionario_evalua_id, ce.envio_correo ,ce.LLeno_cuestionario\n"
                         + "from Cuestioario_evalua ce \n"
                         + "inner join Cliente e\n"
                         + "on e.Cliente_id= ce.Evalua_empleado_id "
                         + "where ce.Cuestionario_id = '" + id_cuestionario + "' and ce.A_empleado_id = '" + Empleado_id + "' and ce.Cuestionario_gestion_id = '" + Cuestionario_gestion_id + "' and ce.tipo = 'Cliente' ";
+                System.out.println("Cliente cuestionario : " + sql_cliente);
                 ResultSet res_cliente = db.consulta(sql_cliente);
+
                 while (res_cliente.next()) {
                     View_Empleado_Encuesta cli = new View_Empleado_Encuesta();
+                    cli.setEmpleado_id(res_cliente.getInt("Evalua_empleado_id"));
                     cli.setNombre_empleado(res_cliente.getString("Nombre_evaluador"));
                     cli.setCorreo_electonico(res_cliente.getString("email"));
                     cli.setCuestionario_evalua_id(res_cliente.getInt("Cuestionario_evalua_id"));
-                    cli.setEnvio_correo(res_auto.getInt("envio_correo"));
-                    cli.setLleno_cuestionario(res_auto.getInt("LLeno_cuestionario"));
+                    cli.setEnvio_correo(res_cliente.getInt("envio_correo"));
+                    cli.setLleno_cuestionario(res_cliente.getInt("LLeno_cuestionario"));
                     envia_cliente.add(cli);
                 }
                 correo_enviar.setLista_clientes(envia_cliente);

@@ -33,11 +33,11 @@
         <div class="box" style="border-top: none">
             <div class="box-header">
                 <div class="row">
-                    <div class="col-xs-3">
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label" style="padding: 7px 0 0 10%;">Ver</label>
+                    <div class="col-sm-12 col-md-3">
+                            <div id="sfi" class="form-group">
+                                <label class="col-md-2 control-label" style="padding: 2% 0 0 0;">Ver:</label>
 
-                            <div class="col-sm-10">
+                            <div class="col-md-10 col-xs-12 input-group">
                               <select id="idRepeat" name="idRepeticion"  class="form-control selectRepeticion" style="width: 100%;">
                                   <%
                                       int c = 0;
@@ -50,7 +50,7 @@
                                   <% c++; }  %>
                               </select>
                             </div>
-                        </div>
+                            </div>
                     </div>
                     <div class="col-sm-12 col-md-3">
                         <div id="sfi" class="form-group">
@@ -63,7 +63,7 @@
                             </div>
                         </div>       
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-sm-12 col-md-3">
                         <div id="sfi" class="form-group">
                             <label class="col-sm-4 control-label" style="padding: 2% 0 0 0;">Fecha final:</label>
                             <div class="input-group date col-sm-8">
@@ -74,12 +74,15 @@
                             </div>
                         </div>       
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-xs-10 col-md-2">
                         <button id="filtrarTarea" type="button" class="btn-purple btn-block" ><i class="fa fa-search"></i> Filtrar</button>   
                         
                     </div>
-                    <div class="col-xs-1">
-                        <button id="btnRefresh" type="button" class="btn-purple pull-right" ><i class="fa fa-refresh"></i></button>      
+                    
+                    <div class="col-xs-2 col-md-1">
+                        <div id="sfi" class="form-group">
+                        <button id="btnRefresh" type="button" class="btn-purple pull-right" ><i class="fa fa-refresh"></i></button>  
+                        </div>
                     </div>
                 </div>  
                 

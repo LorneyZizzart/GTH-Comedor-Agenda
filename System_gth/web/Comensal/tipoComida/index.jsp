@@ -45,7 +45,7 @@
                                 <th>Costo</th>
                                 <th>Hora</th>
                                 <th>Color</th>
-                                <th>HoraS de anticipación</th>
+                                <th>Horas de anticipación</th>
                                 <th>Fecha de registro</th>
                                 <th>Fecha de actualizacion</th>
                                 <th>Detalles</th>

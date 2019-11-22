@@ -100,7 +100,8 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
     List<String> idsComida = new ArrayList<String>();
     String fechaInicio = null;  String fechaFinal = null;
     Boolean orderAlfa = false, orderDate = false;
-    
+    double saldo = 0.0;
+    int idComensal = Integer.parseInt(request.getParameter("idComensal"));
     try {
         
         fechaInicio =  request.getParameter("fi");
@@ -138,7 +139,17 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
         orderDate = false;
     }
         
-    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate);
+    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, idComensal);
+    
+    for(C_TipoComensal c : listaReservas){
+        if(c.getIdTipoComida() == 1){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoDesayuno())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 2){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoAlmuerzo())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 3){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoCena())-c.getDescuentoAdicional())*c.getCantidad();
+       }
+    }
 
 
       out.write("\n");
@@ -149,17 +160,15 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("  <section class=\"invoice\">\n");
       out.write("    <!-- title row -->\n");
       out.write("    <div class=\"row\">\n");
-      out.write("      <div class=\"col-xs-12\">\n");
-      out.write("        <h2 class=\"page-header\">\n");
-      out.write("          <i class=\"fa fa-cutlery\"></i> Lista de reservas\n");
+      out.write("      <div class=\"col-xs-12\" style=\"margin-bottom: 2%;\">\n");
+      out.write("          <img class=\"img-responsive pull-left\" src=\"../../images/uab_logo_y_texto.png\" alt=\"User profile picture\" style=\"width: 15%\">\n");
+      out.write("          <h3 class=\"text-center\" style=\"width: 85%\" ><strong>LISTA DE RESERVAS</strong></h3>\n");
       out.write("          <small class=\"pull-right\"><strong>Fecha inicio:</strong> ");
       out.print(fechaInicio);
       out.write(" <strong>&nbsp;Fecha final:</strong> ");
       out.print(fechaFinal);
       out.write("</small>\n");
-      out.write("        </h2>\n");
-      out.write("      </div>\n");
-      out.write("      <!-- /.col -->\n");
+      out.write("        </div>\n");
       out.write("    </div>\n");
       out.write("    <!-- Table row -->\n");
       out.write("    <div class=\"row\">\n");
@@ -265,6 +274,12 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
                                 }
                             
       out.write("\n");
+      out.write("                            <tr>\n");
+      out.write("                                <td colspan=\"8\" class=\"text-right\"><strong>COSTO TOTAL</strong></td>\n");
+      out.write("                                <td colspan=\"2\">");
+      out.print(saldo);
+      out.write(" Bs.</td>\n");
+      out.write("                            </tr>\n");
       out.write("                        </tbody>\n");
       out.write("        </table>\n");
       out.write("      </div>\n");

@@ -43,6 +43,18 @@ box-shadow: 1px 11px 10px -2px rgba(148,132,148,0.78)
     color: #fff;
 }
 
+.btn-min-purple{
+    background-color: #511583;
+    border-color: #511583;
+    color: #fff;
+}
+
+.btn-min-purple:hover{
+    background-color: #3b0e5f;
+    border-color: #3b0e5f;
+    color: #fff;
+}
+
 .btn-box-tool {
     color: #fff;
 }
@@ -130,14 +142,10 @@ button[disabled], html input[disabled] {
 .timeline {
     margin: 0.5% 2% 5% 2%;
 }
-
-.modal-dialog-edit {
-        width: 25%;
-        margin: 3% 37.5% 0 37.5%;
-    }
 .modal-dialog-procedimiento {
         width: 37%;
     }
+    
 /*para describir las respuestas*/
 .group-pregunta{
     margin-bottom: 5%;
@@ -150,6 +158,11 @@ button[disabled], html input[disabled] {
 .groupTipoAlimento{
     margin: 3% 0 0 0;
 }
+
+.modal-comensal{
+        width: 25%;
+        margin: 3% 37.5% 0 37.5%;
+    }
 
 .bg-purple {
     background-color: #605ca8d6 !important
@@ -174,6 +187,17 @@ button[disabled], html input[disabled] {
     padding: 0%;
 }
 
+.modelViewTarea{
+    background-color: #eaeaea
+}
+
+.modalTarea{
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 3%;
+}
+
+
 .form-cantidad{
     width: 55%;
     
@@ -187,7 +211,22 @@ button[disabled], html input[disabled] {
     width: 13.333333%;
     }
 
+div.bootstrap-wysihtml5-insert-image-modal div.modal-dialog div.modal-content div.modal-header{
+    height: 54px;
+    padding: 10px 16px 0px 0;
+}
+
+div.bootstrap-wysihtml5-insert-image-modal div.modal-dialog div.modal-content div.modal-header h3{
+    margin: 6px 0 0 16px;
+    font-size: 19px;
+}
+
+
+    
 @media only  screen and (max-width:480px){
+    .fc-scroller fc-day-grid-container{
+            height: 336px;
+    }
     .content-encuesta{
         padding: 0;
         margin-right: 2%;
@@ -195,17 +234,14 @@ button[disabled], html input[disabled] {
         margin-bottom: 2%;
     }
     
-    .modal-dialog {
-        width: 80%;
-        margin: 2% 10% 0 10%;
+    .modal-comensal{
+        width: 100%;
+        margin: 0;
     }
 }
 
 @media only  screen and (max-width:710px){    
-    .modal-dialog {
-        width: 80%;
-        margin: 2% 10% 0 10%;
-    }    
+      
     
     .form-cantidad{
         width: 100%;
@@ -215,11 +251,21 @@ button[disabled], html input[disabled] {
         padding: 0 0% 0 0%;
     }
     
+    .modalTarea{
+        width: 100%;
+        margin: 0% 0% 0 0%;
+    }
+    
     
 }
 
-@media (min-width: 768px){
+@media only  screen and (max-width: 768px){
     .col-day {
-    width: 13.333333%;
+        width: 13.333333%;
+    }
+    
+    .modal-comensal {
+        width: 100%;
+        margin: 0;
     }
 }

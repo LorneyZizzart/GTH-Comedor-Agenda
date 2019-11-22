@@ -42,12 +42,13 @@ public final class crearProceso_jsp extends org.apache.jasper.runtime.HttpJspBas
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
 
-    String idTarea = request.getParameter("id");    
+    String[] id = request.getParameter("id").split("%"); 
 
       out.write("\n");
       out.write("<form id=\"formGuardarProceso\" method=\"post\" class=\"formGuardarProceso\">\n");
+      out.write("    <input type=\"hidden\" value=\"insert\" name=\"proceso\" id=\"proceso\">\n");
       out.write("    <input type=\"hidden\" value=\"");
-      out.print(idTarea);
+      out.print(request.getParameter("id"));
       out.write("\" name=\"id\" id=\"id\">\n");
       out.write("                    <div class=\"box-body\">\n");
       out.write("                        <div class=\"form-group\" >\n");
@@ -55,11 +56,10 @@ public final class crearProceso_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                            <input type=\"text\" class=\"form-control\" id=\"nombre\"  name=\"nombre\">                            \n");
       out.write("                        </div>                         \n");
       out.write("                        <div class=\"form-group\">\n");
-      out.write("                            <label>Descripción</label>\n");
-      out.write("                            <textarea class=\"form-control\" rows=\"3\" id=\"descripcion\"  name=\"descripcion\"></textarea>\n");
+      out.write("                            <label>Descripción </label>\n");
+      out.write("                            <textarea class=\"textarea\"  id=\"descripcion\"  name=\"descripcion\" style=\"width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;\"></textarea>\n");
       out.write("                        </div>\n");
       out.write("                    </div>\n");
-      out.write("                    <!-- /.box-body -->\n");
       out.write("\n");
       out.write("                    <div class=\"box-footer\">\n");
       out.write("                        <button type=\"button\" class=\"btn btn-default pull-left btn-cProcess\" data-dismiss=\"modal\"><i class=\"fa fa-arrow-left\"></i> Volver</button>\n");
@@ -70,6 +70,8 @@ public final class crearProceso_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("<script type=\"text/javascript\">\n");
       out.write("    \n");
       out.write("    $(document).ready(function () {\n");
+      out.write("    //bootstrap WYSIHTML5 - text editor\n");
+      out.write("    $(\".textarea\").wysihtml5();\n");
       out.write("//      -- ocultar select multiple   \n");
       out.write("        $('.formGuardarProceso').bootstrapValidator({\n");
       out.write("            message: 'This value is not valid',\n");
@@ -108,7 +110,7 @@ public final class crearProceso_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                            message: 'La descripción debe contener de 5 a 500 caracteres.'\n");
       out.write("                        },\n");
       out.write("                        regexp: {\n");
-      out.write("                            regexp: /^([-a-z0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
+      out.write("                            regexp: /^([-a-z/()*.,%&$#¿?¡!0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
       out.write("                            message: 'El nombre de usuario solo puede constar de letras, números y guiones bajos.'\n");
       out.write("                        }\n");
       out.write("                    }\n");
@@ -142,9 +144,9 @@ public final class crearProceso_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("    \n");
       out.write("    $(\".btn-cProcess\").click(function (e) {\n");
       out.write("        \n");
-      out.write("        $(\".modal-dialog-edit\").width(\"40%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"30%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"30%\");\n");
+      out.write("        $(\".modal-dialog-edit\").width(\"60%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"20%\");\n");
+      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"20%\");\n");
       out.write("        $(\"#titleModal\").html(\"Procesos\");\n");
       out.write("        e.preventDefault();\n");
       out.write("        e.stopImmediatePropagation();\n");

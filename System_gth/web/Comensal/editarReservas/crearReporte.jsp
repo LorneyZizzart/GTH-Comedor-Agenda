@@ -1,17 +1,37 @@
+<%@page import="Entidad.Usuario"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="Entidad.C_TipoComida"%>
 <%@page import="Entidad.C_TipoComensal"%>
 <jsp:useBean id="_tipoComida" class="Controlador.C_TipoComidaController"/>
 <jsp:useBean id="_tipoComensal" class="Controlador.C_TipoComensalesController"/>
+<jsp:useBean id="consultaUser" class="Controlador.UsuarioController" />
 <% 
     List<C_TipoComida> listaTipoComida = new ArrayList<C_TipoComida>();
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     listaTipoComida = _tipoComida.getAllTipoComida();
     listaComensal = _tipoComensal.getAllTipoComensal();
+    List<Usuario> Usuarios = new ArrayList<Usuario>();
+    Usuarios = consultaUser.GetAllUser();
 %>
          <form id="form_guardar" method="post" class="form_guardar">
-                    <div class="box-body">
+             <div class="box-body" style="padding-top: 0;">
+                        <div class="form-group">
+                                <h4 style="color: #501482;" class="page-header"><i class="fa fa-user"></i> Comensal: </h4>
+                                <select name="idComensal" class="form-control selectComensal" data-placeholder="Selelcione una opción"
+                                        style="width: 100%;">
+                                     <option value="0" selected>Todos</option>
+                                  <%
+                                    for(Usuario item : Usuarios){
+                                        if(item.getEstado() == 1){
+                                            %>
+                                   <option value="<%=item.getEmpleado_id()%>"><%=item.getNombre()%></option>
+                                    <%
+                                        }
+                                    }
+                         %>
+                                </select>
+                        </div>
                         <div class="form-group col-md-6" style="padding-right: 0;padding-left: 0;">
                             <label>Fecha incio:</label>
                             <div class="input-group date">
@@ -31,12 +51,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3">Ordenar :</label>
-                            <label class="col-md-4"><input type="checkbox" name="oA" id="oA"  class="flat-red"> Alfabéticamente</label>
-                            <label class="col-md-5"><input type="checkbox" name="oF" id="oF"  class="flat-red" checked> Fecha</label>
+                            <label class="col-md-3 " style="padding-right: 0;">Ordenar :</label>
+                            <label class="col-md-5 "><input type="checkbox" name="oA" id="oA"  class="flat-red"> Alfabéticamente</label>
+                            <label class="col-md-4 "><input type="checkbox" name="oF" id="oF"  class="flat-red" checked> Fecha</label>
                         </div> 
                         <div class="form-group">
-                                <h4 style="color: #501482;" class="page-header"><i class="fa fa-user"></i> Tipos de comensal</h4>
+                                <h4 style="color: #501482;" class="page-header"><i class="fa fa-object-ungroup"></i> Tipos de comensal</h4>
                                 <select name="c" class="form-control selectComensal" multiple="multiple" data-placeholder="Selelcione una opción"
                                         style="width: 100%;">
                                   <%
@@ -100,6 +120,14 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
+                idComensal:{
+                    message: 'El campo no es valido.',
+                    validators: {
+                        notEmpty: {
+                            message: 'El campo no puede ser vacio. '
+                        }
+                    }
+                },
                 fi:{
                     message: 'El campo no es valido.',
                     validators: {

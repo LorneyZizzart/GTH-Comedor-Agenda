@@ -1,0 +1,30 @@
+SMAP
+reporte_005fgestion_jsp.java
+JSP
+*S JSP
+*F
++ 0 reporte_gestion.jsp
+Funcionario/perfil/reporte_gestiones/reporte_gestion.jsp
+*L
+1,6:49
+6:54,9
+8,15:64
+22,4:79
+26,2:83,3
+28,10:89
+37,5:99
+41,2:104
+43,2:106,3
+45,2:112
+47:114,5
+48,3:119
+51:122,7
+52,2:129
+54:131,3
+55,3:134
+58,2:138
+59,37:140
+95,3:176
+97,8:179
+104,2:186
+*E

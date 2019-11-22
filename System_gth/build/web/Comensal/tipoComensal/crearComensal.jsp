@@ -26,12 +26,8 @@
                             <input type="text" class="form-control" id="descuentoCena"  name="descuentoCena">                            
                         </div>
                         <div class="form-group" >
-                            <label>Día inicio</label>
-                            <input type="text" class="form-control" id="diaInicio"  name="diaInicio">                            
-                        </div>
-                        <div class="form-group" >
-                            <label>Día fin</label>
-                            <input type="text" class="form-control" id="diaFin"  name="diaFin">                            
+                            <label>Días anticipacion</label>
+                            <input type="text" class="form-control" id="diasAnticipacion"  name="diasAnticipacion">                            
                         </div>
                         <div class="form-group">
                             <label>Estado</label>
@@ -133,32 +129,13 @@
                         }
                     }
                 },
-                diaInicio: {
+                diasAnticipacion: {
                     message: 'El valor no es valido.',
                     validators: 
                     {
                         notEmpty: 
                         {
-                            message: 'El día de inicio no puede ser vacio. '
-                        },
-                        stringLength: 
-                        {
-                            min: 1,
-                            max: 2,
-                            message: 'Solo puede tener 2 caracteres.'
-                        },
-                        integer: {
-                            message: 'El valor debe ser un número entero.'
-                        }
-                    }
-                },
-                diaFin: {
-                    message: 'El valor no es valido.',
-                    validators: 
-                    {
-                        notEmpty: 
-                        {
-                            message: 'El día de fin no puede ser vacio. '
+                            message: 'El campo no puede ser vacio. '
                         },
                         stringLength: 
                         {

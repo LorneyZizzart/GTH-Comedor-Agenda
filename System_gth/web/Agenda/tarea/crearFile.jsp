@@ -22,10 +22,6 @@
 <script type="text/javascript">   
     
     $(".btn-rlistFile").click(function (e) {
-        
-        $(".modal-dialog-edit").width("40%");
-        $(".modal-dialog-edit").css('margin-right', "30%");
-        $(".modal-dialog-edit").css('margin-left', "30%");
         $("#titleModal").html("Archivos relacionados");
         e.preventDefault();
         e.stopImmediatePropagation();

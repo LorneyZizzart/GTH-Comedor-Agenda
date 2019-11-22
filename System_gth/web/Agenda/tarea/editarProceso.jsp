@@ -8,6 +8,7 @@
   
 %>
 <form id="formGuardarProceso" method="post" class="formGuardarProceso">
+    <input type="hidden" value="update" name="proceso" id="proceso">
     <input type="hidden" value="<%=idProceso%>" name="idProceso" id="idProceso">
     <input type="hidden" value="0" name="id" id="id">
                     <div class="box-body">
@@ -15,10 +16,12 @@
                             <label>Nombre</label>
                             <input type="text" class="form-control" id="nombre"  name="nombre" value="<%=procedimiento.getNombreProcedimiento()%>">                            
                         </div>                         
+                       
                         <div class="form-group">
                             <label>Descripción</label>
-                            <textarea class="form-control" rows="3" id="descripcion"  name="descripcion"><%=procedimiento.getDescripcionProcedimiento()%></textarea>
+                            <textarea class="textarea"  id="descripcion"  name="descripcion" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><%=procedimiento.getDescripcionProcedimiento()%></textarea>
                         </div>
+                        
                     </div>
                     <!-- /.box-body -->
 
@@ -31,7 +34,8 @@
 <script type="text/javascript">
     
     $(document).ready(function () {
-//      -- ocultar select multiple   
+//      -- ocultar select multiple
+      $(".textarea").wysihtml5();
         $('.formGuardarProceso').bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
@@ -69,7 +73,7 @@
                             message: 'La descripción debe contener de 5 a 500 caracteres.'
                         },
                         regexp: {
-                            regexp: /^([-a-z0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛİàáâãèéìíñòóùúûü-\s])+$/i,
+                            regexp: /^([-a-z/()*.,%&$#¿?¡!0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛİàáâãèéìíñòóùúûü-\s])+$/i,
                             message: 'El nombre de usuario solo puede constar de letras, números y guiones bajos.'
                         }
                     }
@@ -102,10 +106,6 @@
     });
     
     $(".btn-cProcess").click(function (e) {
-        
-        $(".modal-dialog-edit").width("40%");
-        $(".modal-dialog-edit").css('margin-right', "30%");
-        $(".modal-dialog-edit").css('margin-left', "30%");
         $("#titleModal").html("Procesos");
         e.preventDefault();
         e.stopImmediatePropagation();

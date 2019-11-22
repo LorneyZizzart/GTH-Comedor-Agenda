@@ -45,8 +45,7 @@
                                 <th>Descuento desayuno</th>  
                                 <th>Descuento almuerzo</th>  
                                 <th>Descuento cena</th>  
-                                <th>Día inicio</th>     
-                                <th>Día fin</th>  
+                                <th>Días anticipación</th>  
                                 <th>Usuario creado</th>                                
                                 <th>Fecha de registro</th>
                                 <th>Fecha de actualización</th>                                  
@@ -67,8 +66,7 @@
                                 <td><%= item.getDescuentoDesayuno()%> Bs.</td>
                                 <td><%= item.getDescuentoAlmuerzo()%> Bs.</td>
                                 <td><%= item.getDescuentoCena()%> Bs.</td>
-                                <td><%= item.getDiaInicio()%></td>
-                                <td><%= item.getDiaFin()%></td>
+                                <td><%= item.getDiasAnticipacion()%></td>
                                 <td><%= item.getUsuarioCrea()%></td>
                                 <td><%= item.getFechaRegistro()%></td>
                                 <td><%= item.getFechaActualizacion()%></td>
@@ -93,8 +91,7 @@
                                 <th>Descuento desayuno</th>  
                                 <th>Descuento almuerzo</th>  
                                 <th>Descuento cena</th>    
-                                <th>Día inicio</th>  
-                                <th>Día fin</th> 
+                                <th>Días anticipación</th> 
                                 <th>Usuario creado</th>                                
                                 <th>Fecha de registro</th>
                                 <th>Fecha de actualización</th>                                   

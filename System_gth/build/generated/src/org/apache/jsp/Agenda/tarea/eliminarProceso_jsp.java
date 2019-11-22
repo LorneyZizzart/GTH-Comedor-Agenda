@@ -71,9 +71,27 @@ public final class eliminarProceso_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("    $(document).ready(function () {\n");
       out.write("        $('.btn_eliminar').hide();\n");
       out.write("        $(\"#mensaje\").hide(3000, function () {\n");
-      out.write("           \n");
+      out.write("           $('#formulario_registro').modal('show');\n");
+      out.write("            $(\"#titleModal\").html(\"Procesos\");\n");
+      out.write("            $(\".cuerpo_registro\").html('');\n");
+      out.write("            $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("            \n");
+      out.write("            $.post('procesosTarea.jsp',\n");
+      out.write("            {id: localStorage.getItem(\"idTarea\")},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            });\n");
       out.write("        });\n");
       out.write("        $(\"form\")[0].reset();\n");
+      out.write("        \n");
+      out.write("         \n");
       out.write("    });\n");
       out.write("</script>\n");
 }else{

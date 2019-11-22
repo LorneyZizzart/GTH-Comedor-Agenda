@@ -8,6 +8,8 @@ package Controlador;
 import Entidad.C_Empleado_Reserva;
 import Entidad.C_TipoComensal;
 import Modelo.C_EmpleadoReservaModel;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ import java.util.List;
  */
 public class C_EmpleadoReservaController {
     
-    public List<C_TipoComensal> getReservasForParams(String fechaInicio, String fechaFinal, List<String> idsComensal, List<String> idsComidas, boolean orderAlpha, boolean orderDate) {
+    public List<C_TipoComensal> getReservasForParams(String fechaInicio, String fechaFinal, List<String> idsComensal, List<String> idsComidas, boolean orderAlpha, boolean orderDate, int idComensal) {
         C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
         String date1[] =  fechaInicio.split("/");
         String date2[] = fechaFinal.split("/");
@@ -24,10 +26,14 @@ public class C_EmpleadoReservaController {
         String dateEnd = date2[2]+"/"+date2[1]+"/"+date2[0];
         String query = "";
         
+        if(idComensal != 0){
+            query = " AND er.IdEmpleado = " + idComensal + " ";
+        }
+        
         if(dateStart.equals(dateEnd)){
-            query = " AND er.Fecha = '" + dateStart+"' ";
+            query = query + " AND er.Fecha = '" + dateStart+"' ";
         }else{
-            query = " AND er.Fecha BETWEEN '"+dateStart+"' AND '"+dateEnd+"' ";
+            query = query + " AND er.Fecha BETWEEN '"+dateStart+"' AND '"+dateEnd+"' ";
         }
         query = query + " AND er.IdTipoComensal IN ( ";
         int i = 0;
@@ -85,9 +91,59 @@ public class C_EmpleadoReservaController {
     / -NombreEmpleado
     / -TelefonoEmpleado
     */
-    public List<C_TipoComensal> getAllReservaEmpleado() {
+    public List<C_TipoComensal> getAllReservaEmpleado(int idComensal, int ver, String fi, String ff, List<String> idsComensal, List<String> idsComidas) {
         C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
-        return mod.getAllReservaEmpleado();
+        String query = "";
+        
+        
+        if(idComensal != 0){
+           query =  " AND er.IdEmpleado = " + idComensal + " ";
+        }
+        
+        if(idsComensal.size() !=0 && Integer.parseInt(idsComensal.get(0)) != 0){
+            query = query + " AND tco.Id IN ( ";
+            int i = 0;
+            for(String c : idsComensal){
+                if(i==0)
+                    query = query + c;
+                else if(i>0)
+                    query = query + ", " + c;
+                i++;
+            }
+            query = query + " ) ";
+        }
+        
+        if(idsComidas.size() !=0 && Integer.parseInt(idsComidas.get(0)) != 0){
+            query = query + " AND tc.IdTipoComida IN ( ";
+            int i = 0;
+            for(String c : idsComidas){
+                if(i==0)
+                    query = query + c;
+                else if(i>0)
+                    query = query + ", " + c;
+                i++;
+            }
+            query = query + " ) ";
+        }
+        
+        switch(ver){
+            case 1:
+                Calendar calendar = Calendar.getInstance();
+                Date date = new Date();
+                calendar.setTime(date);
+                query = query + "AND er.Fecha = '" + calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE) +"'";
+                break;
+            case 2:
+                String date1[] =  fi.split("/");
+                String date2[] = ff.split("/");
+                String dateStart =  date1[2]+"/"+date1[1]+"/"+date1[0];
+                String dateEnd = date2[2]+"/"+date2[1]+"/"+date2[0];
+                query = query + "AND er.Fecha BETWEEN '" + dateStart +"' AND '"+dateEnd+"'";
+                break;
+        }
+            
+        
+        return mod.getAllReservaEmpleado(query);
     }
     
     public List<C_Empleado_Reserva> getReservaByIdDate(int idUsuario, String fecha){
@@ -175,4 +231,5 @@ public class C_EmpleadoReservaController {
         return mod.DeleteReservaEmpleado(idEmpleadoReserva);
     }
     
+       
 }

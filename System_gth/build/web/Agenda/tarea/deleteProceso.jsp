@@ -14,10 +14,10 @@
                         <div class="form-group" >
                             <label>Nombre</label>
                             <input disabled type="text" class="form-control" id="nombre"  name="nombre" value="<%=procedimiento.getNombreProcedimiento()%>">                            
-                        </div>                         
+                        </div>   
                         <div class="form-group">
                             <label>Descripción</label>
-                            <textarea disabled class="form-control" rows="3" id="descripcion"  name="descripcion"><%=procedimiento.getDescripcionProcedimiento()%></textarea>
+                            <textarea disabled class="textarea"  id="descripcion"  name="descripcion" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><%=procedimiento.getDescripcionProcedimiento()%></textarea>
                         </div>
                     </div>
                     <!-- /.box-body -->
@@ -29,6 +29,7 @@
                 </form>
         <div id="mensaje"></div>
 <script type="text/javascript">
+    $(".textarea").wysihtml5();
     
         $(".btn_eliminar").click(function () {
             var id_menu = $("#idProceso").val();
@@ -44,10 +45,6 @@
         });
         
         $(".btn-cProcess").click(function (e) {
-        
-        $(".modal-dialog-edit").width("40%");
-        $(".modal-dialog-edit").css('margin-right', "30%");
-        $(".modal-dialog-edit").css('margin-left', "30%");
         $("#titleModal").html("Procesos");
         e.preventDefault();
         e.stopImmediatePropagation();

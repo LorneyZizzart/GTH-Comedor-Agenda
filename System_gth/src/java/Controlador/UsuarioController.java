@@ -15,6 +15,11 @@ public class UsuarioController {
         UsuarioModel u = new UsuarioModel();
         return u.GetAllUser();
     }
+    
+    public List<Usuario> getAllByDepartamento(int idDepartamento) {
+        UsuarioModel u = new UsuarioModel();
+        return u.getAllByDepartamento(idDepartamento);
+    }
 
     /*
     / Validamos si existe el correo

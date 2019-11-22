@@ -72,16 +72,13 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
       }
       out.write('\n');
 
-    String maxIdTarea = null;
     A_Tarea tarea = new A_Tarea();
     String resultado = null;
     try{
         tarea.setIdTarea(Integer.parseInt(request.getParameter("id")));
-        
-        if(tarea.getIdTarea() == 0)
         tarea.setIdUserCrea(Integer.parseInt(request.getParameter("idUsuario")));
-        tarea.setTitulo(String.valueOf(request.getParameter("titulo")));
-        tarea.setDescripcion(String.valueOf(request.getParameter("descripcion")));        
+        tarea.setTitulo(request.getParameter("titulo"));
+        tarea.setDescripcion(request.getParameter("descripcion"));        
         tarea.setIdRepeticionTarea(Integer.parseInt(request.getParameter("idRepeticion")));
         tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));
         tarea.setFechaInicio(String.valueOf(request.getParameter("fi")));
@@ -137,39 +134,42 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
     }catch(Exception e){
         tarea.setDomingo(0); 
     }
-    if(tarea.getIdTarea() == 0){
-//        resultado = "Ok";
-        resultado = _tarea.SaveTarea(tarea);
-        maxIdTarea = _tarea.getMaxIdTarea();
-        
+    if(request.getParameter("proceso").equalsIgnoreCase("insert")){
+        resultado = "Ok";
+//        resultado = _tarea.SaveTarea(tarea);
+        if(resultado.equalsIgnoreCase("Ok")){
         
       out.write("\n");
+      out.write("        <input type=\"hidden\" value=\"");
+      out.print(request.getParameter("titulo"));
+      out.write("\" name=\"gTitulo\" id=\"gTitulo\">\n");
+      out.write("        <input type=\"hidden\" value=\"");
+      out.print(request.getParameter("idUsuario"));
+      out.write("\" name=\"gIdUsuario\" id=\"gIdUsuario\">\n");
       out.write("    <div class=\" text-center alert alert-success alert-dismissible\">\n");
       out.write("        <h4><i class=\"icon fa fa-check\"></i> Guardado</h4>\n");
       out.write("    </div>\n");
       out.write("     <script type=\"text/javascript\">\n");
-      out.write("        $(document).ready(function () {   \n");
-      out.write("            localStorage.setItem(\"idTarea\", ");
-      out.print(maxIdTarea);
-      out.write(");\n");
-      out.write("            $(\"#mensaje\").hide(3000, function () {\n");
+      out.write("        $(document).ready(function () {  \n");
+      out.write("            localStorage.setItem(\"idTarea\", $('#gTitulo').val()+\"%\"+$('#gIdUsuario').val());\n");
+      out.write("            $(\"#mensaje\").hide(3000, function () {                \n");
       out.write("                $('.form-group').removeClass('has-success');\n");
       out.write("                $('.glyphicon-ok').hide();\n");
       out.write("                $('#btnProcess').show();\n");
       out.write("                $('#btnGuardar').hide();  \n");
-      out.write("\n");
       out.write("            });\n");
-      out.write("            $(\"form\")[0].reset();\n");
       out.write("        });    \n");
       out.write("    </script>\n");
       out.write("    ");
 
         
-    }
+    }}
     else {
-        resultado = _tarea.UpdateTarea(tarea);
+        resultado = _tarea.UpdateTarea(tarea, request.getParameter("titulo"));
+        if(resultado.equalsIgnoreCase("Ok")){
         
       out.write("\n");
+      out.write("        \n");
       out.write("        <div class=\" text-center alert alert-success alert-dismissible\">\n");
       out.write("            <h4><i class=\"icon fa fa-check\"></i> Actualizado</h4>\n");
       out.write("        </div>\n");
@@ -183,7 +183,7 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("        </script>\n");
       out.write("        ");
 
-    }
+    }}
     
     if(!resultado.equals("Ok")){
         
@@ -197,7 +197,6 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("\n");
       out.write("</div>\n");
 }
-      out.write('\n');
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

@@ -54,7 +54,7 @@ public final class saveFile_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("        ");
 
-        
+//        este archivo aun no utilizamos xke encontramos otra alternativa
             String archivourl = "E:\\file";
             
             DiskFileItemFactory factory = new DiskFileItemFactory();

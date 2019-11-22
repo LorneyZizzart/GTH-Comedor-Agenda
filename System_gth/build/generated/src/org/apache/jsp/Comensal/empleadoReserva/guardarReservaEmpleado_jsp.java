@@ -96,10 +96,13 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
     C_Empleado_Reserva empleadoReserva = new C_Empleado_Reserva();
     String resultado = "";
     Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     //variable para obtener la fecha de hoy
-    Calendar dateNow = Calendar.getInstance();
+    Calendar fechaAnticipacion = Calendar.getInstance();
+    Calendar fechaInicial = Calendar.getInstance();
+    Date dateNow = formatter.parse(fechaAnticipacion.get(Calendar.DATE)+"/"+(fechaAnticipacion.get(Calendar.MONTH)+1)+"/"+fechaAnticipacion.get(Calendar.YEAR));
+    fechaAnticipacion.setTime(dateNow);
     Boolean repeticion = false;
-    
     try{
         if(request.getParameter("repetir").equalsIgnoreCase("on"))
         repeticion = true;
@@ -108,7 +111,7 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
     }
     
     try {        
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        
         Date dateStart = formatter.parse(request.getParameter("fechaInicio"));
         Date dateEnd = formatter.parse(request.getParameter("fechaFin"));
 //        System.out.print("dateStart "+dateStart);
@@ -117,51 +120,64 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
             dias = 1;
         }else{
             dias=(int) ((dateEnd.getTime()-dateStart.getTime())/86400000);
-        }
-        
-//        System.out.print("dias "+dias);   
-        
+        }        
+//        System.out.print("dias "+dias);  
+//        añadiendo dias de comensaul mensual
+         fechaAnticipacion.add(Calendar.DATE, listaComensal.get(1).getDiasAnticipacion());
+         
+//        para registrar la diversidad de platos que envio el usuario
         for(C_TipoComida tipoComida : listaTipoComida){
             if(request.getParameter("cantidad"+tipoComida.getNombreComida())!= null){
                 empleadoReserva.setIdTipoComida(tipoComida.getIdTipoComida());
                 empleadoReserva.setIdUser(Integer.parseInt(request.getParameter("idUsuario")));//OK
 //                se habilitara la opcion de cantidades cuando se registren la cantidad de miembros en la familia
                 empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad"+tipoComida.getNombreComida())));
-//                empleadoReserva.setCantidad(1);
-                
                 empleadoReserva.setObservacion(String.valueOf(request.getParameter("observacion")));
+                
                 calendar.setTime(dateStart);
-//                System.out.print("ENTRO: "+dias);
-                for(int i = 1; i <= dias; i++){                    
-                    for(C_TipoComensal item : listaComensal){
-                        if(calendar.get(Calendar.DATE) >= item.getDiaInicio() && calendar.get(Calendar.DATE) <= item.getDiaFin() && item.getEstado() == 1){
-                            empleadoReserva.setIdTipoComensal(item.getTipoComensal_id());
-                        }
-//                        else if(dateNow.get(Calendar.MONTH) != calendar.get(Calendar.MONTH) && item.getEstado() == 1){
-//                            empleadoReserva.setIdTipoComensal(item.getTipoComensal_id());
-//                        }
-                        
-                    }
-//                    System.out.print("fechas: "+calendar.getTime());
-//                    se suma un 1 al MONTH porque los meses de calendar inician con 0
-//                    System.out.print(i+" fechas: "+calendar.get(Calendar.YEAR)+"/"+Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)+1))+"/"+calendar.get(Calendar.DATE));
-                    empleadoReserva.setFecha(calendar.get(Calendar.YEAR)+"/"+Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)+1))+"/"+calendar.get(Calendar.DATE));
+                fechaInicial.setTime(dateStart);
+                for(int i = 1; i <= dias; i++){  
+//                   System.out.print("fecha: "+calendar.getTime());  
+                   
+                    if(calendar.after(fechaAnticipacion) || calendar.equals(fechaAnticipacion)){
+                        empleadoReserva.setIdTipoComensal(listaComensal.get(1).getTipoComensal_id());
+                    }else{
+                        empleadoReserva.setIdTipoComensal(listaComensal.get(0).getTipoComensal_id());
+                    }                      
+//                    System.out.print("Mes: "+((calendar.get(Calendar.MONTH))+1));
+                    empleadoReserva.setFecha(calendar.get(Calendar.YEAR)+"/"+((calendar.get(Calendar.MONTH))+1)+"/"+calendar.get(Calendar.DATE));
+//                    System.out.print("fecha repeticion: "+empleadoReserva.getFecha()); 
                     resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
 //                    resultado = "Ok";
-                    if(repeticion == true){
-                        int monthInitial = calendar.get(Calendar.MONDAY);                        
-                        while(monthInitial == calendar.get(Calendar.MONDAY)){
-                            calendar.add(Calendar.DATE, 7);
-                            if(monthInitial == calendar.get(Calendar.MONDAY)){
-                                empleadoReserva.setFecha(calendar.get(Calendar.YEAR)+"/"+Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)+1))+"/"+calendar.get(Calendar.DATE));
-//                                System.out.print("Month: "+calendar.get(Calendar.MONDAY));
-                                resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
-//                                resultado = "Ok";
-                            }                            
-                        }
-                    }                    
+                 
+//                    calendar.add(Calendar.MONTH, -1);
                     calendar.add(Calendar.DATE, 1);
                 }
+//                se toma el ultimo dia de registro para la repeticion
+                 int monthInitial = calendar.get(Calendar.MONDAY);  
+                    while(repeticion == true){
+                        fechaInicial.add(Calendar.DATE, 7);
+                        calendar.setTime(fechaInicial.getTime());
+//                        System.out.print("fecha repeticion: "+calendar.getTime()); 
+                       
+                        for(int i = 1; i <= dias; i++){  
+                            if(monthInitial == calendar.get(Calendar.MONDAY)){
+                                if(calendar.after(fechaAnticipacion) || calendar.equals(fechaAnticipacion)){
+                                empleadoReserva.setIdTipoComensal(listaComensal.get(1).getTipoComensal_id());
+                                }else{
+                                    empleadoReserva.setIdTipoComensal(listaComensal.get(0).getTipoComensal_id());
+                                }                      
+//                                System.out.print("Mes: "+((calendar.get(Calendar.MONTH))+1));
+                                empleadoReserva.setFecha(calendar.get(Calendar.YEAR)+"/"+((calendar.get(Calendar.MONTH))+1)+"/"+calendar.get(Calendar.DATE));
+                              resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
+//                                System.out.print("fecha repeticion: "+empleadoReserva.getFecha()); 
+//                                resultado = "Ok";
+                            }else{
+                                repeticion = false;
+                            }
+                            calendar.add(Calendar.DATE, 1); 
+                        }
+                    }  
             }
         }   
     }catch(Exception e){
@@ -170,7 +186,7 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
     }
     
     if(resultado.equalsIgnoreCase("Ok")){
- 
+
       out.write("\n");
       out.write("<div class=\" text-center alert alert-success alert-dismissible\">\n");
       out.write("    <h4><i class=\"icon fa fa-check\"></i> Reserva realizada</h4>\n");

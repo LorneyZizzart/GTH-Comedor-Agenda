@@ -2,12 +2,13 @@
 <%@page import="Entidad.A_ProcedimientoTarea"%>
 <%@page import="Entidad.A_Tarea"%>
 <jsp:useBean id="_procedimiento" class="Controlador.A_ProcedimientoTareaController"/>
+<jsp:useBean id="_tarea" class="Controlador.A_TareaController"/>
 <%
     
-    
+    String[] id = request.getParameter("id").split("%"); 
     String resultado = null;
     try{        
-        if(Integer.parseInt(request.getParameter("id")) == 0){
+        if(request.getParameter("proceso").equalsIgnoreCase("update")){
             A_ProcedimientoTarea p = new A_ProcedimientoTarea();
             p.setIdProcedimiento(Integer.parseInt(request.getParameter("idProceso"))); 
             p.setNombreProcedimiento(request.getParameter("nombre"));
@@ -15,7 +16,8 @@
             resultado = _procedimiento.UpdateProcedimientoTarea(p);
         }else{
             A_Tarea tarea = new A_Tarea();
-            tarea.setIdTarea(Integer.parseInt(request.getParameter("id")));  
+            tarea.setTitulo(id[0]);
+            tarea.setIdUserCrea(Integer.parseInt(id[1]));
             tarea.setNombreProcedimiento(request.getParameter("nombre"));
             tarea.setDescripcionProcedimiento(request.getParameter("descripcion"));
             resultado = _procedimiento.SaveProcedimiento(tarea);
@@ -27,7 +29,9 @@
     }
     
     if(resultado.equalsIgnoreCase("Ok")){
+    
 %>
+
 <div class=" text-center alert alert-success alert-dismissible">
     <h4><i class="icon fa fa-check"></i> Guardado</h4>
 </div>
@@ -37,8 +41,36 @@
         $("#mensaje").hide(3000, function () {
             $('.form-group').removeClass('has-success');
             $('.glyphicon-ok').hide();
+                
+//            $("#formulario_registro").modal('hide');//ocultamos el modal
+//            $('body').removeClass('modal-open');//eliminamos la clase del body para poder hacer scroll
+//            $('.modal-backdrop').remove();//eliminamos el backdrop del modal
+            
+            $('#formulario_registro').modal('show');
+            $("#titleModal").html("Procesos");
+            $(".cuerpo_registro").html('');
+            $(".cuerpo_registro").addClass('loader');
+            
+            $.post('procesosTarea.jsp',
+            {id: localStorage.getItem("idTarea")},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            });
+            
+            
         });
         $("#formGuardarProceso")[0].reset();
+
+        
+
+        
     });
 </script>
 <%}else{%>

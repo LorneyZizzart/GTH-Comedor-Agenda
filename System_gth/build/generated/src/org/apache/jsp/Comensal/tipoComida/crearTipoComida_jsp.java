@@ -61,8 +61,14 @@ public final class crearTipoComida_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("                            <input type=\"text\" class=\"form-control\" id=\"hora\"  name=\"hora\">                            \n");
       out.write("                        </div> \n");
       out.write("                        <div class=\"form-group\">\n");
-      out.write("                            <label>Color del item</label>\n");
-      out.write("                            <input type=\"text\" class=\"form-control\" id=\"color\"  name=\"color\">                            \n");
+      out.write("                            <label>Color</label>  \n");
+      out.write("                            <div class=\"input-group my-colorpicker2\">\n");
+      out.write("                                <input type=\"text\" id=\"color\"  name=\"color\" class=\"form-control\">\n");
+      out.write("\n");
+      out.write("                                <div class=\"input-group-addon\">\n");
+      out.write("                                  <i></i>\n");
+      out.write("                                </div>\n");
+      out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label>Horas de anticipación <span data-toggle=\"tooltip\" title=\"Se restara a la hora de ingreso al comedor, debe ser un formato de HH:MM.\" class=\"badge\">!</span></label>\n");
@@ -88,6 +94,8 @@ public final class crearTipoComida_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write("        <div id=\"mensaje\"></div>\n");
       out.write("    <script type=\"text/javascript\">\n");
       out.write("    $(document).ready(function () {\n");
+      out.write("        //color picker with addon\n");
+      out.write("        $(\".my-colorpicker2\").colorpicker();\n");
       out.write("        $('.form_guardar').bootstrapValidator({\n");
       out.write("            message: 'This value is not valid',\n");
       out.write("            feedbackIcons: {\n");

@@ -61,7 +61,7 @@
         <div class="col-md-3">
             <div class="box ">
                 <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user2-160x160.jpg" alt="User profile picture">
+                    <img class="profile-user-img img-responsive img-circle" src="../../folder_picture/<%=empleado.getFoto()%>" alt="User profile picture">
 
                     <h3 class="profile-username text-center"><%=_character.CharacterUCFirst(empleado.getNombre())%> <%=_character.CharacterUCFirst(empleado.getApellido_paterno())%> <%=_character.CharacterUCFirst(empleado.getApellido_materno())%></h3>
                 </div>

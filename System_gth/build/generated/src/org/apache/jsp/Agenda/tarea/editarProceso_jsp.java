@@ -69,6 +69,7 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
 
       out.write("\n");
       out.write("<form id=\"formGuardarProceso\" method=\"post\" class=\"formGuardarProceso\">\n");
+      out.write("    <input type=\"hidden\" value=\"update\" name=\"proceso\" id=\"proceso\">\n");
       out.write("    <input type=\"hidden\" value=\"");
       out.print(idProceso);
       out.write("\" name=\"idProceso\" id=\"idProceso\">\n");
@@ -80,12 +81,14 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.print(procedimiento.getNombreProcedimiento());
       out.write("\">                            \n");
       out.write("                        </div>                         \n");
+      out.write("                       \n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label>Descripción</label>\n");
-      out.write("                            <textarea class=\"form-control\" rows=\"3\" id=\"descripcion\"  name=\"descripcion\">");
+      out.write("                            <textarea class=\"textarea\"  id=\"descripcion\"  name=\"descripcion\" style=\"width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;\">");
       out.print(procedimiento.getDescripcionProcedimiento());
       out.write("</textarea>\n");
       out.write("                        </div>\n");
+      out.write("                        \n");
       out.write("                    </div>\n");
       out.write("                    <!-- /.box-body -->\n");
       out.write("\n");
@@ -98,7 +101,8 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("<script type=\"text/javascript\">\n");
       out.write("    \n");
       out.write("    $(document).ready(function () {\n");
-      out.write("//      -- ocultar select multiple   \n");
+      out.write("//      -- ocultar select multiple\n");
+      out.write("      $(\".textarea\").wysihtml5();\n");
       out.write("        $('.formGuardarProceso').bootstrapValidator({\n");
       out.write("            message: 'This value is not valid',\n");
       out.write("            feedbackIcons: {\n");
@@ -136,7 +140,7 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("                            message: 'La descripción debe contener de 5 a 500 caracteres.'\n");
       out.write("                        },\n");
       out.write("                        regexp: {\n");
-      out.write("                            regexp: /^([-a-z0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
+      out.write("                            regexp: /^([-a-z/()*.,%&$#¿?¡!0-9_-ÀÁÂÃÈÉÊÌÍÑÒÓÔÙÚÛÝàáâãèéìíñòóùúûü-\\s])+$/i,\n");
       out.write("                            message: 'El nombre de usuario solo puede constar de letras, números y guiones bajos.'\n");
       out.write("                        }\n");
       out.write("                    }\n");
@@ -169,10 +173,6 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("    });\n");
       out.write("    \n");
       out.write("    $(\".btn-cProcess\").click(function (e) {\n");
-      out.write("        \n");
-      out.write("        $(\".modal-dialog-edit\").width(\"40%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"30%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"30%\");\n");
       out.write("        $(\"#titleModal\").html(\"Procesos\");\n");
       out.write("        e.preventDefault();\n");
       out.write("        e.stopImmediatePropagation();\n");

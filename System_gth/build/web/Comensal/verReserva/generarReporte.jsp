@@ -35,8 +35,10 @@
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
+    double saldo = 0.0;
     String fechaInicio = null;  String fechaFinal = null;
     Boolean orderAlfa = false, orderDate = false;
+    int idEmpleado = Integer.parseInt(request.getParameter("e"));
     
     try {
         fechaInicio =  request.getParameter("fi");
@@ -78,22 +80,32 @@
         orderDate = false;
     }
 
-    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate);
+    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, idEmpleado);
+    
+    for(C_TipoComensal c : listaReservas){
+        if(c.getIdTipoComida() == 1){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoDesayuno())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 2){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoAlmuerzo())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 3){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoCena())-c.getDescuentoAdicional())*c.getCantidad();
+       }
+    }
 %>
 
 <body onload="window.print();" >
 <div >
   <!-- Main content -->
   <section class="invoice">
+      
+     
     <!-- title row -->
     <div class="row">
-      <div class="col-xs-12">
-        <h2 class="page-header">
-          <i class="fa fa-cutlery"></i> Lista de reservas
+        <div class="col-xs-12" style="margin-bottom: 2%;">
+          <img class="img-responsive pull-left" src="../../images/uab_logo_y_texto.png" alt="User profile picture" style="width: 15%">
+          <h3 class="text-center" style="width: 85%" ><strong>LISTA DE RESERVAS</strong></h3>
           <small class="pull-right"><strong>Fecha inicio:</strong> <%=fechaInicio%> <strong>&nbsp;Fecha final:</strong> <%=fechaFinal%></small>
-        </h2>
-      </div>
-      <!-- /.col -->
+        </div>
     </div>
     <!-- Table row -->
     <div class="row">
@@ -108,7 +120,7 @@
                                 <th>Cantidad</th>
                                 <th>Precio total</th>
                                 <th>Comensal</th>
-                                <th class="text-center" style="width: 15%;">Firma</th>
+                                <th>Fecha de registro</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -134,11 +146,15 @@
                                    }
                                 %>
                                 <td><%= item.getNombreComensal()%></td>
-                                <td></td>
+                                <td><%= item.getFechaRegistro()%></td>
                             </tr>
                             <%
                                 }
                             %>
+                            <tr>
+                                <td colspan="5" class="text-right"><strong>COSTO TOTAL</strong></td>
+                                <td colspan="4"><%=saldo%> Bs.</td>
+                            </tr>
                         </tbody>
         </table>
       </div>

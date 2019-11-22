@@ -56,12 +56,21 @@ public final class guardarProceso_jsp extends org.apache.jasper.runtime.HttpJspB
         }
       }
       out.write('\n');
+      Controlador.A_TareaController _tarea = null;
+      synchronized (_jspx_page_context) {
+        _tarea = (Controlador.A_TareaController) _jspx_page_context.getAttribute("_tarea", PageContext.PAGE_SCOPE);
+        if (_tarea == null){
+          _tarea = new Controlador.A_TareaController();
+          _jspx_page_context.setAttribute("_tarea", _tarea, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
     
-    
+    String[] id = request.getParameter("id").split("%"); 
     String resultado = null;
     try{        
-        if(Integer.parseInt(request.getParameter("id")) == 0){
+        if(request.getParameter("proceso").equalsIgnoreCase("update")){
             A_ProcedimientoTarea p = new A_ProcedimientoTarea();
             p.setIdProcedimiento(Integer.parseInt(request.getParameter("idProceso"))); 
             p.setNombreProcedimiento(request.getParameter("nombre"));
@@ -69,7 +78,8 @@ public final class guardarProceso_jsp extends org.apache.jasper.runtime.HttpJspB
             resultado = _procedimiento.UpdateProcedimientoTarea(p);
         }else{
             A_Tarea tarea = new A_Tarea();
-            tarea.setIdTarea(Integer.parseInt(request.getParameter("id")));  
+            tarea.setTitulo(id[0]);
+            tarea.setIdUserCrea(Integer.parseInt(id[1]));
             tarea.setNombreProcedimiento(request.getParameter("nombre"));
             tarea.setDescripcionProcedimiento(request.getParameter("descripcion"));
             resultado = _procedimiento.SaveProcedimiento(tarea);
@@ -81,7 +91,9 @@ public final class guardarProceso_jsp extends org.apache.jasper.runtime.HttpJspB
     }
     
     if(resultado.equalsIgnoreCase("Ok")){
+    
 
+      out.write("\n");
       out.write("\n");
       out.write("<div class=\" text-center alert alert-success alert-dismissible\">\n");
       out.write("    <h4><i class=\"icon fa fa-check\"></i> Guardado</h4>\n");
@@ -92,8 +104,36 @@ public final class guardarProceso_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("        $(\"#mensaje\").hide(3000, function () {\n");
       out.write("            $('.form-group').removeClass('has-success');\n");
       out.write("            $('.glyphicon-ok').hide();\n");
+      out.write("                \n");
+      out.write("//            $(\"#formulario_registro\").modal('hide');//ocultamos el modal\n");
+      out.write("//            $('body').removeClass('modal-open');//eliminamos la clase del body para poder hacer scroll\n");
+      out.write("//            $('.modal-backdrop').remove();//eliminamos el backdrop del modal\n");
+      out.write("            \n");
+      out.write("            $('#formulario_registro').modal('show');\n");
+      out.write("            $(\"#titleModal\").html(\"Procesos\");\n");
+      out.write("            $(\".cuerpo_registro\").html('');\n");
+      out.write("            $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("            \n");
+      out.write("            $.post('procesosTarea.jsp',\n");
+      out.write("            {id: localStorage.getItem(\"idTarea\")},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            });\n");
+      out.write("            \n");
+      out.write("            \n");
       out.write("        });\n");
       out.write("        $(\"#formGuardarProceso\")[0].reset();\n");
+      out.write("\n");
+      out.write("        \n");
+      out.write("\n");
+      out.write("        \n");
       out.write("    });\n");
       out.write("</script>\n");
 }else{

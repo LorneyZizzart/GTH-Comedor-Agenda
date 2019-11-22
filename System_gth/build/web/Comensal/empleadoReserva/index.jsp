@@ -101,28 +101,6 @@
                 $(".cuerpo_registro").removeClass('loader');
                 $(".cuerpo_registro").html(alerta);
             });
-        
-//        var title = prompt('Event Title:');
-//        if (title) {
-//          calendar.addEvent({
-//            title: title,
-//            start: arg.start,
-//            end: arg.end,
-//            allDay: arg.allDay
-//          })
-//        }
-//        calendar.unselect();
-//        var inicioDate = FullCalendar.formatDate(e.start, {
-//                month: 'long',
-//                year: 'numeric',
-//                day: 'numeric',
-//                locale: 'es'
-//              });
-//        console.log('date incio: ' + FullCalendar.formatDate(e.start, {
-//
-//                day: 'numeric'
-//            }));
-//        console.log('date fin ' + e.end);
       },
       dayRender(date, cell) {
         let thisDate = moment(date.date);

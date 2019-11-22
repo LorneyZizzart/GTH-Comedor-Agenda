@@ -14,6 +14,7 @@
 
 %>
 <form id="form_guardar" method="post" class="form_guardar" enctype="multipart/form-data">
+    <input type="hidden" value="insert" name="proceso" id="proceso">
     <input type="hidden" value="0" name="id" id="id">
     <input type="hidden" value="<%=idUsuario%>" name="idUsuario" id="idUsuario">
                     <div class="box-body">
@@ -21,11 +22,20 @@
                             <label>TÌtulo</label>
                             <input type="text" class="form-control" id="titulo"  name="titulo">                            
                         </div>                         
-                        <div class="form-group">
-                            <label>DescripciÛn</label>
-                            <textarea class="form-control" rows="3" id="descripcion"  name="descripcion"></textarea>
+                        <div id="description" class="form-group">
+                            <label>DescripciÛn </label>
+                            <textarea  class="textarea"  id="descripcion"  name="descripcion" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                            <!--<textarea id="descripcion"  name="descripcion"></textarea>-->
                         </div>
                         <div class="form-group">
+                            <label>Cargar imagen </label>
+                            <input type="text" class="form-control" id="tituloImage"  name="tituloImage" placeholder="TÌtulo de la imagen"> 
+                            <input name="file-input" id="file-input" type="file"/>
+                        </div>
+                        <div id="divImage" class="form-group row" style="margin: 2px;">
+                        </div>
+                        <div class="row" >
+                            <div class="form-group col-md-6">
                             <label>Repetir cada</label>
                             <select id="idRepeticion" name="idRepeticion"  class="form-control select2" style="width: 100%;">
                                 <option value="0" disabled selected="selected">Selecione una opciÛn</option>
@@ -37,7 +47,7 @@
                                <% } } %>
                             </select>
                         </div>
-                        <div id="fechaInicio" class="form-group" style="padding-right: 0;padding-left: 0;">
+                        <div id="fechaInicio" class="form-group col-md-6" >
                             <label>Fecha incio:</label>
                             <div class="input-group date">
                               <div class="input-group-addon">
@@ -46,33 +56,35 @@
                               <input type="text" class="form-control pull-right" name="fi" id="datepicker1" autocomplete="off">
                             </div>
                         </div>
+                        </div>
+                        
                             <div class="row row-days">
                                 <div class="form-group col-sm-1 col-day">
-                                    <label>D</label>
+                                    <label>Domingo</label>
                                     <input type="checkbox" name="D" id="D"  class="flat-red">
                                 </div>
                                 <div class="form-group col-sm-1 col-day">
-                                    <label>L</label>
+                                    <label>Lunes</label>
                                     <input type="checkbox" name="L" id="L"  class="flat-red">
                                 </div>
                                 <div class="form-group col-sm-1 col-day">
-                                    <label>M</label>
+                                    <label>Martes</label>
                                     <input type="checkbox" name="Ma" id="Ma"  class="flat-red">
                                 </div>
                                 <div class="form-group col-sm-1 col-day">
-                                    <label>M</label>
+                                    <label>Miercoles</label>
                                     <input type="checkbox" name="Mi" id="Mi"  class="flat-red">
                                 </div>
                                 <div class="form-group col-sm-1 col-day">
-                                    <label>J</label>
+                                    <label>Jueves</label>
                                     <input type="checkbox" name="J" id="J"  class="flat-red">
                                 </div>
                                 <div class="form-group col-sm-1 col-day">
-                                    <label>V</label>
+                                    <label>Viernes</label>
                                     <input type="checkbox" name="V" id="V"  class="flat-red">
                                 </div>
                                 <div class="form-group col-sm-1 col-day">
-                                    <label>S</label>
+                                    <label>S·bado</label>
                                     <input type="checkbox" name="S" id="S"  class="flat-red">
                                 </div>
                             </div>
@@ -120,7 +132,72 @@
         <div id="mensaje"></div>
 <script type="text/javascript">
     
+    var numImage = 1;
+    
+    $("#file-input").click(function (e) {
+        
+        
+        
+        console.log("num: ", numImage);
+    });
+    
+
+ $(function() {
+  $('#file-input').change(function(e) {      
+      addImage(e); 
+     });
+
+     function addImage(e){
+      
+      var file = e.target.files[0],
+      imageType = /image.*/;
+    
+      if (!file.type.match(imageType))
+       return;
+  
+      var reader = new FileReader();
+      reader.onload = fileOnload;
+      reader.readAsDataURL(file);
+     }
+  
+     function fileOnload(e) {
+        $('#divImage').append('<div id="divimgSalida'+numImage+'" class="col-md-2 text-center cont-image" style="border: solid 1px #aba8a8; margin: 2px;padding: 0;"> \n\
+                                <label id="imgSalida'+numImage+'">'+$('#tituloImage').val()+'</label>\n\
+                                <a onclick="eliminarImagen(imgSalida'+numImage+')" id="imgSalida'+numImage+'" type="button" class="btn-purple pull-right eliminarImage" style="padding: 0px 4px;cursor:pointer;"><i class="fa fa-close"></i></a>\n\
+                                <img id="imgSalida'+numImage+'" width="100%" height="100%" src="" /> \n\
+                            </div>');
+      var result=e.target.result;
+      $('.cont-image #imgSalida'+numImage).attr("src",result);
+      
+      console.log("result: ", result);
+      
+      $.post('guardarFile.jsp',
+            {id: 1, path:result},
+                    function (html) {
+                    $("#imgSalida"+numImage).removeClass('loader');
+                    $("#imgSalida"+numImage).html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $("#imgSalida"+numImage).removeClass('loader');
+                $("#imgSalida"+numImage).html(alerta);
+            });
+     numImage++; 
+     $('#tituloImage').val('');
+     }
+    });
+    
+    function eliminarImagen(e){
+        $("#div"+e[1].id).remove();
+    }
+    
     $(document).ready(function () {
+//
+//        $('#descripcion').Editor();
+//        $('#descripcion').Editor('setText', ['<p style="color:#a29e9e;">DescripciÛn de la tarea</p>']);
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
     $('#btnProcess').hide();
         //Timepicker
     $(".timepicker").timepicker({
@@ -138,49 +215,40 @@
         });
 //        ocultar select multiple
         $(".row-days").hide();
-        $("#fechaInicio").hide();
         $("#horaInicio").hide();
         $('#idRepeticion').on('change', function() {
             
             switch(this.value){
                 case '1':
                     $(".row-days").hide();
-                    $("#fechaInicio").show();
                     $("#horaInicio").hide();
                     break;
                 case '2':
-                    $("#fechaInicio").show();
                     $(".row-days").hide();
                     $("#horaInicio").show();
                     break;
                 case '3':
                     $("#horaInicio").hide();
-                    $("#fechaInicio").show();
                     $(".row-days").show();
                     break;
                 case '4':
                     $("#horaInicio").hide();
                     $(".row-days").hide();
-                    $("#fechaInicio").show();
                     break;
                 case '5':
                     $("#horaInicio").hide();
                     $(".row-days").hide();
-                    $("#fechaInicio").show();
                     break;
                 case '6':
                     $("#horaInicio").hide();
                     $(".row-days").hide();
-                    $("#fechaInicio").show();
                     break;
                 case '7':
                     $("#horaInicio").hide();
                     $(".row-days").hide();
-                    $("#fechaInicio").show();
                     break;
                 default:
                     $(".row-days").hide();
-                    $("#fechaInicio").hide();
                     $("#horaInicio").hide();
                     
             }
@@ -203,8 +271,8 @@
                         },
                         stringLength: {
                             min: 3,
-                            max: 30,
-                            message: 'El titulo tiene que ser mas de 3 y menos de 30 caracteres'
+                            max: 100,
+                            message: 'El titulo tiene que ser mas de 3 y menos de 100 caracteres'
                         },
                         regexp: {
                             regexp: /^([-a-z0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
@@ -224,7 +292,7 @@
                             message: 'La descripciÛn debe contener de 5 a 500 caracteres.'
                         },
                         regexp: {
-                            regexp: /^([-a-z/()*%&$#ø?°!0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
+                            regexp: /^([-a-z/()*.,%&$#ø?°!0-9_-¿¡¬√»… ÃÕ—“”‘Ÿ⁄€›‡·‚„ËÈÏÌÒÚÛ˘˙˚¸-\s])+$/i,
                             message: 'El nombre de usuario solo puede constar de letras, n˙meros y guiones bajos.'
                         }
                     }
@@ -271,12 +339,9 @@
             });
         });
     });
+   
     
     $("#btnProcess").click(function (e) {
-        
-        $(".modal-dialog-edit").width("40%");
-        $(".modal-dialog-edit").css('margin-right', "30%");
-        $(".modal-dialog-edit").css('margin-left', "30%");
         $("#titleModal").html("Procesos");
         e.preventDefault();
         e.stopImmediatePropagation();

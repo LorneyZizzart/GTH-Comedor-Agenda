@@ -15,19 +15,49 @@ public class UsuarioModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "Select u.User_id, u.Usuario, u.email, u.Perfil, u.Estado, e.Nombre, e.Apellido_paterno, e.Apellido_materno\n" +
+            String sql = "Select u.User_id, e.Empleado_id, u.Usuario, u.email, u.Perfil, u.Estado, e.Nombre, e.Apellido_paterno, e.Apellido_materno\n" +
                          "From Usuario u \n" +
                          "inner join Empleado  e \n" +
                          "on e.Empleado_id = u.Empleado_id order by u.Usuario";
-            System.out.print("sql: "+sql);
+            
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 Usuario u = new Usuario();
                 u.setUser_id(res.getInt("User_id"));
+                u.setEmpleado_id(res.getInt("Empleado_id"));
                 u.setUsuario(res.getString("Usuario"));
                 u.setEmail(res.getString("email"));
                 u.setPerfil(res.getString("Perfil"));
                 u.setEstado(res.getInt("Estado"));
+                u.setNombre(res.getString("Apellido_paterno")+" "+res.getString("Apellido_materno")+" "+res.getString("Nombre"));
+                usuarios.add(u);
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Modelo.UsuarioModel.GetAllUser() " + e.getMessage());
+        }
+        return usuarios;
+    }
+    
+    public List<Usuario> getAllByDepartamento(int idDepartamento) {
+        List<Usuario> usuarios = new ArrayList<Usuario>();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT us.User_id, em.Empleado_id, em.Apellido_paterno, em.Apellido_materno, em.Nombre\n" +
+                        "FROM Departamento de, Empleado_cargo ec, Empleado em, Usuario us\n" +
+                        "WHERE us.Empleado_id = em.Empleado_id\n" +
+                        "AND em.Empleado_id = ec.Empleado_id\n" +
+                        "AND ec.Departamento_id = de.Departamento_id\n" +
+                        "AND em.Estado <> 6\n" +
+                        "AND de.Departamento_id = " + idDepartamento + "\n"+
+                        "ORDER BY em.Apellido_paterno ASC";
+            
+            ResultSet res = db.consulta(sql);
+            while (res.next()) {
+                Usuario u = new Usuario();
+                u.setUser_id(res.getInt("User_id"));
+                u.setEmpleado_id(res.getInt("Empleado_id"));
                 u.setNombre(res.getString("Apellido_paterno")+" "+res.getString("Apellido_materno")+" "+res.getString("Nombre"));
                 usuarios.add(u);
             }

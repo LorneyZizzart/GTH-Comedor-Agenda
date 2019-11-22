@@ -68,10 +68,6 @@ public final class crearFile_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<script type=\"text/javascript\">   \n");
       out.write("    \n");
       out.write("    $(\".btn-rlistFile\").click(function (e) {\n");
-      out.write("        \n");
-      out.write("        $(\".modal-dialog-edit\").width(\"40%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-right', \"30%\");\n");
-      out.write("        $(\".modal-dialog-edit\").css('margin-left', \"30%\");\n");
       out.write("        $(\"#titleModal\").html(\"Archivos relacionados\");\n");
       out.write("        e.preventDefault();\n");
       out.write("        e.stopImmediatePropagation();\n");

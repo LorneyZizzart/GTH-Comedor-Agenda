@@ -52,7 +52,7 @@ public final class fileUploadHandler_jsp extends org.apache.jasper.runtime.HttpJ
       }
       out.write('\n');
 
-    _upFile.doPost(request, response);
+//    _upFile.doPost(request, response);
 
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
