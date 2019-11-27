@@ -71,7 +71,7 @@
     }
     if(request.getParameter("proceso").equalsIgnoreCase("insert")){
         resultado = "Ok";
-//        resultado = _tarea.SaveTarea(tarea);
+        resultado = _tarea.SaveTarea(tarea);
         if(resultado.equalsIgnoreCase("Ok")){
         %>
         <input type="hidden" value="<%=request.getParameter("titulo")%>" name="gTitulo" id="gTitulo">

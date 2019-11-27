@@ -44,7 +44,7 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write("\n");
+      out.write("        \n");
       out.write("\n");
       out.write("\n");
       Controlador.C_EmpleadoReservaController _empleadoReserva = null;

@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label>Cargar imagen </label>
                             <input type="text" class="form-control" id="tituloImage"  name="tituloImage" placeholder="Título de la imagen"> 
-                            <input name="file-input" id="file-input" type="file"/>
+                            <input name="imgSalida1" id="imgSalida1" type="file"/>
                         </div>
                         <div id="divImage" class="form-group row" style="margin: 2px;">
                         </div>
@@ -134,7 +134,7 @@
     
     var numImage = 1;
     
-    $("#file-input").click(function (e) {
+    $("#imgSalida1").click(function (e) {
         
         
         
@@ -143,7 +143,7 @@
     
 
  $(function() {
-  $('#file-input').change(function(e) {      
+  $('#imgSalida1').change(function(e) {      
       addImage(e); 
      });
 
@@ -161,6 +161,7 @@
      }
   
      function fileOnload(e) {
+         console.log("entro iamgen")
         $('#divImage').append('<div id="divimgSalida'+numImage+'" class="col-md-2 text-center cont-image" style="border: solid 1px #aba8a8; margin: 2px;padding: 0;"> \n\
                                 <label id="imgSalida'+numImage+'">'+$('#tituloImage').val()+'</label>\n\
                                 <a onclick="eliminarImagen(imgSalida'+numImage+')" id="imgSalida'+numImage+'" type="button" class="btn-purple pull-right eliminarImage" style="padding: 0px 4px;cursor:pointer;"><i class="fa fa-close"></i></a>\n\
@@ -171,18 +172,18 @@
       
       console.log("result: ", result);
       
-      $.post('guardarFile.jsp',
-            {id: 1, path:result},
-                    function (html) {
-                    $("#imgSalida"+numImage).removeClass('loader');
-                    $("#imgSalida"+numImage).html(html);
-                    }
-             ).fail(function (jqXHR, textStatus, errorThrown)
-            {
-                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
-                $("#imgSalida"+numImage).removeClass('loader');
-                $("#imgSalida"+numImage).html(alerta);
-            });
+//      $.post('guardarFile.jsp',
+//            {id: 1, path:result},
+//                    function (html) {
+//                    $("#imgSalida"+numImage).removeClass('loader');
+//                    $("#imgSalida"+numImage).html(html);
+//                    }
+//             ).fail(function (jqXHR, textStatus, errorThrown)
+//            {
+//                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+//                $("#imgSalida"+numImage).removeClass('loader');
+//                $("#imgSalida"+numImage).html(alerta);
+//            });
      numImage++; 
      $('#tituloImage').val('');
      }
@@ -336,7 +337,7 @@
                     var menn = "<p class='text-red'>Se produjo un error " + errorThrown + "  " + textStatus + "</p>";
                     $("#mensaje").html(menn);
                 }
-            });
+            }); 
         });
     });
    
