@@ -1,0 +1,28 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="Entidad.Empleado"%>
+<jsp:useBean id="_tarea" class="Controlador.A_TareaController" />
+<%
+    int idUsuario = 0;
+    
+    try{
+        idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+    }catch(Exception e){
+        idUsuario = 0;
+    }
+    
+    String cargo = "";
+    if(idUsuario != 0){
+        List<Empleado> empleados = new ArrayList<Empleado>();
+        empleados = _tarea.getEmpleados();
+        for(Empleado e : empleados){
+            if(e.getUser_id() == idUsuario){
+                if(!e.getCargo().getCargo_nombre().equals(null)){
+                    cargo = e.getCargo().getCargo_nombre();
+                }                
+            }
+        }
+    }    
+%>
+<label>Cargo</label>
+<input disabled type="text" class="form-control" id="cargo"  name="cargo" value="<%=cargo%>">   

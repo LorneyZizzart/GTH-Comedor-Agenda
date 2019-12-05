@@ -38,16 +38,14 @@
     <!-- /.row -->
     <!--Modal-->
     <div class="modal fade" id="formulario_registro">
-        <div class="modal-dialog modal-dialog-edit">
+        <div id="modal-dialog" class="modal-dialog modalTarea">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                     <h4 id="titleModal" class="modal-title">title</h4>
                 </div>
-                <div class="modal-body cuerpo_registro " style="padding: 0%;">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
-                </div>
+                <div id="modelViewTarea" class="modal-body cuerpo_registro"></div>
             </div>
             <!-- /.modal-content -->
         </div>
@@ -75,8 +73,10 @@
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectMirror: true,
-      select: function(e) {       
-        $("#titleModal").html("Crear tarea");
+      select: function(e) {   
+        $("#formulario_registro #modal-dialog").removeClass( "modalTarea"); 
+        $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
+        $("#titleModal").html("Crear nota personal");
         $('#formulario_registro').modal('show');
         $(".cuerpo_registro").html('');
         $(".cuerpo_registro").addClass('loader');
@@ -118,20 +118,19 @@
         return yesterday.diff(select.start) <= 0;
       },
       eventClick(e){
-        $(".modal-dialog").width("40%");
-        $("#titleModal").html("Editar tarea");
-        $('#formulario_registro').modal('show');
-        $(".cuerpo_registro").html('');
-        $(".cuerpo_registro").addClass('loader');
-        $.post('editarTarea.jsp',
+          
+           
+           $('#formulario_registro').modal('show');
+           $(".cuerpo_registro").html('');
+           $(".cuerpo_registro").addClass('loader');
+           
+          if(e.event.groupId == '1'){    
+              $("#titleModal").html("Tarea");
+              $("#formulario_registro #modal-dialog").addClass( "modalTarea");
+              $("#formulario_registro #modelViewTarea").addClass('modelViewTarea');
+           $.post('verTarea.jsp',
                 {id: e.event.id,
-                 nombre: e.event.title,
-                 fechaInicial: FullCalendar.formatDate(e.event.start, {
-                                locale: 'es'
-                            }),
-                 fechaNow: FullCalendar.formatDate(new Date(), {
-                                locale: 'es'
-                            })},
+                 title: e.event.title},
                     function (html) {
                     $(".cuerpo_registro").removeClass('loader');
                     $(".cuerpo_registro").html(html);
@@ -142,26 +141,57 @@
                 $(".cuerpo_registro").removeClass('loader');
                 $(".cuerpo_registro").html(alerta);
             });
+          }else{
+              $("#titleModal").html("Nota personal");
+              $("#formulario_registro #modal-dialog").removeClass( "modalTarea");
+              $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
+             $.post('verTareaPersonal.jsp',
+                {id: e.event.id},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            }); 
+          }
       },
       editable: false,
       eventLimit: true, // allow "more" link when too many events  
         events: [
             <%
             for(A_Tarea item : listaTareas){
+                String color = "";
+                if(item.getIdTipoTarea()==1){
+                  color = "#f39c12 !important";
+                    if(item.getIdEstadoTarea() == 2 ){
+//                      verde
+                        color = "#00a65a !important";
+                    }else if(item.getIdEstadoTarea() == 6){
+//                      rojo
+                        color = "#dd4b39 !important";
+                    } 
+                }
+
                %>{
                 id: <%=item.getIdTarea()%>,
+                groupId: '<%=item.getIdTipoTarea()%>',
+                idUser: <%=item.getIdUserCrea()%>,
                 title: '<%=item.getTitulo()%>',
-                start: '<%=item.getFechaInicio()%>T<%=item.getHoraInicio()%>',
-                end: '<%=item.getFechaFinal()%>T<%=item.getHoraFinal()%>',
-                backgroundColor: '<%=item.getColor()%>',
-                borderColor: '<%=item.getColor()%>',
+                start: '<%=item.getFechaInicio()%>',
+                end: '<%=item.getFechaFinal()%>',
+                backgroundColor: '<%=color%>',
+                borderColor: '<%=color%>'
                 },
             <%}%>
         {
         id: (++counter).toString(),
         title: 'Meeting',
-        start: '2018-07-12T10:30:00',
-        end: '2018-07-12T12:30:00'
+        start: '2016-12-01T10:30:00',
+        end: '2016-12-02T12:30:00'
         }
         ],
         timeFormat: 'H(:mm)t'

@@ -1,0 +1,19 @@
+SMAP
+plan_005faccion_005fcriterio_005fguarda_jsp.java
+JSP
+*S JSP
+*F
++ 0 plan_accion_criterio_guarda.jsp
+planificaEstrate/plan_accion/plan_accion_criterio_guarda.jsp
+*L
+1,2:46
+3:48,9
+5,4:58
+8,18:62
+25,13:80
+38:93,2
+39,3:95
+42:98,3
+43,2:101
+44,2:102
+*E

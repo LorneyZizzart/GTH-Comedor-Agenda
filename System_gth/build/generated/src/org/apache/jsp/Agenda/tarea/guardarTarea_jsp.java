@@ -74,15 +74,17 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
 
     A_Tarea tarea = new A_Tarea();
     String resultado = null;
+    
     try{
         tarea.setIdTarea(Integer.parseInt(request.getParameter("id")));
-        tarea.setIdUserCrea(Integer.parseInt(request.getParameter("idUsuario")));
+        tarea.setIdUserCrea(Integer.parseInt(request.getParameter("idFunc")));
         tarea.setTitulo(request.getParameter("titulo"));
         tarea.setDescripcion(request.getParameter("descripcion"));        
         tarea.setIdRepeticionTarea(Integer.parseInt(request.getParameter("idRepeticion")));
         tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));
         tarea.setFechaInicio(String.valueOf(request.getParameter("fi")));
         tarea.setHoraInicio(request.getParameter("horaInicio"));
+        tarea.setIdTipoTarea(1);
     }catch(Exception e){
         resultado =  "No se resivieron todos los parametros. Error: " + e;
     }
@@ -135,16 +137,20 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
         tarea.setDomingo(0); 
     }
     if(request.getParameter("proceso").equalsIgnoreCase("insert")){
-        resultado = "Ok";
-//        resultado = _tarea.SaveTarea(tarea);
+//        resultado = "Ok";
+        
+        resultado = _tarea.SaveTarea(tarea);
+        
         if(resultado.equalsIgnoreCase("Ok")){
+            A_Tarea auxTarea = new A_Tarea();
+            auxTarea = _tarea.getMaxIdTarea();
         
       out.write("\n");
       out.write("        <input type=\"hidden\" value=\"");
       out.print(request.getParameter("titulo"));
       out.write("\" name=\"gTitulo\" id=\"gTitulo\">\n");
       out.write("        <input type=\"hidden\" value=\"");
-      out.print(request.getParameter("idUsuario"));
+      out.print(request.getParameter("idFunc"));
       out.write("\" name=\"gIdUsuario\" id=\"gIdUsuario\">\n");
       out.write("    <div class=\" text-center alert alert-success alert-dismissible\">\n");
       out.write("        <h4><i class=\"icon fa fa-check\"></i> Guardado</h4>\n");
@@ -152,6 +158,12 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("     <script type=\"text/javascript\">\n");
       out.write("        $(document).ready(function () {  \n");
       out.write("            localStorage.setItem(\"idTarea\", $('#gTitulo').val()+\"%\"+$('#gIdUsuario').val());\n");
+      out.write("            for (var i = 0; i < listaImage.length; i++) {\n");
+      out.write("                saveImageDB(");
+      out.print(auxTarea.getIdTarea());
+      out.write(", listaImage[i].titulo, listaImage[i].nameImage);\n");
+      out.write("                saveImage(listaImage[i].path);\n");
+      out.write("          }\n");
       out.write("            $(\"#mensaje\").hide(3000, function () {                \n");
       out.write("                $('.form-group').removeClass('has-success');\n");
       out.write("                $('.glyphicon-ok').hide();\n");
@@ -165,7 +177,8 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
         
     }}
     else {
-        resultado = _tarea.UpdateTarea(tarea, request.getParameter("titulo"));
+
+        resultado = _tarea.UpdateTarea(tarea, request.getParameter("oldTitulo"), Integer.parseInt(request.getParameter("idFunc")));
         if(resultado.equalsIgnoreCase("Ok")){
         
       out.write("\n");
@@ -175,6 +188,13 @@ public final class guardarTarea_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("        </div>\n");
       out.write("         <script type=\"text/javascript\">\n");
       out.write("            $(document).ready(function () {\n");
+      out.write("                \n");
+      out.write("                for (var i = 0; i < listaImage.length; i++) {\n");
+      out.write("                saveImageDB(");
+      out.print(request.getParameter("id"));
+      out.write(", listaImage[i].titulo, listaImage[i].nameImage);\n");
+      out.write("                }\n");
+      out.write("                \n");
       out.write("                $(\"#mensaje\").hide(3000, function () {\n");
       out.write("                    location.reload();\n");
       out.write("                });\n");

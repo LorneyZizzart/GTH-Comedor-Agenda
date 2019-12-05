@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Invitado1
  */
-public class A_ProcedimientoTarea {
+public class A_ProcedimientoTarea extends A_PathProcedimientoTarea{
     private int IdUsuario;
     private int IdProcedimiento;
     private String NombreProcedimiento;

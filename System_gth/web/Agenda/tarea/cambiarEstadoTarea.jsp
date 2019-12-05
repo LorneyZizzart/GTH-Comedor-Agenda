@@ -18,7 +18,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();
-        renderTable($('#idUsuario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);
+        renderTable($('#idFuncionario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);
     });
 </script>
 <%}else{System.out.print("Error al actulizar el estado de la tarea");%>

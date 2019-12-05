@@ -1,30 +1,52 @@
-<%--<%@page import="com.itextpdf.text.pdf.codec.Base64"%>--%>
+<%@page import="Entidad.A_Tarea"%>
+<%@page import="java.io.File"%>
+<%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.FileItemFactory"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.InputStream"%>
 <%@ page import="java.util.*" %>
-<%@page import="com.itextpdf.text.pdf.codec.Base64"%>
-<jsp:useBean id="_upFile" class="Modelo.AFileUploadHandler" />
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
+<jsp:useBean id="_tarea" class="Controlador.A_TareaController"/>
 <%
-//   _upFile.doPost(request, response);
-    String idTarea = request.getParameter("id");
-    byte[] image = Base64.decode(request.getParameter("path"));
-//    String path =  Base64.parseBase64Binary(request.getParameter("path"));
-    String base64Message = _encript.ValorAEncriptar(request.getParameter("path"));
-    InputStream i =  new FileInputStream(request.getParameter("path"));
-    
-    String resultado = _upFile.savePathTarea(idTarea, "", i);
-//    String resultado = "Ok";
+//        if (!directorio.exists()) {
+//            if (directorio.mkdirs()) {
+                FileItemFactory file_factory = new DiskFileItemFactory();
+                        /*ServletFileUpload esta clase convierte los input file a FileItem*/
+                ServletFileUpload servlet_up = new ServletFileUpload(file_factory);
 
-    if(resultado.equalsIgnoreCase("Ok")){
+                        /*sacando los FileItem del ServletFileUpload en una lista */
+                List items = servlet_up.parseRequest(request);
+
+
+                for(int i=0;i<items.size();i++){
+                                /*FileItem representa un archivo en memoria que puede ser pasado al disco duro*/
+                    FileItem item = (FileItem) items.get(0);
+                                /*item.isFormField() false=input file; true=text field*/
+                    if (! item.isFormField()){
+                                        /*cual sera la ruta al archivo en el servidor*/
+                                        File archivo_server = new File("E:/Proyectos/GTH/System_gth/web/folder_picture/Tareas/"+item.getName());
+                                        
+                                        if (!archivo_server.exists()) {
+                                            item.write(archivo_server);
+                                        }                                       
+                                        /*y lo escribimos en el servido*/
+                                        
+                                        %>
+
+                                <%
+        //                out.print("Nombre --> " + item.getName() );
+        //                out.print("<br> Tipo --> " + item.getContentType());
+        //                out.print("<br> tamaño --> " + (item.getSize()/1240)+ "KB");
+                        out.print(item.getName());
+
+                    }
+//                }
+//            } else {
+//                out.println("Error al crear directorio");
+//            }
+        }
+	   	/*FileItemFactory es una interfaz para crear FileItem*/
+        
  %>
-<div class=" text-center alert alert-success alert-dismissible">
-    <h4><i class="icon fa fa-check"></i> Ok</h4>
-</div>    
-<%}else{%>
-<div class="alert alert-danger alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>
-    <%=resultado%>
-</div>
-<%}%>

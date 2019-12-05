@@ -1,0 +1,17 @@
+SMAP
+elimina_005fevento_005fguardar_jsp.java
+JSP
+*S JSP
+*F
++ 0 elimina_evento_guardar.jsp
+Eventos/evento/elimina_evento_guardar.jsp
+*L
+1:45
+2:46,9
+4,4:56
+7,17:60
+23,16:77
+38,4:93
+42:97,3
+43,5:100
+*E

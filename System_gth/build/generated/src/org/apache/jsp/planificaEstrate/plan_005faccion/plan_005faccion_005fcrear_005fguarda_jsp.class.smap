@@ -1,0 +1,19 @@
+SMAP
+plan_005faccion_005fcrear_005fguarda_jsp.java
+JSP
+*S JSP
+*F
++ 0 plan_accion_crear_guarda.jsp
+planificaEstrate/plan_accion/plan_accion_crear_guarda.jsp
+*L
+1,2:46
+3:48,9
+5,4:58
+8,28:62
+35,13:90
+48:103,2
+49,3:105
+52:108,3
+53,2:111
+54,2:112
+*E

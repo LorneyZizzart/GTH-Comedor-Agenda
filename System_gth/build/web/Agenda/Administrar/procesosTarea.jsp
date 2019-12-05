@@ -10,6 +10,7 @@
 %>
 <div class="box-header" style="padding: 0 0 2% 0">
         <h3 class="box-title">Lista de Procesos</h3>
+
     </div>
 <div class="box-body table-responsive" style="padding: 0px 5px 30px 5px;">
                     <table id="example1" class="display table table-bordered table-striped">
@@ -28,7 +29,7 @@
                             %>
                             <tr>
                                 <td><%=contador%></td>
-                                <td><a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>"class="formEditProcess" style="cursor:pointer;"><%=p.getNombreProcedimiento()%> </a>      </td>                  
+                                <td><a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>"class="verProceso" style="cursor:pointer;"><%=p.getNombreProcedimiento()%> </a>    </td>                    
                             </tr>
                             <%
                                 }
@@ -45,12 +46,34 @@
 
 } );
     
-     $(".formEditProcess").click(function (e){
-         $("#formulario_registro #modelViewTarea").addClass('modelViewTarea');
-        $(".modal-dialog").addClass("modalTarea");
+    $(".formEditProcess").click(function (e){
+        $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
         e.preventDefault();
         e.stopImmediatePropagation();
         $("#titleModal").html("Editar tarea");
+        $('#formulario_registro').modal('show');
+        $(".cuerpo_registro").html('');
+        $(".cuerpo_registro").addClass('loader');
+        $.post('editarProceso.jsp',
+            {id: $(this).attr('data-id')},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            }); 
+        
+    });
+    
+    $(".verProceso").click(function (e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $("#titleModal").html("Proceso");
+        $("#formulario_registro #modelViewTarea").addClass('modelViewTarea');
         $('#formulario_registro').modal('show');
         $(".cuerpo_registro").html('');
         $(".cuerpo_registro").addClass('loader');
@@ -67,5 +90,55 @@
                 $(".cuerpo_registro").html(alerta);
             }); 
         
+    });
+
+    $(".formNewProcess").click(function (e) {
+        $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
+        $("#titleModal").html("Nuevo proceso");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+            $('#formulario_registro').modal('show');
+            $(".cuerpo_registro").html('');
+            $(".cuerpo_registro").addClass('loader');
+            //$.post('lista_cuenta_duplicada.jsp',
+            var id = $(this).attr('data-id').split("%");
+            //console.log("title: ", id(0));
+            $.post('crearProceso.jsp',
+            
+            {id: $(this).attr('data-id')},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            });
+    });
+    
+    $(".formDeletProcess").click(function (e){
+        $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
+        $("#titleModal").html("Eliminar proceso");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        
+        $('#formulario_registro').modal('show');
+        $(".cuerpo_registro").html('');
+        $(".cuerpo_registro").addClass('loader');
+        
+        $.post('deleteProceso.jsp',
+            {id: $(this).attr('data-id')},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            });        
     });
 </script>

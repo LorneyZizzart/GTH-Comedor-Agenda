@@ -3,10 +3,15 @@ package org.apache.jsp.Agenda.tarea;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.A_Tarea;
+import java.io.File;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.FileItemFactory;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
-import com.itextpdf.text.pdf.codec.Base64;
 
 public final class guardarFile_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -50,15 +55,10 @@ public final class guardarFile_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
-      Modelo.AFileUploadHandler _upFile = null;
-      synchronized (_jspx_page_context) {
-        _upFile = (Modelo.AFileUploadHandler) _jspx_page_context.getAttribute("_upFile", PageContext.PAGE_SCOPE);
-        if (_upFile == null){
-          _upFile = new Modelo.AFileUploadHandler();
-          _jspx_page_context.setAttribute("_upFile", _upFile, PageContext.PAGE_SCOPE);
-        }
-      }
-      out.write('\n');
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       Controlador.EncriptionController _encript = null;
       synchronized (_jspx_page_context) {
         _encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("_encript", PageContext.PAGE_SCOPE);
@@ -68,33 +68,59 @@ public final class guardarFile_jsp extends org.apache.jasper.runtime.HttpJspBase
         }
       }
       out.write('\n');
+      Controlador.A_TareaController _tarea = null;
+      synchronized (_jspx_page_context) {
+        _tarea = (Controlador.A_TareaController) _jspx_page_context.getAttribute("_tarea", PageContext.PAGE_SCOPE);
+        if (_tarea == null){
+          _tarea = new Controlador.A_TareaController();
+          _jspx_page_context.setAttribute("_tarea", _tarea, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
-//   _upFile.doPost(request, response);
-    String idTarea = request.getParameter("id");
-    byte[] image = Base64.decode(request.getParameter("path"));
-//    String path =  Base64.parseBase64Binary(request.getParameter("path"));
-    String base64Message = _encript.ValorAEncriptar(request.getParameter("path"));
-    InputStream i =  new FileInputStream(request.getParameter("path"));
-    
-    String resultado = _upFile.savePathTarea(idTarea, "", i);
-//    String resultado = "Ok";
+//        if (!directorio.exists()) {
+//            if (directorio.mkdirs()) {
+                FileItemFactory file_factory = new DiskFileItemFactory();
+                        /*ServletFileUpload esta clase convierte los input file a FileItem*/
+                ServletFileUpload servlet_up = new ServletFileUpload(file_factory);
 
-    if(resultado.equalsIgnoreCase("Ok")){
+                        /*sacando los FileItem del ServletFileUpload en una lista */
+                List items = servlet_up.parseRequest(request);
+
+
+                for(int i=0;i<items.size();i++){
+                                /*FileItem representa un archivo en memoria que puede ser pasado al disco duro*/
+                    FileItem item = (FileItem) items.get(0);
+                                /*item.isFormField() false=input file; true=text field*/
+                    if (! item.isFormField()){
+                                        /*cual sera la ruta al archivo en el servidor*/
+                                        File archivo_server = new File("E:/Proyectos/GTH/System_gth/web/folder_picture/Tareas/"+item.getName());
+                                        
+                                        if (!archivo_server.exists()) {
+                                            item.write(archivo_server);
+                                        }                                       
+                                        /*y lo escribimos en el servido*/
+                                        
+                                        
+      out.write("\n");
+      out.write("\n");
+      out.write("                                ");
+
+        //                out.print("Nombre --> " + item.getName() );
+        //                out.print("<br> Tipo --> " + item.getContentType());
+        //                out.print("<br> tamaño --> " + (item.getSize()/1240)+ "KB");
+                        out.print(item.getName());
+
+                    }
+//                }
+//            } else {
+//                out.println("Error al crear directorio");
+//            }
+        }
+	   	/*FileItemFactory es una interfaz para crear FileItem*/
+        
  
-      out.write("\n");
-      out.write("<div class=\" text-center alert alert-success alert-dismissible\">\n");
-      out.write("    <h4><i class=\"icon fa fa-check\"></i> Ok</h4>\n");
-      out.write("</div>    \n");
-}else{
-      out.write("\n");
-      out.write("<div class=\"alert alert-danger alert-dismissible\">\n");
-      out.write("    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n");
-      out.write("    <h4><i class=\"icon fa fa-ban\"></i> Alerta!</h4>\n");
-      out.write("    ");
-      out.print(resultado);
-      out.write("\n");
-      out.write("</div>\n");
-}
+      out.write('\n');
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

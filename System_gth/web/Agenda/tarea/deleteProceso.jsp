@@ -1,14 +1,19 @@
+<%@page import="Entidad.A_Tarea"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="Entidad.A_ProcedimientoTarea"%>
-<jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <jsp:useBean id="_proceso" class="Controlador.A_ProcedimientoTareaController"/>
+<jsp:useBean id="_path" class="Controlador.A_PathProcedimientoTareaController" />
 <%
-    String idProceso = _encript.ValorADesencriptar(request.getParameter("id")); 
+    String[] id = request.getParameter("id").split("%"); 
     A_ProcedimientoTarea procedimiento = new A_ProcedimientoTarea();
-    procedimiento = _proceso.getProcedimientoById(Integer.parseInt(idProceso));
+    procedimiento = _proceso.getProcedimientoById(Integer.parseInt(id[0]));
+    List<A_Tarea> listaPath = new ArrayList<A_Tarea>();
+    listaPath = _path.getAllPathProcedimiento(Integer.parseInt(id[0])); 
   
 %>
 <form id="formGuardarProceso" method="post" class="formGuardarProceso">
-    <input type="hidden" value="<%=idProceso%>" name="idProceso" id="idProceso">
+    <input type="hidden" value="<%=id[0]%>" name="idProceso" id="idProceso">
     <input type="hidden" value="0" name="id" id="id">
                     <div class="box-body">
                         <div class="form-group" >
@@ -18,6 +23,17 @@
                         <div class="form-group">
                             <label>Descripción</label>
                             <textarea disabled class="textarea"  id="descripcion"  name="descripcion" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><%=procedimiento.getDescripcionProcedimiento()%></textarea>
+                        </div>
+                        <div id="divImage" class="form-group row" style="margin: 2px;">
+                            <%
+                                for (A_Tarea path : listaPath) {
+
+            %>
+                            <div id="divimgSalida<%=path.getIdPathProcedimiento()%>" class="col-md-2 text-center cont-image" style="border: solid 1px #aba8a8; margin: 2px;padding: 0;border-radius: 5px;">
+                                <label id="imgSalida"><%=path.getNombrePath()%></label>
+                                <img id="imgSalida" width="100%" height="100%" src="../../folder_picture/Procesos/<%=path.getPathImage()%>" />
+                            </div>
+    <%  } %>
                         </div>
                     </div>
                     <!-- /.box-body -->
@@ -47,7 +63,7 @@
         $(".btn-cProcess").click(function (e) {
         $("#titleModal").html("Procesos");
         e.preventDefault();
-        e.stopImmediatePropagation();
+        e.stopImmediatePropagation();   
             $('#formulario_registro').modal('show');
             $(".cuerpo_registro").html('');
             $(".cuerpo_registro").addClass('loader');

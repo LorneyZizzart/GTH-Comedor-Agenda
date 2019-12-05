@@ -154,7 +154,7 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                <td class=\"text-left\" ><a data-id=\"");
       out.print(item.getTitulo());
       out.write('%');
-      out.print(idUsuario);
+      out.print(item.getIdUserCrea());
       out.write('%');
       out.print(2);
       out.write("\" class=\"verTarea\" style=\"cursor:pointer;\">");
@@ -171,22 +171,17 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                        <a data-id=\"");
       out.print(item.getTitulo());
       out.write('%');
-      out.print(idUsuario);
-      out.write("\" class=\"formProcess btn btn-xs btn-info\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Procesos\"><i class=\"fa fa-plus\"></i></a>     \n");
-      out.write("<!--                                        <a data-id=\"");
-/*=item.getTitulo()*/
-      out.write('%');
-/*=idUsuario*/
-      out.write("\" class=\"listUploadFile btn btn-xs btn-warning\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Archivos\"><i class=\"fa fa-folder\"></i></a>    -->\n");
+      out.print(item.getIdUserCrea());
+      out.write("\" class=\"formProcess btn btn-xs btn-info\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Procesos\"><i class=\"fa fa-plus\"></i></a>                                             \n");
       out.write("                                        <a data-id=\"");
       out.print(item.getTitulo());
       out.write('%');
-      out.print(idUsuario);
+      out.print(item.getIdUserCrea());
       out.write("\" class=\"formEdit btn btn-xs btn-primary edit_button\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Editar\"><i class=\"fa fa-edit\"></i></a>                                \n");
       out.write("                                        <a data-id=\"");
       out.print(item.getTitulo());
       out.write('%');
-      out.print(idUsuario);
+      out.print(item.getIdUserCrea());
       out.write("\" class=\"formEliminar btn btn-danger btn-xs delete_button\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Eliminar\"> <i class=\"fa fa-trash-o\"></i></a>                                \n");
       out.write("                                    </div>\n");
       out.write("                                </td>\n");
@@ -196,27 +191,20 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
                                       }} else{
                                     for (A_Tarea item : lista) {
                                     contador++;
-                                    String color = "rgba(255, 235, 59, 0.3)";
+//                                    amarillo
+                                    String color = "#f39c12 !important";
                                     if(item.getIdEstadoTarea() == 2 ){
-                                        color = "rgba(76, 175, 80, 0.3)";
+//                                        verde
+                                        color = "#00a65a !important";
                                     }else if(item.getIdEstadoTarea() == 6){
-                                        color = "rgba(233, 30, 99, 0.3)";
-                                    }  
-                                    //posible
-//                                    String color = "rgba(255, 235, 59, 0.1)";
-//                                    if(item.getIdEstadoTarea() == 2 ){
-//                                        color = "rgba(76, 175, 80, 0.1)";
-//                                    }else if(item.getIdEstadoTarea() == 6){
-//                                        color = "rgba(233, 30, 99, 0.1)";
-//                                    } 
-                                    //--posible
+//                                        rojo
+                                        color = "#dd4b39 !important";
+                                    } 
                             
       out.write("\n");
       out.write("                            <tr id=\"");
       out.print(item.getIdTarea());
-      out.write("\" style=\"background: ");
-      out.print(color);
-      out.write("\">\n");
+      out.write("\" >\n");
       out.write("                                <td>");
       out.print(contador);
       out.write("<input type=\"hidden\" name=\"posicion_celda\" value=\"");
@@ -225,7 +213,7 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                <td><a data-id=\"");
       out.print(item.getTitulo());
       out.write('%');
-      out.print(idUsuario);
+      out.print(item.getIdUserCrea());
       out.write('%');
       out.print(1);
       out.write("\" class=\"verTarea\" style=\"cursor:pointer;\">");
@@ -240,7 +228,9 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write(' ');
       out.print(item.getHoraInicio());
       out.write("</td>\n");
-      out.write("                                <td><select id=\"idEstadoTarea\" name=\"idEstadoTarea\" class=\"changeEstadoTarea form-control selectRepeticion\" style=\"width: 100%; background-color: transparent; border: 0.1px solid;\">\n");
+      out.write("                                <td><select style=\"width: 100%; background: ");
+      out.print(color);
+      out.write("; color: white;\" id=\"idEstadoTarea\" name=\"idEstadoTarea\" class=\"changeEstadoTarea form-control selectRepeticion\">\n");
       out.write("                                  ");
 
                                       for(A_EstadoTarea e : listaEstado){
@@ -249,7 +239,7 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
                                               select = "Selected";
                                           
       out.write("\n");
-      out.write("                                          <option value=\"");
+      out.write("                                          <option style=\"background: white; color: #2f2e2e;;\" value=\"");
       out.print(item.getIdTarea());
       out.write('-');
       out.print(e.getIdEstadoTarea());
@@ -269,8 +259,8 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                        <a data-id=\"");
       out.print(item.getTitulo());
       out.write('%');
-      out.print(idUsuario);
-      out.write("\" class=\"formProcess btn btn-xs btn-primary\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Procesos\"><i class=\"fa fa-plus\"></i></a>                             \n");
+      out.print(item.getIdUserCrea());
+      out.write("\" class=\"formProcess btn btn-xs btn-primary\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Procesos\"><i class=\"fa fa-plus\"></i></a>                              \n");
       out.write("                                    </div>\n");
       out.write("                                </td>\n");
       out.write("                            </tr>\n");
@@ -321,9 +311,13 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <div class=\"modal-dialog modalTarea\">\n");
       out.write("            <div class=\"modal-content\">\n");
       out.write("                <div class=\"modal-header\">\n");
-      out.write("                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n");
-      out.write("                        <span aria-hidden=\"true\">&times;</span></button>\n");
-      out.write("                    <h4 id=\"titleModal\" class=\"modal-title\">title</h4>\n");
+      out.write("                    \n");
+      out.write("                    <button type=\"button\" class=\"btn-purple pull-right\" data-dismiss=\"modal\" aria-label=\"Close\" style=\"border: solid 1px #9056bf;\"><i class=\"fa fa-close\"></i></button>\n");
+      out.write("                    <div id=\"btn-print\"><button id=\"btn-print-div\" type=\"button\" class=\"btn btn-primary pull-right\" ><i class=\"fa fa-print\"></i></button></div>\n");
+      out.write("                    \n");
+      out.write("<!--                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n");
+      out.write("                        <span aria-hidden=\"true\">&times;</span></button>-->\n");
+      out.write("                    <h4 id=\"titleModal\" class=\"modal-title\"> title</h4>\n");
       out.write("                </div>\n");
       out.write("                <div id=\"modelViewTarea\" class=\"modal-body cuerpo_registro\"></div>\n");
       out.write("            </div>\n");
@@ -333,6 +327,7 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    </div>\n");
       out.write("                            \n");
       out.write("<script>\n");
+      out.write("      \n");
       out.write("    $(document).ready(function() {\n");
       out.write("        \n");
       out.write("        $('.formNuevo').tooltip({ boundary: 'window' })\n");

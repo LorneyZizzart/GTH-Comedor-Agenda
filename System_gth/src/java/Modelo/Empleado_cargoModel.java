@@ -64,7 +64,7 @@ public class Empleado_cargoModel {
                     + " inner join Cargo c\n"
                     + "	on ec.Cargo_id = c.Cargo_id"
                     + " where ec.Activo = '1' and ec.Empleado_id = '" + empladoId + "' ";
-
+            System.out.print("sql: "+sql);
             ResultSet res = db.consulta(sql);
             if (res.next()) {
                 e.setId(res.getInt("Id"));

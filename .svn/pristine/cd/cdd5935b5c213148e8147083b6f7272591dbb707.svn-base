@@ -1,0 +1,206 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Modelo;
+
+import Conexion.ConectaSqlServer;
+import Entidad.Plan_objetivo;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Roberto
+ */
+public class Plan_objetivoModelo {
+
+    public String SaveorUpdateObjetivo(Plan_objetivo plan_objetivo) {
+        String mensaje = "Ok";
+        try {
+            if (plan_objetivo.getPlan_objetivo_id() == 0) {
+                mensaje = SavePlanObjetivo(plan_objetivo);
+            } else {
+                mensaje = UpdatePlanObjetivo(plan_objetivo);
+            }
+        } catch (Exception e) {
+            mensaje = "Modelo.Plan_objetivoModelo.SaveorUpdateObjetivo()" + e.getMessage();
+            System.out.println(mensaje);
+        }
+        return mensaje;
+    }
+
+    public String SavePlanObjetivo(Plan_objetivo plan_objetivo) {
+        String mensaje = "Ok";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+
+            java.util.Date uDate = new java.util.Date();
+            java.sql.Date sDate = convertDateToSql(uDate);
+
+            String sqlinserta = "INSERT INTO Plan_objetivo\n"
+                    + "           (Titulo, Creditacion, Gestion\n"
+                    + "           ,Empleado_id, Estado,Fecha_creacion )\n"
+                    + "     VALUES (?,?,?,?,?,?)";
+            System.out.println("SQL : " + sqlinserta);
+            PreparedStatement stmt = db.getConn().prepareStatement(sqlinserta);
+            stmt.setString(1, plan_objetivo.getTitulo());
+            stmt.setString(2, plan_objetivo.getCreditacion());
+            stmt.setInt(3, plan_objetivo.getGestion());
+            stmt.setInt(4, plan_objetivo.getEmpleado_id());
+            stmt.setInt(5, plan_objetivo.getEstado());
+            stmt.setDate(6, sDate);
+            System.out.println(" STMT : " + stmt.toString());
+            int i = stmt.executeUpdate();
+
+            int ultimoId = UltimoIdPlan();
+            mensaje = mensaje + "##" + ultimoId;
+            db.cierraConexion();
+        } catch (SQLException e) {
+            mensaje = "Error##Modelo.Plan_objetivoModelo.SavePlanObjetivo() " + e.getMessage();
+            System.out.println(mensaje);
+        }
+        return mensaje;
+    }
+
+    public int UltimoIdPlan() {
+        int valor = 0;
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String consulta = "SELECT max(Plan_objetivo_id) id      \n"
+                    + "FROM Plan_objetivo";
+            ResultSet res = db.consulta(consulta);
+            if (res.next()) {
+                valor = res.getInt("id");
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Error Modelo.Plan_objetivoModelo.UltimoIdPlan() : " + e.getMessage());
+        }
+        return valor;
+    }
+
+    public String UpdatePlanObjetivo(Plan_objetivo plan_objetivo) {
+        String mensaje = "Ok";
+        try {
+            java.util.Date uDate = new java.util.Date();
+            java.sql.Date sDate = convertDateToSql(uDate);
+
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+
+            String sqlactualiza = "UPDATE Plan_objetivo\n"
+                    + "   SET Titulo = ? "
+                    + "      ,Creditacion = ? \n"
+                    + "      ,Gestion = ? \n"
+                    + "      ,Fecha_actualizacion = ? \n"
+                    + "      ,Empleado_actualiza = ? \n"
+                    + "      ,Estado = ? \n"
+                    + "WHERE Plan_objetivo_id = ? ";
+            PreparedStatement stmt = db.getConn().prepareStatement(sqlactualiza);
+            stmt.setString(1, plan_objetivo.getTitulo());
+            stmt.setString(2, plan_objetivo.getCreditacion());
+            stmt.setInt(3, plan_objetivo.getGestion());
+            stmt.setDate(4, sDate);
+            stmt.setInt(5, plan_objetivo.getEmpleado_id());
+            stmt.setInt(6, plan_objetivo.getEstado());
+            stmt.setInt(7, plan_objetivo.getPlan_objetivo_id());
+
+            int i = stmt.executeUpdate();
+
+            mensaje = mensaje + "##Actualiza";
+            db.cierraConexion();
+        } catch (SQLException e) {
+            mensaje = "Error##Modelo.Plan_objetivoModelo.SavePlanObjetivo() " + e.getMessage();
+            System.out.println(mensaje);
+        }
+        return mensaje;
+    }
+
+    public List<Plan_objetivo> GetAllPlanObjetivobyUser(int empleado_id) {
+        List<Plan_objetivo> plan_objetivos = new ArrayList<Plan_objetivo>();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String consulta = "SELECT po.Plan_objetivo_id, po.Titulo, SUBSTRING(po.Creditacion,1,50)Creditacion, po.Gestion, po.Empleado_id\n"
+                    + "      ,convert(varchar , po.Fecha_creacion, 103)Fecha_creacion, convert(varchar , po.Fecha_actualizacion,103)Fecha_actualizacion, po.Empleado_actualiza,po.Estado\n"
+                    + "	  , CONCAT(e.Apellido_paterno,' ', e.Apellido_materno, ' ', e.Nombre) Nombre_creador\n"
+                    + "	  , (Select CONCAT(em.Apellido_paterno,' ', em.Apellido_materno, ' ', em.Nombre) from Empleado em where em.Empleado_id = po.Empleado_actualiza) Nombre_Actualiza\n"
+                    + "  FROM Plan_objetivo po\n"
+                    + "		inner join Empleado e\n"
+                    + "		on po.Empleado_id = e.Empleado_id\n"
+                    + "where po.Empleado_id = '" + empleado_id + "' and po.Estado = '1' ";
+            System.out.println("GetAllPlanObjetivobyUser " + consulta);
+            ResultSet res = db.consulta(consulta);
+            while (res.next()) {
+                Plan_objetivo p = new Plan_objetivo();
+                p.setPlan_objetivo_id(res.getInt("Plan_objetivo_id"));
+                p.setTitulo(res.getString("Titulo"));
+                p.setCreditacion(res.getString("Creditacion"));
+                p.setGestion(res.getInt("Gestion"));
+                p.setEmpleado_id(res.getInt("Empleado_id"));
+                p.setFecha_creacion(res.getString("Fecha_creacion"));
+                p.setFecha_actualizacion(res.getString("Fecha_actualizacion"));
+                p.setEmpleado_actualiza(res.getInt("Empleado_actualiza"));
+                p.setEstado(res.getInt("Estado"));
+
+                p.setNombre_creador(res.getString("Nombre_creador"));
+                p.setNombre_actualizador(res.getString("Nombre_Actualiza"));
+
+                plan_objetivos.add(p);
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Modelo.Plan_objetivoModelo.GetAllPlanObjetivobyUser() " + e.getMessage());
+        }
+        return plan_objetivos;
+    }
+
+    public Plan_objetivo GetplanObjetivobyId(int plan_objetivo_id) {
+        Plan_objetivo p = new Plan_objetivo();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String consulta = "SELECT po.Plan_objetivo_id, po.Titulo, po.Creditacion, po.Gestion, po.Empleado_id\n"
+                    + "      ,convert(varchar , po.Fecha_creacion, 103)Fecha_creacion, convert(varchar , po.Fecha_actualizacion,103)Fecha_actualizacion, po.Empleado_actualiza,po.Estado\n"
+                    + "	  , CONCAT(e.Apellido_paterno,' ', e.Apellido_materno, ' ', e.Nombre) Nombre_creador\n"
+                    + "	  , (Select CONCAT(em.Apellido_paterno,' ', em.Apellido_materno, ' ', em.Nombre) from Empleado em where em.Empleado_id = po.Empleado_actualiza) Nombre_Actualiza\n"
+                    + "  FROM Plan_objetivo po\n"
+                    + "		inner join Empleado e\n"
+                    + "		on po.Empleado_id = e.Empleado_id\n"
+                    + "where po.Plan_objetivo_id = '" + plan_objetivo_id + "'";
+            ResultSet res = db.consulta(consulta);
+            while (res.next()) {
+
+                p.setPlan_objetivo_id(res.getInt("Plan_objetivo_id"));
+                p.setTitulo(res.getString("Titulo"));
+                p.setCreditacion(res.getString("Creditacion"));
+                p.setGestion(res.getInt("Gestion"));
+                p.setEmpleado_id(res.getInt("Empleado_id"));
+                p.setFecha_creacion(res.getString("Fecha_creacion"));
+                p.setFecha_actualizacion(res.getString("Fecha_actualizacion"));
+                p.setEmpleado_actualiza(res.getInt("Empleado_actualiza"));
+                p.setEstado(res.getInt("Estado"));
+
+                p.setNombre_creador(res.getString("Nombre_creador"));
+                p.setNombre_actualizador(res.getString("Nombre_Actualiza"));
+
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Modelo.Plan_objetivoModelo.GetAllPlanObjetivobyUser() " + e.getMessage());
+        }
+        return p;
+    }
+
+    private static java.sql.Date convertDateToSql(java.util.Date uDate) {
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        return sDate;
+    }
+}

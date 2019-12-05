@@ -108,9 +108,13 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <!-- Para Mostrar las alertas Toast-->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/toast_alert/toastr.css\" />\n");
       out.write("\n");
-      out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>    \n");
+      out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>  \n");
       out.write("        <!-- bootstrap datepicker -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../plugins/datepicker/datepicker3.css\">\n");
+      out.write("        <!--image lightgallery.css-->\n");
+      out.write("        <link type=\"text/css\" rel=\"stylesheet\" href=\"../../plugins/lightGallery-master/dist/css/lightgallery.css\" /> \n");
+      out.write("        \n");
+      out.write("        <!--emprimir-->\n");
       out.write("        \n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
       out.write("    \n");
@@ -356,16 +360,14 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <!-- /.row -->\n");
       out.write("    <!--Modal-->\n");
       out.write("    <div class=\"modal fade\" id=\"formulario_registro\">\n");
-      out.write("        <div class=\"modal-dialog modal-dialog-edit\">\n");
+      out.write("        <div id=\"modal-dialog\" class=\"modal-dialog modalTarea\">\n");
       out.write("            <div class=\"modal-content\">\n");
       out.write("                <div class=\"modal-header\">\n");
       out.write("                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n");
       out.write("                        <span aria-hidden=\"true\">&times;</span></button>\n");
       out.write("                    <h4 id=\"titleModal\" class=\"modal-title\">title</h4>\n");
       out.write("                </div>\n");
-      out.write("                <div class=\"modal-body cuerpo_registro \" style=\"padding: 0%;\">\n");
-      out.write("                    <button type=\"button\" class=\"btn btn-default pull-left\" data-dismiss=\"modal\"><i class=\"fa fa-close\"></i> Cancelar</button>\n");
-      out.write("                </div>\n");
+      out.write("                <div id=\"modelViewTarea\" class=\"modal-body cuerpo_registro\"></div>\n");
       out.write("            </div>\n");
       out.write("            <!-- /.modal-content -->\n");
       out.write("        </div>\n");
@@ -449,6 +451,11 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("\n");
+      out.write("<script src=\"https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/lightGallery-master/dist/js/lightgallery-all.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/lightGallery-master/lib/jquery.mousewheel.min.js\"></script>\n");
+      out.write("<!--imprimir-->\n");
+      out.write("<script src=\"../../plugins/demoPrint2/jQuery.print.js\"></script>\n");
       out.write("<script src='../../dist/js/moment.js'></script>\n");
       out.write("<script type=\"text/javascript\" charset=\"utf-8\">\n");
       out.write("    $(\"#btn_salir\").click(function () {\n");
@@ -488,8 +495,10 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("      navLinks: true, // can click day/week names to navigate views\n");
       out.write("      selectable: true,\n");
       out.write("      selectMirror: true,\n");
-      out.write("      select: function(e) {       \n");
-      out.write("        $(\"#titleModal\").html(\"Crear tarea\");\n");
+      out.write("      select: function(e) {   \n");
+      out.write("        $(\"#formulario_registro #modal-dialog\").removeClass( \"modalTarea\"); \n");
+      out.write("        $(\"#formulario_registro #modelViewTarea\").removeClass( \"modelViewTarea\");\n");
+      out.write("        $(\"#titleModal\").html(\"Crear nota personal\");\n");
       out.write("        $('#formulario_registro').modal('show');\n");
       out.write("        $(\".cuerpo_registro\").html('');\n");
       out.write("        $(\".cuerpo_registro\").addClass('loader');\n");
@@ -531,20 +540,19 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        return yesterday.diff(select.start) <= 0;\n");
       out.write("      },\n");
       out.write("      eventClick(e){\n");
-      out.write("        $(\".modal-dialog\").width(\"40%\");\n");
-      out.write("        $(\"#titleModal\").html(\"Editar tarea\");\n");
-      out.write("        $('#formulario_registro').modal('show');\n");
-      out.write("        $(\".cuerpo_registro\").html('');\n");
-      out.write("        $(\".cuerpo_registro\").addClass('loader');\n");
-      out.write("        $.post('editarTarea.jsp',\n");
+      out.write("          \n");
+      out.write("           \n");
+      out.write("           $('#formulario_registro').modal('show');\n");
+      out.write("           $(\".cuerpo_registro\").html('');\n");
+      out.write("           $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("           \n");
+      out.write("          if(e.event.groupId == '1'){    \n");
+      out.write("              $(\"#titleModal\").html(\"Tarea\");\n");
+      out.write("              $(\"#formulario_registro #modal-dialog\").addClass( \"modalTarea\");\n");
+      out.write("              $(\"#formulario_registro #modelViewTarea\").addClass('modelViewTarea');\n");
+      out.write("           $.post('verTarea.jsp',\n");
       out.write("                {id: e.event.id,\n");
-      out.write("                 nombre: e.event.title,\n");
-      out.write("                 fechaInicial: FullCalendar.formatDate(e.event.start, {\n");
-      out.write("                                locale: 'es'\n");
-      out.write("                            }),\n");
-      out.write("                 fechaNow: FullCalendar.formatDate(new Date(), {\n");
-      out.write("                                locale: 'es'\n");
-      out.write("                            })},\n");
+      out.write("                 title: e.event.title},\n");
       out.write("                    function (html) {\n");
       out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
       out.write("                    $(\".cuerpo_registro\").html(html);\n");
@@ -555,6 +563,23 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
       out.write("                $(\".cuerpo_registro\").html(alerta);\n");
       out.write("            });\n");
+      out.write("          }else{\n");
+      out.write("              $(\"#titleModal\").html(\"Nota personal\");\n");
+      out.write("              $(\"#formulario_registro #modal-dialog\").removeClass( \"modalTarea\");\n");
+      out.write("              $(\"#formulario_registro #modelViewTarea\").removeClass( \"modelViewTarea\");\n");
+      out.write("             $.post('verTareaPersonal.jsp',\n");
+      out.write("                {id: e.event.id},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            }); \n");
+      out.write("          }\n");
       out.write("      },\n");
       out.write("      editable: false,\n");
       out.write("      eventLimit: true, // allow \"more\" link when too many events  \n");
@@ -562,30 +587,44 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            ");
 
             for(A_Tarea item : listaTareas){
+                String color = "";
+                if(item.getIdTipoTarea()==1){
+                  color = "#f39c12 !important";
+                    if(item.getIdEstadoTarea() == 2 ){
+//                      verde
+                        color = "#00a65a !important";
+                    }else if(item.getIdEstadoTarea() == 6){
+//                      rojo
+                        color = "#dd4b39 !important";
+                    } 
+                }
+
                
       out.write("{\n");
       out.write("                id: ");
       out.print(item.getIdTarea());
+      out.write(",\n");
+      out.write("                groupId: '");
+      out.print(item.getIdTipoTarea());
+      out.write("',\n");
+      out.write("                idUser: ");
+      out.print(item.getIdUserCrea());
       out.write(",\n");
       out.write("                title: '");
       out.print(item.getTitulo());
       out.write("',\n");
       out.write("                start: '");
       out.print(item.getFechaInicio());
-      out.write('T');
-      out.print(item.getHoraInicio());
       out.write("',\n");
       out.write("                end: '");
       out.print(item.getFechaFinal());
-      out.write('T');
-      out.print(item.getHoraFinal());
       out.write("',\n");
       out.write("                backgroundColor: '");
-      out.print(item.getColor());
+      out.print(color);
       out.write("',\n");
       out.write("                borderColor: '");
-      out.print(item.getColor());
-      out.write("',\n");
+      out.print(color);
+      out.write("'\n");
       out.write("                },\n");
       out.write("            ");
 }
@@ -593,8 +632,8 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        {\n");
       out.write("        id: (++counter).toString(),\n");
       out.write("        title: 'Meeting',\n");
-      out.write("        start: '2018-07-12T10:30:00',\n");
-      out.write("        end: '2018-07-12T12:30:00'\n");
+      out.write("        start: '2016-12-01T10:30:00',\n");
+      out.write("        end: '2016-12-02T12:30:00'\n");
       out.write("        }\n");
       out.write("        ],\n");
       out.write("        timeFormat: 'H(:mm)t'\n");

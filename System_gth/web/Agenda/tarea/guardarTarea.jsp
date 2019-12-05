@@ -9,15 +9,17 @@
 <%
     A_Tarea tarea = new A_Tarea();
     String resultado = null;
+    
     try{
         tarea.setIdTarea(Integer.parseInt(request.getParameter("id")));
-        tarea.setIdUserCrea(Integer.parseInt(request.getParameter("idUsuario")));
+        tarea.setIdUserCrea(Integer.parseInt(request.getParameter("idFunc")));
         tarea.setTitulo(request.getParameter("titulo"));
         tarea.setDescripcion(request.getParameter("descripcion"));        
         tarea.setIdRepeticionTarea(Integer.parseInt(request.getParameter("idRepeticion")));
         tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));
         tarea.setFechaInicio(String.valueOf(request.getParameter("fi")));
         tarea.setHoraInicio(request.getParameter("horaInicio"));
+        tarea.setIdTipoTarea(1);
     }catch(Exception e){
         resultado =  "No se resivieron todos los parametros. Error: " + e;
     }
@@ -70,18 +72,26 @@
         tarea.setDomingo(0); 
     }
     if(request.getParameter("proceso").equalsIgnoreCase("insert")){
-        resultado = "Ok";
+//        resultado = "Ok";
+        
         resultado = _tarea.SaveTarea(tarea);
+        
         if(resultado.equalsIgnoreCase("Ok")){
+            A_Tarea auxTarea = new A_Tarea();
+            auxTarea = _tarea.getMaxIdTarea();
         %>
         <input type="hidden" value="<%=request.getParameter("titulo")%>" name="gTitulo" id="gTitulo">
-        <input type="hidden" value="<%=request.getParameter("idUsuario")%>" name="gIdUsuario" id="gIdUsuario">
+        <input type="hidden" value="<%=request.getParameter("idFunc")%>" name="gIdUsuario" id="gIdUsuario">
     <div class=" text-center alert alert-success alert-dismissible">
         <h4><i class="icon fa fa-check"></i> Guardado</h4>
     </div>
      <script type="text/javascript">
         $(document).ready(function () {  
             localStorage.setItem("idTarea", $('#gTitulo').val()+"%"+$('#gIdUsuario').val());
+            for (var i = 0; i < listaImage.length; i++) {
+                saveImageDB(<%=auxTarea.getIdTarea()%>, listaImage[i].titulo, listaImage[i].nameImage);
+                saveImage(listaImage[i].path);
+          }
             $("#mensaje").hide(3000, function () {                
                 $('.form-group').removeClass('has-success');
                 $('.glyphicon-ok').hide();
@@ -94,7 +104,8 @@
         
     }}
     else {
-        resultado = _tarea.UpdateTarea(tarea, request.getParameter("titulo"));
+
+        resultado = _tarea.UpdateTarea(tarea, request.getParameter("oldTitulo"), Integer.parseInt(request.getParameter("idFunc")));
         if(resultado.equalsIgnoreCase("Ok")){
         %>
         
@@ -103,6 +114,11 @@
         </div>
          <script type="text/javascript">
             $(document).ready(function () {
+                
+                for (var i = 0; i < listaImage.length; i++) {
+                saveImageDB(<%=request.getParameter("id")%>, listaImage[i].titulo, listaImage[i].nameImage);
+                }
+                
                 $("#mensaje").hide(3000, function () {
                     location.reload();
                 });

@@ -106,9 +106,13 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <!-- Para Mostrar las alertas Toast-->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/toast_alert/toastr.css\" />\n");
       out.write("\n");
-      out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>    \n");
+      out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>  \n");
       out.write("        <!-- bootstrap datepicker -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../plugins/datepicker/datepicker3.css\">\n");
+      out.write("        <!--image lightgallery.css-->\n");
+      out.write("        <link type=\"text/css\" rel=\"stylesheet\" href=\"../../plugins/lightGallery-master/dist/css/lightgallery.css\" /> \n");
+      out.write("        \n");
+      out.write("        <!--emprimir-->\n");
       out.write("        \n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
       out.write("    \n");
@@ -516,6 +520,11 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("\n");
+      out.write("<script src=\"https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/lightGallery-master/dist/js/lightgallery-all.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/lightGallery-master/lib/jquery.mousewheel.min.js\"></script>\n");
+      out.write("<!--imprimir-->\n");
+      out.write("<script src=\"../../plugins/demoPrint2/jQuery.print.js\"></script>\n");
       out.write("<script src='../../dist/js/moment.js'></script>\n");
       out.write("<script type=\"text/javascript\" charset=\"utf-8\">\n");
       out.write("    $(\"#btn_salir\").click(function () {\n");

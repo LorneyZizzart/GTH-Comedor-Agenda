@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class A_TareaModel {
     
-    public List<A_Tarea> getAllTarea(int idUser, String sentencia) throws ParseException {
+    public List<A_Tarea> getAllTarea(String slqUser, String sentencia) throws ParseException {
         List<A_Tarea> tareas = new ArrayList<A_Tarea>();        
         try {
             ConectaSqlServer db = new ConectaSqlServer();
@@ -39,9 +39,9 @@ public class A_TareaModel {
                         "AND ta.idRepeticionTarea = rt.idRepeticionTarea\n" +
                         "AND ta.idUsuarioCrea = us.User_id\n" +
                         "AND us.Empleado_id = em.Empleado_id\n" +
-                        "AND ta.estado <> 6  " +
-                        "AND ta.idUsuarioCrea = " + idUser + " " +sentencia;
-//            System.out.print("sql: "+sql);
+                        "AND ta.idTipoTarea = 1\n" +
+                        "AND ta.estado <> 6 " + slqUser+ " " +sentencia;
+
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 A_Tarea tarea = new A_Tarea();
@@ -76,22 +76,55 @@ public class A_TareaModel {
         }
         return tareas;
     }
-//    ver tareas agrupadas
-    public List<A_Tarea> getGroupTareaByUser (int idUser) {
+    
+    public List<A_Tarea> getAllTareaCalendar(int idUser){
         List<A_Tarea> tareas = new ArrayList<A_Tarea>();        
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro , rt.nombre,  ta.descripcion\n" +
+            String sql = "SELECT idTarea, idUsuarioCrea, idRepeticionTarea, idEstadoTarea, titulo, color, fechaInicio, fechaFinal, horaInicio, idTipoTarea FROM ATarea WHERE estado <> 6 AND idUsuarioCrea = " +idUser;
+
+            ResultSet res = db.consulta(sql);
+            while (res.next()) {
+                A_Tarea tarea = new A_Tarea();
+                
+                tarea.setIdTarea(res.getInt("idTarea"));
+                tarea.setIdUserCrea(res.getInt("idUsuarioCrea"));
+                tarea.setIdRepeticionTarea(res.getInt("idRepeticionTarea"));
+                tarea.setIdEstadoTarea(res.getInt("idEstadoTarea"));
+                tarea.setTitulo(res.getString("titulo"));
+                tarea.setColor(res.getString("color"));
+                tarea.setFechaInicio(res.getString("fechaInicio"));
+                tarea.setFechaFinal(res.getString("fechaFinal"));
+                tarea.setHoraInicio(res.getString("horaInicio"));;   
+                tarea.setIdTipoTarea(res.getInt("idTipoTarea"));
+                
+                tareas.add(tarea);
+            }
+            db.cierraConexion();
+                      
+        } catch (SQLException e) {
+            System.out.println("Modelo.A_TareaModel.getAllTareaCalendar() " + e.getMessage());
+        }
+        return tareas;
+    }
+//    ver tareas agrupadas
+    public List<A_Tarea> getGroupTareaByUser (String sentenciaUser) {
+        List<A_Tarea> tareas = new ArrayList<A_Tarea>();        
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT ta.titulo, ta.idUsuarioCrea, ta.idRepeticionTarea, ta.fechaRegistro , rt.nombre,  ta.descripcion\n" +
                          "FROM ATarea ta, ARepeticionTarea rt\n" +
                          "WHERE ta.idRepeticionTarea = rt.idRepeticionTarea\n" +
-                        "AND ta.estado <> 6 " + 
-                         "AND idUsuarioCrea = " + idUser + "\n" +
-                         "GROup by ta.titulo, ta.idRepeticionTarea, ta.fechaRegistro, rt.nombre, ta.descripcion";
+                        "AND ta.idTipoTarea = 1\n" +
+                        "AND ta.estado <> 6 " + sentenciaUser +
+                         "GROup by ta.titulo, ta.idUsuarioCrea, ta.idRepeticionTarea, ta.fechaRegistro, rt.nombre, ta.descripcion";
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 A_Tarea tarea = new A_Tarea();
                 tarea.setIdRepeticionTarea(res.getInt("idRepeticionTarea"));
+                tarea.setIdUserCrea(res.getInt("idUsuarioCrea"));
                 tarea.setTitulo(res.getString("titulo"));
                 tarea.setFechaRegistroTarea(res.getDate("fechaRegistro"));
                 tarea.setNombreRepeticion(res.getString("nombre"));   
@@ -173,6 +206,7 @@ public class A_TareaModel {
 "                        WHERE ta.idEstadoTarea = rt.idRepeticionTarea\n" +
 "                        AND ta.idUsuarioCrea = us.User_id\n" +
 "                        AND us.Empleado_id = em.Empleado_id\n" +
+                        "AND ta.idTipoTarea = 1\n" +
 "                        AND ta.estado <> 6  \n" +
 "                        AND ta.titulo = '" + titulo + "'\n" +
 "			 AND ta.idUsuarioCrea = " + idUser;
@@ -252,6 +286,7 @@ public class A_TareaModel {
                         "AND ta.idRepeticionTarea = rt.idRepeticionTarea\n" +
                         "AND ta.idUsuarioCrea = us.User_id\n" +
                         "AND us.Empleado_id = em.Empleado_id\n" +
+                        "AND ta.idTipoTarea = 1\n" +
                         "AND ta.estado <> 6  " +
                         "AND ta.titulo = '" + t.getTitulo() + "' AND ta.idUsuarioCrea = " + t.getIdUserCrea();
             ResultSet res = db.consulta(sql);
@@ -287,7 +322,7 @@ public class A_TareaModel {
         return tareas;
     }
     
-    public String SaveOrUpdate(A_Tarea tarea, String titulo) {
+    public String SaveOrUpdate(A_Tarea tarea, String titulo, int oldIdUser) {
         String respuesta = null;
         try {
             if (tarea.getIdTarea() == 0 && titulo == null) {
@@ -295,7 +330,7 @@ public class A_TareaModel {
                 respuesta = SaveTarea(tarea);
             } else {
                 // Actualizar
-                respuesta = ActualizarTarea(tarea, titulo);
+                respuesta = ActualizarTarea(tarea, titulo, oldIdUser);
             }
 
         } catch (Exception e) {
@@ -320,28 +355,47 @@ public class A_TareaModel {
         }
         return resultado;
     }
+    //TAREA PERSONAL
     
+    public A_Tarea getTareaPersonalById(int idTarea) {
+        A_Tarea tarea = new A_Tarea();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT idTarea, titulo, descripcion  FROM ATarea where idTarea = " + idTarea;
+
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {                
+                tarea.setIdTarea(res.getInt("idTarea"));
+                tarea.setTitulo(res.getString("titulo"));
+                tarea.setDescripcion(res.getString("descripcion"));
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Controlador.A_TareaModel.getTareaPersonalById() " + e.getMessage());
+        }
+        return tarea;
+    }
     
-    private String SaveTarea(A_Tarea tarea) {
+    public String saveTareaPersonal(A_Tarea tarea) {
         String respuesta = "Ok";
         try {
                 ConectaSqlServer db = new ConectaSqlServer();
                 db.conectar();
                 String sql = "INSERT INTO ATarea\n"
-                        + "  (titulo, descripcion, idRepeticionTarea, idEstadoTarea, fechaInicio, horaInicio, domingo, lunes, martes, miercoles, jueves, viernes, sabado, fechaRegistro, fechaActualizacion, idUsuarioCrea, estado)"
+                        + "  (titulo, descripcion, fechaInicio, fechaFinal, fechaRegistro, fechaActualizacion, idUsuarioCrea, estado, idTipoTarea)"
                         + "  VALUES\n"
-                        + "  ('"+tarea.getTitulo()+"','"+tarea.getDescripcion()+"',"+tarea.getIdRepeticionTarea()+","+tarea.getIdEstadoTarea()+",'"+tarea.getFechaInicio()+"','"+tarea.getHoraInicio()+"',"+tarea.getDomingo()+"," + tarea.getLunes()+"," + tarea.getMartes()+ ","+tarea.getMiercoles()+","+tarea.getJueves()+","+tarea.getViernes()+","+tarea.getSabado()+",CONVERT(date, SYSDATETIME()),CONVERT(date, SYSDATETIME()),"+tarea.getIdUserCrea()+",1)";
-
+                        + "  ('"+tarea.getTitulo()+"','"+tarea.getDescripcion()+"','"+tarea.getFechaInicio()+"','"+tarea.getFechaFinal()+"',CONVERT(date, SYSDATETIME()),CONVERT(date, SYSDATETIME()),"+tarea.getIdUserCrea()+",1, 2)";
                 db.insertar(sql);
                 db.cierraConexion();
                        
         } catch (SQLException e) {
-            respuesta = "Modelo.A_TareaModel.SaveTarea() " + e.getMessage();
+            respuesta = "Modelo.A_TareaModel.saveTareaPersonal() " + e.getMessage();
         }
         return respuesta;
-    }  
+    } 
     
-    private String ActualizarTarea(A_Tarea tarea, String titulo) {
+    public String ActualizarTareaPersonal(A_Tarea tarea, int idTarea) {
         String respuesta = "Ok";
         try {
             ConectaSqlServer db = new ConectaSqlServer();
@@ -350,6 +404,65 @@ public class A_TareaModel {
             String sql = "UPDATE ATarea \n"
                     + "   SET titulo = '" + tarea.getTitulo()+ "' \n"
                     + "      ,descripcion = '" + tarea.getDescripcion()+ "' \n"
+                    + "      ,fechaActualizacion = CONVERT(date, SYSDATETIME()) "
+                    + " WHERE idTarea = " + idTarea;
+            
+            db.actualizar(sql);
+            
+            db.cierraConexion();
+        } catch (SQLException e) {
+            respuesta = "Modelo.A_TareaModel.ActualizarTareaPersonal() " + e.getMessage();
+        }
+        return respuesta;
+    }
+    
+    public String DeleteTareaPersonal(int idTarea) {
+        String respuesta = "Ok";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "UPDATE ATarea \n"
+                    + "   SET estado = 6 \n"
+                    + " WHERE idTarea = " + idTarea;
+            db.actualizar(sql);
+            db.cierraConexion();
+        } catch (SQLException e) {
+            respuesta = "Modelo.A_TareaModel.DeleteTarea() " + e.getMessage();
+        }
+        return respuesta;
+    }
+    
+    private String SaveTarea(A_Tarea tarea) {
+        String respuesta = "Ok";
+        try {
+                ConectaSqlServer db = new ConectaSqlServer();
+                db.conectar();
+                String sql = "INSERT INTO ATarea\n"
+                        + "  (titulo, descripcion, idRepeticionTarea, idEstadoTarea, idTipoTarea, fechaInicio, horaInicio, domingo, lunes, martes, miercoles, jueves, viernes, sabado, fechaRegistro, fechaActualizacion, idUsuarioCrea, estado)"
+                        + "  VALUES\n"
+                        + "  ('"+tarea.getTitulo()+"','"+tarea.getDescripcion()+"',"+tarea.getIdRepeticionTarea()+","+tarea.getIdEstadoTarea()+","+tarea.getIdTipoTarea()+",'"+tarea.getFechaInicio()+"','"+tarea.getHoraInicio()+"',"+tarea.getDomingo()+"," + tarea.getLunes()+"," + tarea.getMartes()+ ","+tarea.getMiercoles()+","+tarea.getJueves()+","+tarea.getViernes()+","+tarea.getSabado()+",CONVERT(date, SYSDATETIME()),CONVERT(date, SYSDATETIME()),"+tarea.getIdUserCrea()+",1)";
+
+                db.insertar(sql);
+                db.cierraConexion();
+                       
+        } catch (SQLException e) {
+            respuesta = "Modelo.A_TareaModel.SaveTarea() " + e.getMessage();
+        }
+        return respuesta;
+    }
+    
+    
+    
+    private String ActualizarTarea(A_Tarea tarea, String oldTitulo, int oldIdUser) {
+        String respuesta = "Ok";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+
+            String sql = "UPDATE ATarea \n"
+                    + "   SET titulo = '" + tarea.getTitulo()+ "' \n"
+                    + "      ,descripcion = '" + tarea.getDescripcion()+ "' \n"
+                    + "      ,idUsuarioCrea = '" + tarea.getIdUserCrea()+ "' \n"
                     + "      ,idRepeticionTarea = " + tarea.getIdRepeticionTarea()+ " \n"
                     + "      ,idEstadoTarea = " + tarea.getIdEstadoTarea()+ " \n"
                     + "      ,fechaInicio = '" + tarea.getFechaInicio()+ "' \n"
@@ -362,9 +475,8 @@ public class A_TareaModel {
                     + "      ,viernes = " + tarea.getViernes()+ " \n"
                     + "      ,sabado = " + tarea.getSabado()+ " \n"
                     + "      ,fechaActualizacion = CONVERT(date, SYSDATETIME()) "
-                    + " WHERE titulo = '" + titulo + "' AND idUsuarioCrea = " + tarea.getIdUserCrea();
+                    + " WHERE titulo = '" + oldTitulo + "' AND idUsuarioCrea = " + oldIdUser;
             
-//            System.err.println("sql: "+ sql);
             db.actualizar(sql);
             
             db.cierraConexion();
@@ -451,5 +563,39 @@ public class A_TareaModel {
         
         fecha = day+"/"+month+"/"+year;
         return fecha;
+    }
+    
+    public List<Empleado> getEmpleados() {
+        List<Empleado> empleados = new ArrayList<Empleado>();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT em.Empleado_id, em.Nombre, em.Apellido_paterno, em.Apellido_materno, em.email, em.Fecha_nacimiento, em.Telefono,\n" +
+                        "us.User_id\n" +
+                        "FROM Empleado em, Usuario us\n" +
+                        "where em.Empleado_id = us.Empleado_id";
+            ResultSet res = db.consulta(sql);
+            while (res.next()) {
+                Empleado e = new Empleado();
+                e.setUser_id(res.getInt("User_id"));
+                e.setEmpleado_id(res.getInt("Empleado_id"));
+                e.setNombre(res.getString("Nombre"));
+                e.setApellido_paterno(res.getString("Apellido_paterno"));
+                e.setApellido_materno(res.getString("Apellido_materno"));
+                e.setEmail(res.getString("email"));
+                e.setFecha_nacimiento(res.getString("Fecha_nacimiento"));
+                e.setTelefono(res.getString("Telefono"));
+
+                Empleado_cargoModel cargo = new Empleado_cargoModel();
+                e.setCargo(cargo.GetEmpleadoCargoByIdEmpleado(e.getEmpleado_id()));
+
+                empleados.add(e);
+            }
+
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Modelo.EmpleadoModel.GetAllEmpleado()" + e.getMessage());
+        }
+        return empleados;
     }
 }

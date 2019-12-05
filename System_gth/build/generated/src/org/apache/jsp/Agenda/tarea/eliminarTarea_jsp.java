@@ -3,6 +3,7 @@ package org.apache.jsp.Agenda.tarea;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.A_PathTarea;
 import Entidad.A_Tarea;
 import Entidad.A_EstadoTarea;
 import Entidad.A_RepeticionTarea;
@@ -51,6 +52,8 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
+      out.write("\n");
       Controlador.A_EstadoTareaController _estadoTarea = null;
       synchronized (_jspx_page_context) {
         _estadoTarea = (Controlador.A_EstadoTareaController) _jspx_page_context.getAttribute("_estadoTarea", PageContext.PAGE_SCOPE);
@@ -87,14 +90,26 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
         }
       }
       out.write('\n');
+      Controlador.A_PathTareaController _path = null;
+      synchronized (_jspx_page_context) {
+        _path = (Controlador.A_PathTareaController) _jspx_page_context.getAttribute("_path", PageContext.PAGE_SCOPE);
+        if (_path == null){
+          _path = new Controlador.A_PathTareaController();
+          _jspx_page_context.setAttribute("_path", _path, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
     String[] id = request.getParameter("id").split("%"); 
     List<A_EstadoTarea> listaEstadoTarea = new ArrayList<A_EstadoTarea>();
     List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
+    List<A_PathTarea> listaPath = new ArrayList<A_PathTarea>();
     listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     A_Tarea tarea = new A_Tarea();
     tarea = _tarea.getTareaByTitulo(id[0], Integer.parseInt(id[1]));
     listaEstadoTarea = _estadoTarea.getAllEstadoTarea();
+    listaPath = _path.getAllPath(id[0], Integer.parseInt(id[1]));
+
 
       out.write("\n");
       out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
@@ -102,6 +117,7 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.print(request.getParameter("id"));
       out.write("\" name=\"id\" id=\"id\">\n");
       out.write("                    <div class=\"box-body\">\n");
+      out.write(" \n");
       out.write("                        <div class=\"form-group\" >\n");
       out.write("                            <label>Título</label>\n");
       out.write("                            <input disabled type=\"text\" class=\"form-control\" id=\"titulo\"  name=\"titulo\" value=\"");
@@ -114,7 +130,31 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.print(tarea.getDescripcion());
       out.write("</textarea>\n");
       out.write("                        </div>\n");
-      out.write("                        <div class=\"form-group\">\n");
+      out.write("                        <div id=\"divImage\" class=\"form-group col-md-12\" style=\"margin: 10px 0 10px 0; padding: 0;\">\n");
+      out.write("                              ");
+
+                                for (A_PathTarea path : listaPath) {
+
+                                    
+      out.write("\n");
+      out.write("                                  <div id=\"divimgSalida");
+      out.print(path.getIdPath());
+      out.write("\" class=\"col-md-2 text-center cont-image\" style=\"border: solid 1px #aba8a8; margin: 2px;padding: 0; border-radius: 5px;\">\n");
+      out.write("                                        <label id=\"imgSalida\">");
+      out.print(path.getNombrePath());
+      out.write("</label>\n");
+      out.write("                                        <img id=\"imgSalida");
+      out.print(path.getIdPath());
+      out.write("\" width=\"100%\" height=\"100%\" src=\"../../folder_picture/Tareas/");
+      out.print(path.getPathImage());
+      out.write("\" />\n");
+      out.write("                                    </div>\n");
+      out.write("                            ");
+  } 
+      out.write("\n");
+      out.write("                        </div>\n");
+      out.write("                        <div class=\"row\" >\n");
+      out.write("                                                    <div class=\"form-group col-md-6\">\n");
       out.write("                            <label>Repetir cada</label>\n");
       out.write("                            <select disabled id=\"idRepeticion\" name=\"idRepeticion\"  class=\"form-control select2\" style=\"width: 100%;\">\n");
       out.write("                                <option value=\"0\" disabled selected=\"selected\">Selecione una opción</option>\n");
@@ -140,7 +180,7 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("\n");
       out.write("                            </select>\n");
       out.write("                        </div>\n");
-      out.write("                            <div id=\"fechaInicio\" class=\"form-group\" style=\"padding-right: 0;padding-left: 0;\">\n");
+      out.write("                            <div id=\"fechaInicio\" class=\"form-group col-md-6\" >\n");
       out.write("                            <label>Fecha incio:</label>\n");
       out.write("                            <div class=\"input-group date\">\n");
       out.write("                              <div class=\"input-group-addon\">\n");
@@ -151,6 +191,8 @@ public final class eliminarTarea_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("\">\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
+      out.write("                        </div>\n");
+      out.write("\n");
       out.write("                            <div class=\"row row-days\">\n");
       out.write("                                <div class=\"form-group col-sm-1 col-day\">\n");
       out.write("                                    <label>D</label>\n");

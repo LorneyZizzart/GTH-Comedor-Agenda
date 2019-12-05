@@ -33,11 +33,11 @@
                             %>
                             <tr>
                                 <td><%=contador%></td>
-                                <td><a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>"class="verProceso" style="cursor:pointer;"><%=p.getNombreProcedimiento()%> </a>    </td>                    
+                                <td><a data-id="<%=p.getIdProcedimiento()%>"class="verProceso" style="cursor:pointer;"><%=p.getNombreProcedimiento()%> </a>    </td>                    
                                 <td class="text-center">
                                     <div class="btn-group ">
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>" class="formEditProcess btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(p.getIdProcedimiento()))%>" class="formDeletProcess btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
+                                        <a data-id="<%=p.getIdProcedimiento()%>%<%=request.getParameter("id")%>" class="formEditProcess btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
+                                        <a data-id="<%=p.getIdProcedimiento()%>%<%=request.getParameter("id")%>" class="formDeletProcess btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
                                     </div>
                                 </td>
                             </tr>

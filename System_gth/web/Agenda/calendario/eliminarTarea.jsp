@@ -4,7 +4,7 @@
     int id = 0;
     try {
         id = Integer.parseInt(request.getParameter("id"));
-//        respuesta = _tarea.DeleteTareaById(id);
+        respuesta = _tarea.DeleteTareaPersonal(id);
     }catch (Exception e) {
         id = 0;
     }

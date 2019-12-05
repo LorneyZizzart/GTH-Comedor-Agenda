@@ -40,9 +40,13 @@
         <!-- Para Mostrar las alertas Toast-->
         <link rel="stylesheet" href="../../bootstrap/toast_alert/toastr.css" />
 
-        <script src="../../plugins/jQuery/jquery-3.4.1.min.js"></script>    
+        <script src="../../plugins/jQuery/jquery-3.4.1.min.js"></script>  
         <!-- bootstrap datepicker -->
         <link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">
+        <!--image lightgallery.css-->
+        <link type="text/css" rel="stylesheet" href="../../plugins/lightGallery-master/dist/css/lightgallery.css" /> 
+        
+        <!--emprimir-->
         
         <link rel="stylesheet" href="../../bootstrap/css/myStyle.css">
     

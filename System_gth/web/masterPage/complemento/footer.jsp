@@ -75,6 +75,11 @@
 <script src="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <script src="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
+<script src="../../plugins/lightGallery-master/dist/js/lightgallery-all.min.js"></script>
+<script src="../../plugins/lightGallery-master/lib/jquery.mousewheel.min.js"></script>
+<!--imprimir-->
+<script src="../../plugins/demoPrint2/jQuery.print.js"></script>
 <script src='../../dist/js/moment.js'></script>
 <script type="text/javascript" charset="utf-8">
     $("#btn_salir").click(function () {

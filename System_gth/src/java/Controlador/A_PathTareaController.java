@@ -7,6 +7,7 @@ package Controlador;
 
 import Entidad.A_PathTarea;
 import Modelo.A_PathTareaModel;
+
 import java.util.List;
 
 /**
@@ -17,8 +18,12 @@ public class A_PathTareaController {
     A_PathTareaModel mod = new A_PathTareaModel();
     
     
-    public List<A_PathTarea> getAllPath(int idTarea) {
-        return this.mod.getAllPath(idTarea);
+    public List<A_PathTarea> getAllPath(String titulo, int idUser) {
+        return this.mod.getAllPath(titulo, idUser);
+    } 
+    
+    public String savePath(A_PathTarea path){
+        return this.mod.savePathTarea(path);
     }
     
     public String DeletePath(int idPath){ 

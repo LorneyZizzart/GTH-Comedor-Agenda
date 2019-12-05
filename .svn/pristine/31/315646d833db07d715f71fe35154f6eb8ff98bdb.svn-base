@@ -1,0 +1,43 @@
+<%--<%@page import="com.itextpdf.text.pdf.codec.Base64"%>--%>
+<%@page import="java.io.File"%>
+<%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.FileItemFactory"%>
+<%@page import="java.io.FileInputStream"%>
+<%@page import="java.io.InputStream"%>
+<%@ page import="java.util.*" %>
+<%@page import="com.itextpdf.text.pdf.codec.Base64"%>
+<jsp:useBean id="_upFile" class="Modelo.AFileUploadHandler" />
+<jsp:useBean id="_encript" class="Controlador.EncriptionController" />
+<%
+	   	/*FileItemFactory es una interfaz para crear FileItem*/
+        FileItemFactory file_factory = new DiskFileItemFactory();
+        
+	String resultado = "";	
+		/*ServletFileUpload esta clase convierte los input file a FileItem*/
+        ServletFileUpload servlet_up = new ServletFileUpload(file_factory);
+		/*sacando los FileItem del ServletFileUpload en una lista */
+        List items = servlet_up.parseRequest(request);
+		
+        for(int i=0;i<items.size();i++){
+			/*FileItem representa un archivo en memoria que puede ser pasado al disco duro*/
+            FileItem item = (FileItem) items.get(0);
+			/*item.isFormField() false=input file; true=text field*/
+            if (! item.isFormField()){
+				/*cual sera la ruta al archivo en el servidor*/
+				File archivo_server = new File("E:/Proyectos/GTH/System_gth/web/folder_picture/"+item.getName());
+				/*y lo escribimos en el servido*/
+				item.write(archivo_server);
+                                resultado = "Ok";
+                                %>
+                
+                        <%
+//                out.print("Nombre --> " + item.getName() );
+//                out.print("<br> Tipo --> " + item.getContentType());
+//                out.print("<br> tamaño --> " + (item.getSize()/1240)+ "KB");
+                out.print("../../folder_picture/"+item.getName());
+                
+            }
+        }
+ %>

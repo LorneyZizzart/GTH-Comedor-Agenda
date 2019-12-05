@@ -86,11 +86,10 @@ public final class verProceso_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                \n");
       out.write("</div>\n");
       out.write("                <div class=\"box-footer\" style=\"padding: 8px 0 0 0;background-color: #eaeaea;\">\n");
-      out.write("                        <button type=\"button\" class=\"btn-purple pull-right btn-cProcess\" data-dismiss=\"modal\"><i class=\"fa fa-arrow-left\"></i> Volver</button>\n");
+      out.write("                        <button type=\"button\" class=\"btn-purple pull-left btn-cProcess\" data-dismiss=\"modal\"><i class=\"fa fa-arrow-left\"></i> Volver</button>\n");
       out.write("                    </div>\n");
       out.write("                <script type=\"text/javascript\">\n");
       out.write("                    $(\".btn-cProcess\").click(function (e) {\n");
-      out.write("                         $(\".modal-dialog\").removeClass( \"modalTarea\");\n");
       out.write("                        $(\"#formulario_registro #modelViewTarea\").removeClass( \"modelViewTarea\");\n");
       out.write("        $(\"#titleModal\").html(\"Procesos\");\n");
       out.write("        e.preventDefault();\n");

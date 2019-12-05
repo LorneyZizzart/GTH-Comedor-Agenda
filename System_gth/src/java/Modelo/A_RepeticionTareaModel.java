@@ -16,7 +16,8 @@ import java.util.List;
  *
  * @author Invitado1
  */
-public class A_RepeticionTareaModel {
+public class A_RepeticionTareaModel {    
+    
     
     public List<A_RepeticionTarea> getAllRepeticionTarea() {
         List<A_RepeticionTarea> repeticionesTarea = new ArrayList<A_RepeticionTarea>();
@@ -25,7 +26,7 @@ public class A_RepeticionTareaModel {
             db.conectar();
             String sql = "SELECT idRepeticionTarea, nombre, sumarDias, sumarMes, sumarYear, estado "
                        + "FROM ARepeticionTarea "
-                       + " WHERE Estado <> 6 ORDER BY nombre ASC";
+                       + " WHERE estado <> 6 ORDER BY nombre ASC";
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 A_RepeticionTarea repeticionTarea = new A_RepeticionTarea();
@@ -37,6 +38,7 @@ public class A_RepeticionTareaModel {
                 repeticionTarea.setEstadoRepeticion(res.getInt("estado"));
                 repeticionesTarea.add(repeticionTarea);
             }
+            
             db.cierraConexion();
         } catch (SQLException e) {
             System.out.println("Modelo.A_RepeticionTareaModel.getAllRepeticionTarea() " + e.getMessage());

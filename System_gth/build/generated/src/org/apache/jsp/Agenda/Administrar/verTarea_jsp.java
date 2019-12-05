@@ -3,6 +3,7 @@ package org.apache.jsp.Agenda.Administrar;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.A_PathTarea;
 import java.util.ArrayList;
 import java.util.List;
 import Entidad.A_Tarea;
@@ -47,6 +48,7 @@ public final class verTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
       Controlador.A_TareaController _tarea = null;
       synchronized (_jspx_page_context) {
         _tarea = (Controlador.A_TareaController) _jspx_page_context.getAttribute("_tarea", PageContext.PAGE_SCOPE);
@@ -65,17 +67,30 @@ public final class verTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
         }
       }
       out.write('\n');
+      Controlador.A_PathTareaController _path = null;
+      synchronized (_jspx_page_context) {
+        _path = (Controlador.A_PathTareaController) _jspx_page_context.getAttribute("_path", PageContext.PAGE_SCOPE);
+        if (_path == null){
+          _path = new Controlador.A_PathTareaController();
+          _jspx_page_context.setAttribute("_path", _path, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
     String[] id = request.getParameter("id").split("%"); 
     A_Tarea tarea = new A_Tarea();
     List<A_Tarea> procesos = new ArrayList<A_Tarea>();
+    List<A_PathTarea> listaPath = new ArrayList<A_PathTarea>();
     tarea = _tarea.getTareaByTitulo(id[0], Integer.parseInt(id[1]));
+    listaPath = _path.getAllPath(id[0], Integer.parseInt(id[1]));
+
     if(Integer.parseInt(id[2]) == 1){
         tarea = _tarea.getTareaById(tarea.getIdTarea());
         procesos = _proceso.getAllProcedimientoTarea(tarea.getTitulo(),tarea.getIdUserCrea());
     }else{
         procesos = _proceso.getAllProcedimientoTarea(id[0], Integer.parseInt(id[1]));
     }
+    
 
       out.write("\n");
       out.write("<div style=\" padding: 0 2% 2% 2%; border: solid 1px #d2d2d2; background-color: white;\">\n");
@@ -87,7 +102,7 @@ public final class verTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print(tarea.getTitulo());
       out.write("</h4>\n");
       out.write("            </div>   \n");
-      out.write("            <div class=\"col-md-12\" style=\"margin-top: 20px; padding: 0\">\n");
+      out.write("            <div class=\"row\" style=\"margin: 20px 0 0 0;\">\n");
       out.write("                <div class=\"col-md-6 col-xs-12\" style=\"padding-left: 10px;\">\n");
       out.write("                    <p> <a class=\"name\">Tipo de repetición: </a>");
       out.print(tarea.getNombreRepeticion());
@@ -171,6 +186,27 @@ if(tarea.getLunes()> 0){
       out.write("             <p>");
       out.print(p.getDescripcionProcedimiento());
       out.write("</p>\n");
+      out.write("    ");
+  } 
+      out.write("\n");
+      out.write("                </div>\n");
+      out.write("                <div class=\"box-footer\">\n");
+      out.write("                    <h4>IMAGENES DE REFERENCIA</h4>\n");
+      out.write("                    ");
+
+                                for (A_PathTarea path : listaPath) {
+
+            
+      out.write("\n");
+      out.write("                            <div id=\"divimgSalida\" class=\"col-md-2 text-center cont-image\" style=\"border: solid 1px #aba8a8; margin: 2px;padding: 0;\">\n");
+      out.write("                                \n");
+      out.write("                                <img id=\"imgSalida'+numImage+'\" width=\"100%\" height=\"100%\" src=\"../../folder_picture/");
+      out.print(path.getPathImage());
+      out.write("\" />\n");
+      out.write("                                <label id=\"imgSalida\">");
+      out.print(path.getNombrePath());
+      out.write("</label>\n");
+      out.write("                            </div>\n");
       out.write("    ");
   } 
       out.write("\n");

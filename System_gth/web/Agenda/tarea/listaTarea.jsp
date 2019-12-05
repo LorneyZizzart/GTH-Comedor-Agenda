@@ -67,15 +67,14 @@
                             %>
                             <tr >
                                 <td><%=contador%></td>
-                                <td class="text-left" ><a data-id="<%=item.getTitulo()%>%<%=idUsuario%>%<%=2%>" class="verTarea" style="cursor:pointer;"><%=item.getTitulo()%></a></td>   
+                                <td class="text-left" ><a data-id="<%=item.getTitulo()%>%<%=item.getIdUserCrea()%>%<%=2%>" class="verTarea" style="cursor:pointer;"><%=item.getTitulo()%></a></td>   
                                 <td><%= item.getNombreRepeticion()%></td>
                                 <td><%= item.getFechaRegistroTarea()%></td>
                                 <td class="text-center">
                                     <div class="btn-group ">
-                                        <a data-id="<%=item.getTitulo()%>%<%=idUsuario%>" class="formProcess btn btn-xs btn-info" data-toggle="tooltip" data-placement="bottom" title="Procesos"><i class="fa fa-plus"></i></a>     
-<!--                                        <a data-id="<%/*=item.getTitulo()*/%>%<%/*=idUsuario*/%>" class="listUploadFile btn btn-xs btn-warning"  data-toggle="tooltip" data-placement="bottom" title="Archivos"><i class="fa fa-folder"></i></a>    -->
-                                        <a data-id="<%=item.getTitulo()%>%<%=idUsuario%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
-                                        <a data-id="<%=item.getTitulo()%>%<%=idUsuario%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
+                                        <a data-id="<%=item.getTitulo()%>%<%=item.getIdUserCrea()%>" class="formProcess btn btn-xs btn-info" data-toggle="tooltip" data-placement="bottom" title="Procesos"><i class="fa fa-plus"></i></a>                                             
+                                        <a data-id="<%=item.getTitulo()%>%<%=item.getIdUserCrea()%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
+                                        <a data-id="<%=item.getTitulo()%>%<%=item.getIdUserCrea()%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
                                     </div>
                                 </td>
                             </tr>
@@ -83,40 +82,35 @@
                                       }} else{
                                     for (A_Tarea item : lista) {
                                     contador++;
-                                    String color = "rgba(255, 235, 59, 0.3)";
+//                                    amarillo
+                                    String color = "#f39c12 !important";
                                     if(item.getIdEstadoTarea() == 2 ){
-                                        color = "rgba(76, 175, 80, 0.3)";
+//                                        verde
+                                        color = "#00a65a !important";
                                     }else if(item.getIdEstadoTarea() == 6){
-                                        color = "rgba(233, 30, 99, 0.3)";
-                                    }  
-                                    //posible
-//                                    String color = "rgba(255, 235, 59, 0.1)";
-//                                    if(item.getIdEstadoTarea() == 2 ){
-//                                        color = "rgba(76, 175, 80, 0.1)";
-//                                    }else if(item.getIdEstadoTarea() == 6){
-//                                        color = "rgba(233, 30, 99, 0.1)";
-//                                    } 
-                                    //--posible
+//                                        rojo
+                                        color = "#dd4b39 !important";
+                                    } 
                             %>
-                            <tr id="<%=item.getIdTarea()%>" style="background: <%=color%>">
+                            <tr id="<%=item.getIdTarea()%>" >
                                 <td><%=contador%><input type="hidden" name="posicion_celda" value="<%=contador%>" class="posicion_celda"></td>
-                                <td><a data-id="<%=item.getTitulo()%>%<%=idUsuario%>%<%=1%>" class="verTarea" style="cursor:pointer;"><%=item.getTitulo()%></a></td>                         
+                                <td><a data-id="<%=item.getTitulo()%>%<%=item.getIdUserCrea()%>%<%=1%>" class="verTarea" style="cursor:pointer;"><%=item.getTitulo()%></a></td>                         
 
                                 <td><%= item.getNombreRepeticion()%></td>
                                 <td><%=String.valueOf(item.getFechaInicio())%> <%=item.getHoraInicio()%></td>
-                                <td><select id="idEstadoTarea" name="idEstadoTarea" class="changeEstadoTarea form-control selectRepeticion" style="width: 100%; background-color: transparent; border: 0.1px solid;">
+                                <td><select style="width: 100%; background: <%=color%>; color: white;" id="idEstadoTarea" name="idEstadoTarea" class="changeEstadoTarea form-control selectRepeticion">
                                   <%
                                       for(A_EstadoTarea e : listaEstado){
                                           String select = "";
                                           if(e.getIdEstadoTarea()==item.getIdEstadoTarea())
                                               select = "Selected";
                                           %>
-                                          <option value="<%=item.getIdTarea()%>-<%=e.getIdEstadoTarea()%>" <%=select%>> <%=e.getNombreEstadoTarea()%></option>                            
+                                          <option style="background: white; color: #2f2e2e;;" value="<%=item.getIdTarea()%>-<%=e.getIdEstadoTarea()%>" <%=select%>> <%=e.getNombreEstadoTarea()%></option>                            
                                   <% }  %>
                               </select></td>
                                 <td class="text-center">
                                     <div class="btn-group ">
-                                        <a data-id="<%=item.getTitulo()%>%<%=idUsuario%>" class="formProcess btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Procesos"><i class="fa fa-plus"></i></a>                             
+                                        <a data-id="<%=item.getTitulo()%>%<%=item.getIdUserCrea()%>" class="formProcess btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Procesos"><i class="fa fa-plus"></i></a>                              
                                     </div>
                                 </td>
                             </tr>
@@ -159,9 +153,13 @@
         <div class="modal-dialog modalTarea">
             <div class="modal-content">
                 <div class="modal-header">
+                    
+                    <!--<button type="button" class="btn-purple pull-right" data-dismiss="modal" aria-label="Close" style="border: solid 1px #9056bf;"><i class="fa fa-close"></i></button>-->
+                    <!--<div id="btn-print"><button id="btn-print-div" type="button" class="btn btn-primary pull-right" ><i class="fa fa-print"></i></button></div>-->
+                    
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 id="titleModal" class="modal-title">title</h4>
+                    <h4 id="titleModal" class="modal-title"> title</h4>
                 </div>
                 <div id="modelViewTarea" class="modal-body cuerpo_registro"></div>
             </div>
@@ -171,6 +169,7 @@
     </div>
                             
 <script>
+      
     $(document).ready(function() {
         
         $('.formNuevo').tooltip({ boundary: 'window' })

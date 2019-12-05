@@ -1,0 +1,14 @@
+SMAP
+plan_005farchivo_005felimina_jsp.java
+JSP
+*S JSP
+*F
++ 0 plan_archivo_elimina.jsp
+planificaEstrate/plan_accion/plan_archivo_elimina.jsp
+*L
+1:46,9
+2,7:55
+8,18:62
+25,14:80
+38,4:93
+*E

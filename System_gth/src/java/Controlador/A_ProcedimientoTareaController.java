@@ -10,6 +10,7 @@ import Entidad.A_Tarea;
 import Entidad.Empleado;
 import Modelo.A_ProcedimientoTareaModel;
 import Modelo.A_TareaModel;
+import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,22 @@ public class A_ProcedimientoTareaController {
         return this.mod.getAllProcedimientoTarea(titulo, idUsuario);
     }
     
+    public List<A_Tarea> getAllIdProcedimiento(String titulo, int idUsuario, String nombreProceso) {
+        return this.mod.getAllIdProcedimiento(titulo, idUsuario, nombreProceso);
+    }
+    
     public A_ProcedimientoTarea getProcedimientoById(int idProcedimiento){
         return this.mod.getProcedimientoById(idProcedimiento);
     }  
     
-    public String SaveProcedimiento(A_Tarea procesoTarea) throws ParseException {        
+    public A_Tarea getMaxIdProcedimiento(){
+        return mod.getMaxIdProcedimiento();
+    }
+    
+    public List<A_Tarea> SaveProcedimiento(A_Tarea procesoTarea) throws ParseException {        
         A_TareaModel modT = new A_TareaModel();
         List<A_Tarea> listaTarea = new ArrayList<A_Tarea>();
+        List<A_Tarea> listaId = new ArrayList<A_Tarea>();
 //        A_Tarea tarea = new A_Tarea();
 //        tarea = modT.getTareaById(procesoTarea.getIdTarea());
         listaTarea = modT.getAllTareaForProcess(procesoTarea);
@@ -39,8 +49,9 @@ public class A_ProcedimientoTareaController {
         for(A_Tarea t : listaTarea){
             procesoTarea.setIdTarea(t.getIdTarea());
             resultado = this.mod.SaveProcedimientoTarea(procesoTarea);
+            listaId.add(this.mod.getMaxIdProceso());
         }
-        return  resultado;
+        return  listaId;
     }
     
     public String UpdateProcedimientoTarea(A_ProcedimientoTarea procesoTarea) {

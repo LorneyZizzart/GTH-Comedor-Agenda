@@ -53,6 +53,35 @@ public class A_ProcedimientoTareaModel {
         return procedimientos;
     }
     
+        public List<A_Tarea> getAllIdProcedimiento(String titulo, int idUsuario, String nombreProceso) {
+        List<A_Tarea> procedimientos = new ArrayList<A_Tarea>();
+        
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT pt.idProcedimiento\n" +
+                        "FROM AProcedimientoTarea pt, ATarea ta\n" +
+                        "WHERE pt.idTarea = ta.idTarea\n" +
+                        "AND ta.titulo = '"+titulo+"'\n" +
+                        "AND ta.idUsuarioCrea = "+idUsuario+"\n" +
+                        "AND pt.nombre = '" + nombreProceso +"'";
+            
+            System.out.print("sql: "+sql);
+            
+            ResultSet res = db.consulta(sql);
+            while (res.next()) { 
+                A_Tarea p = new A_Tarea();
+                p.setIdProcedimiento(res.getInt("idProcedimiento"));
+                procedimientos.add(p);
+            }  
+            
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Modelo.A_ProcedimientoTareaModel.getAllIdProcedimiento() " + e.getMessage());
+        }
+        return procedimientos;
+    }
+    
     private List<A_Tarea> getAllProcedimientoByIdTarea(int idTarea) {
         List<A_Tarea> procedimientos = new ArrayList<A_Tarea>();
         try {
@@ -107,6 +136,47 @@ public class A_ProcedimientoTareaModel {
         return p;
     }
     
+    public A_Tarea getMaxIdProcedimiento(){
+        A_Tarea t = new A_Tarea();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT idProcedimiento, idTarea, nombre\n" +
+                        "FROM AProcedimientoTarea\n" +
+                        "WHERE idProcedimiento = (SELECT MAX(idProcedimiento)  FROM AProcedimientoTarea)\n" +
+                        "GROUP BY idProcedimiento, idTarea, nombre";
+
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {       
+                t.setIdProcedimiento(res.getInt("idProcedimiento"));
+                t.setIdTarea(res.getInt("idTarea"));
+                t.setNombreProcedimiento(res.getString("nombre"));
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Controlador.A_ProcedimientoTareaModel.getMaxIdTarea() " + e.getMessage());
+        }
+        return t;
+    }
+    
+    public A_Tarea getMaxIdProceso(){
+        A_Tarea t = new A_Tarea();
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "SELECT MAX(idProcedimiento) as id  FROM AProcedimientoTarea";
+
+            ResultSet res = db.consulta(sql);
+            if (res.next()) {   
+                t.setIdProcedimiento(res.getInt("id"));
+            }
+            db.cierraConexion();
+        } catch (SQLException e) {
+            System.out.println("Controlador.A_ProcedimientoTareaModel.getMaxIdProceso() " + e.getMessage());
+        }
+        return t;
+    }
+    
     public String SaveProcedimientoTarea(A_Tarea a) {
         String respuesta = "Ok";
         try {
@@ -140,7 +210,7 @@ public class A_ProcedimientoTareaModel {
 
             db.cierraConexion();
         } catch (SQLException e) {
-            respuesta = "Modelo.A_TareaModel.ActualizarTarea() " + e.getMessage();
+            respuesta = "Modelo.A_ProcedimientoTareaModel.ActualizarTarea() " + e.getMessage();
         }
         return respuesta;
     }

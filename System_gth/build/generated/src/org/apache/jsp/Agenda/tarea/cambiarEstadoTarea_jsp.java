@@ -70,7 +70,7 @@ public final class cambiarEstadoTarea_jsp extends org.apache.jasper.runtime.Http
       out.write("<script type=\"text/javascript\">\n");
       out.write("    $(document).ready(function () {\n");
       out.write("        fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();\n");
-      out.write("        renderTable($('#idUsuario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);\n");
+      out.write("        renderTable($('#idFuncionario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);\n");
       out.write("    });\n");
       out.write("</script>\n");
 }else{System.out.print("Error al actulizar el estado de la tarea");

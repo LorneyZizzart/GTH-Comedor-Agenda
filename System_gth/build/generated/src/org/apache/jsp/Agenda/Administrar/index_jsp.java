@@ -59,7 +59,6 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
 
       out.write("\n");
       out.write("\n");
-      out.write("\n");
       out.write(" \n");
       out.write('\n');
       Controlador.EncriptionController __encript = null;
@@ -111,9 +110,13 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <!-- Para Mostrar las alertas Toast-->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/toast_alert/toastr.css\" />\n");
       out.write("\n");
-      out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>    \n");
+      out.write("        <script src=\"../../plugins/jQuery/jquery-3.4.1.min.js\"></script>  \n");
       out.write("        <!-- bootstrap datepicker -->\n");
       out.write("        <link rel=\"stylesheet\" href=\"../../plugins/datepicker/datepicker3.css\">\n");
+      out.write("        <!--image lightgallery.css-->\n");
+      out.write("        <link type=\"text/css\" rel=\"stylesheet\" href=\"../../plugins/lightGallery-master/dist/css/lightgallery.css\" /> \n");
+      out.write("        \n");
+      out.write("        <!--emprimir-->\n");
       out.write("        \n");
       out.write("        <link rel=\"stylesheet\" href=\"../../bootstrap/css/myStyle.css\">\n");
       out.write("    \n");
@@ -345,6 +348,15 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
         }
       }
       out.write('\n');
+      Controlador.CharacterController _character = null;
+      synchronized (_jspx_page_context) {
+        _character = (Controlador.CharacterController) _jspx_page_context.getAttribute("_character", PageContext.PAGE_SCOPE);
+        if (_character == null){
+          _character = new Controlador.CharacterController();
+          _jspx_page_context.setAttribute("_character", _character, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
       Controlador.DepartamentoController _departamento = null;
       synchronized (_jspx_page_context) {
         _departamento = (Controlador.DepartamentoController) _jspx_page_context.getAttribute("_departamento", PageContext.PAGE_SCOPE);
@@ -355,11 +367,11 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       }
       out.write('\n');
 
+    List<A_RepeticionTarea> listaR = new ArrayList<A_RepeticionTarea>();
     List<Departamento> ListaDepartamento = new ArrayList<Departamento>();
     ListaDepartamento = _departamento.GetAllDepartamento();
-    
     String[] listaRe = new String[]{"Todo", "Hoy", "Semanal", "Quincenal", "Mensual", "Semestral", "Anual", "Predeterminado" , "General"};
-
+    listaR = _repeticion.getAllRepeticionTarea();
 
       out.write("\n");
       out.write("<input type=\"hidden\" value=\"");
@@ -378,7 +390,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("<section class=\"content\">    \n");
-      out.write("        <div class=\"box box-purple\" >\n");
+      out.write("        <div class=\"box\" style=\"border-top: none\">\n");
       out.write("            <div class=\"box-header\">\n");
       out.write("                <div class=\"row\">\n");
       out.write("                    <div class=\"col-sm-12 col-md-4\">\n");
@@ -409,7 +421,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    <div id=\"listFuncionarios\" class=\"col-sm-12 col-md-4\">\n");
       out.write("                            \n");
       out.write("                    </div>\n");
-      out.write("                              <div class=\"col-sm-12 col-md-4\">\n");
+      out.write("                    <div class=\"col-sm-12 col-md-4\">\n");
       out.write("                            <div id=\"sfi\" class=\"form-group\">\n");
       out.write("                                <label class=\"col-md-2 control-label\" style=\"padding: 2% 0 0 0;\">Ver:</label>\n");
       out.write("\n");
@@ -439,10 +451,10 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            </div>\n");
       out.write("                            </div>\n");
       out.write("                    </div>\n");
-      out.write("                       <div class=\"col-sm-12 col-md-4\">\n");
+      out.write("                    <div class=\"col-sm-12 col-md-4\">\n");
       out.write("                        <div id=\"sfi\" class=\"form-group\">\n");
-      out.write("                            <label class=\"col-md-3 control-label\" style=\"padding: 2% 0 0 0;\">Fecha incio:</label>\n");
-      out.write("                            <div class=\"input-group date col-md-9\">\n");
+      out.write("                            <label class=\"col-sm-3 control-label\" style=\"padding: 2% 0 0 0;\">Fecha incio:</label>\n");
+      out.write("                            <div class=\"input-group date col-sm-9 col-xs-12\">\n");
       out.write("                              <div class=\"input-group-addon\">\n");
       out.write("                                <i class=\"fa fa-calendar\"></i>\n");
       out.write("                              </div>\n");
@@ -453,7 +465,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    <div class=\"col-sm-12 col-md-4\">\n");
       out.write("                        <div id=\"sfi\" class=\"form-group\">\n");
       out.write("                            <label class=\"col-md-3 control-label\" style=\"padding: 2% 0 0 0;\">Fecha final:</label>\n");
-      out.write("                            <div class=\"input-group date col-md-9\">\n");
+      out.write("                            <div class=\"input-group date col-md-9 col-xs-12\">\n");
       out.write("                              <div class=\"input-group-addon\">\n");
       out.write("                                <i class=\"fa fa-calendar\"></i>\n");
       out.write("                              </div>\n");
@@ -463,8 +475,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    </div>\n");
       out.write("                    <div class=\"col-xs-12 col-md-4\">\n");
       out.write("                        <button id=\"filtrarTarea\" type=\"button\" class=\"btn-purple btn-block\" ><i class=\"fa fa-search\"></i> Filtrar</button>   \n");
-      out.write("                        \n");
       out.write("                    </div>\n");
+      out.write("                    \n");
+      out.write("                    \n");
       out.write("                </div>  \n");
       out.write("                \n");
       out.write("            </div>\n");
@@ -551,6 +564,11 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("\n");
+      out.write("<script src=\"https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/lightGallery-master/dist/js/lightgallery-all.min.js\"></script>\n");
+      out.write("<script src=\"../../plugins/lightGallery-master/lib/jquery.mousewheel.min.js\"></script>\n");
+      out.write("<!--imprimir-->\n");
+      out.write("<script src=\"../../plugins/demoPrint2/jQuery.print.js\"></script>\n");
       out.write("<script src='../../dist/js/moment.js'></script>\n");
       out.write("<script type=\"text/javascript\" charset=\"utf-8\">\n");
       out.write("    $(\"#btn_salir\").click(function () {\n");
@@ -571,12 +589,31 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("</html>\n");
       out.write(" \n");
       out.write("<script>\n");
+      out.write("     \n");
       out.write("    var fechaInicio  = \"\", fechaFinal = \"\";\n");
       out.write("    $(document).ready(function() {\n");
-      out.write("        $('.select2').select2();\n");
       out.write("        estadoDate(true);\n");
+      out.write("        renderTable(0, 1, fechaInicio, fechaFinal);\n");
       out.write("        renderListFuncionarios(0);\n");
       out.write("    });\n");
+      out.write("    $('#idDepartamento').on('change', function() { \n");
+      out.write("        renderListFuncionarios(this.value);\n");
+      out.write("    });\n");
+      out.write("    function renderListFuncionarios(idDepartamento){\n");
+      out.write("        $.post('listaFuncionarios.jsp',\n");
+      out.write("            {idD: idDepartamento},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\"#listFuncionarios\").removeClass('loader');\n");
+      out.write("                    $(\"#listFuncionarios\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("        {\n");
+      out.write("            \n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\"#listFuncionarios\").removeClass('loader');\n");
+      out.write("                $(\"#listFuncionarios\").html(alerta);\n");
+      out.write("       }); \n");
+      out.write("    }\n");
       out.write("    $('#dp1').datepicker({\n");
       out.write("            format: 'dd/mm/yyyy',\n");
       out.write("            autoclose: true\n");
@@ -598,11 +635,11 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    $('#filtrarTarea').click(function (){\n");
       out.write("        fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();\n");
       out.write("        renderTable($('#idFuncionario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);\n");
-      out.write("    });\n");
-      out.write("    \n");
-      out.write("    $('#idDepartamento').on('change', function() { \n");
-      out.write("        renderListFuncionarios(this.value);\n");
-      out.write("    });\n");
+      out.write("    })\n");
+      out.write("    $('#btnRefresh').click(function (){\n");
+      out.write("        fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();\n");
+      out.write("        renderTable($('#idFuncionario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);\n");
+      out.write("    })\n");
       out.write("    \n");
       out.write("    function renderTable(idU, idR, fi, ff){\n");
       out.write("        $.post('listaTarea.jsp',\n");
@@ -616,22 +653,6 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
       out.write("                $(\"#tablaTarea\").removeClass('loader');\n");
       out.write("                $(\"#tablaTarea\").html(alerta);\n");
-      out.write("       }); \n");
-      out.write("    }\n");
-      out.write("    \n");
-      out.write("    function renderListFuncionarios(idDepartamento){\n");
-      out.write("        $.post('listaFuncionarios.jsp',\n");
-      out.write("            {idD: idDepartamento},\n");
-      out.write("                    function (html) {\n");
-      out.write("                    $(\"#listFuncionarios\").removeClass('loader');\n");
-      out.write("                    $(\"#listFuncionarios\").html(html);\n");
-      out.write("                    }\n");
-      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
-      out.write("        {\n");
-      out.write("            \n");
-      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
-      out.write("                $(\"#listFuncionarios\").removeClass('loader');\n");
-      out.write("                $(\"#listFuncionarios\").html(alerta);\n");
       out.write("       }); \n");
       out.write("    }\n");
       out.write("    \n");

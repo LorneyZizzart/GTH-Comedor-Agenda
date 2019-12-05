@@ -5,6 +5,8 @@
  */
 package Entidad;
 
+import java.io.InputStream;
+
 /**
  *
  * @author DELL-UAB
@@ -13,8 +15,26 @@ public class A_PathTarea {
     private int IdPath;
     private int IdTarea;
     private String NombrePath;
-    private String Path;
+    private String PathImage;
     private String TypeFilePath;
+    InputStream archivoimg;
+    private byte[] archivoimg2;
+    
+     public InputStream getArchivoimg() {
+        return archivoimg;
+    }
+    
+    public void setArchivoimg(InputStream archivoimg) {
+        this.archivoimg = archivoimg;
+    }
+    
+    public byte[] getArchivoimg2() {
+        return archivoimg2;
+    }
+    
+    public void setArchivoimg2(byte[] archivoimg2) {
+        this.archivoimg2 = archivoimg2;
+    }
     
     public void setTypeFilePath(String TypeFilePath){
         this.TypeFilePath = TypeFilePath;
@@ -41,12 +61,12 @@ public class A_PathTarea {
         return NombrePath;
     }
     
-    public void setPath(String Path){
-        this.Path = Path;
+    public void setPathImage(String PathImage){
+        this.PathImage = PathImage;
     }
     
-    public String getPath(){
-        return Path;
+    public String getPathImage(){
+        return PathImage;
     }
     
     

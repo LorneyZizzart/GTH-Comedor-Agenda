@@ -1,3 +1,4 @@
+<%@page import="Entidad.Departamento"%>
 <%@page import="Entidad.A_RepeticionTarea"%>
 <%@page import="Entidad.A_Tarea"%> 
 <%@ include file= "../../masterPage/complemento/head.jsp" %> 
@@ -11,8 +12,11 @@
 <jsp:useBean id="_repeticion" class="Controlador.A_RepeticionTareaController" />
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <jsp:useBean id="_character" class="Controlador.CharacterController" />
+<jsp:useBean id="_departamento" class="Controlador.DepartamentoController" />
 <%
     List<A_RepeticionTarea> listaR = new ArrayList<A_RepeticionTarea>();
+    List<Departamento> ListaDepartamento = new ArrayList<Departamento>();
+    ListaDepartamento = _departamento.GetAllDepartamento();
     String[] listaRe = new String[]{"Todo", "Hoy", "Semanal", "Quincenal", "Mensual", "Semestral", "Anual", "Predeterminado" , "General"};
     listaR = _repeticion.getAllRepeticionTarea();
 %>
@@ -30,6 +34,7 @@
 
 
 <section class="content">    
+    <input type="hidden" value="<%=DatoUsuario.getUser_id()%>" name="idFuncionario" id="idFuncionario">
         <div class="box" style="border-top: none">
             <div class="box-header">
                 <div class="row">
@@ -54,8 +59,8 @@
                     </div>
                     <div class="col-sm-12 col-md-3">
                         <div id="sfi" class="form-group">
-                            <label class="col-sm-4 control-label" style="padding: 2% 0 0 0;">Fecha incio:</label>
-                            <div class="input-group date col-sm-8">
+                            <label class="col-sm-3 control-label" style="padding: 2% 0 0 0;">Fecha incio:</label>
+                            <div class="input-group date col-sm-9 col-xs-12">
                               <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                               </div>
@@ -65,8 +70,8 @@
                     </div>
                     <div class="col-sm-12 col-md-3">
                         <div id="sfi" class="form-group">
-                            <label class="col-sm-4 control-label" style="padding: 2% 0 0 0;">Fecha final:</label>
-                            <div class="input-group date col-sm-8">
+                            <label class="col-md-3 control-label" style="padding: 2% 0 0 0;">Fecha final:</label>
+                            <div class="input-group date col-md-9 col-xs-12">
                               <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                               </div>
@@ -74,16 +79,12 @@
                             </div>
                         </div>       
                     </div>
-                    <div class="col-xs-10 col-md-2">
-                        <button id="filtrarTarea" type="button" class="btn-purple btn-block" ><i class="fa fa-search"></i> Filtrar</button>   
-                        
+                    <div class="col-xs-12 col-md-3">
+                        <button id="filtrarTarea" type="button" class="btn-purple col-xs-9 col-md-9" ><i class="fa fa-search"></i> Filtrar</button>   
+                        <button id="btnRefresh" type="button" class="btn-purple pull-right col-xs-2 col-md-2" ><i class="fa fa-refresh"></i></button> 
                     </div>
                     
-                    <div class="col-xs-2 col-md-1">
-                        <div id="sfi" class="form-group">
-                        <button id="btnRefresh" type="button" class="btn-purple pull-right" ><i class="fa fa-refresh"></i></button>  
-                        </div>
-                    </div>
+                    
                 </div>  
                 
             </div>
@@ -95,12 +96,31 @@
 </section>
 <%@ include file= "../../masterPage/complemento/footer.jsp" %> 
 <script>
+     
     var fechaInicio  = "", fechaFinal = "";
     $(document).ready(function() {
         estadoDate(true);
-        renderTable($('#idUsuario').val(), 1, fechaInicio, fechaFinal);
-        
+        renderTable($('#idFuncionario').val(), 1, fechaInicio, fechaFinal);
+        renderListFuncionarios(0);
     });
+    $('#idDepartamento').on('change', function() { 
+        renderListFuncionarios(this.value);
+    });
+    function renderListFuncionarios(idDepartamento){
+        $.post('listaFuncionarios.jsp',
+            {idD: idDepartamento},
+                    function (html) {
+                    $("#listFuncionarios").removeClass('loader');
+                    $("#listFuncionarios").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+        {
+            
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $("#listFuncionarios").removeClass('loader');
+                $("#listFuncionarios").html(alerta);
+       }); 
+    }
     $('#dp1').datepicker({
             format: 'dd/mm/yyyy',
             autoclose: true
@@ -121,11 +141,11 @@
     
     $('#filtrarTarea').click(function (){
         fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();
-        renderTable($('#idUsuario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);
+        renderTable($('#idFuncionario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);
     })
     $('#btnRefresh').click(function (){
         fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();
-        renderTable($('#idUsuario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);
+        renderTable($('#idFuncionario').val(), $('#idRepeat').val(), fechaInicio, fechaFinal);
     })
     
     function renderTable(idU, idR, fi, ff){

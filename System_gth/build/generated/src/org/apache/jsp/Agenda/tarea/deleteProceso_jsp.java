@@ -3,6 +3,9 @@ package org.apache.jsp.Agenda.tarea;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.A_Tarea;
+import java.util.ArrayList;
+import java.util.List;
 import Entidad.A_ProcedimientoTarea;
 
 public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBase
@@ -42,16 +45,10 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write('\n');
-      Controlador.EncriptionController _encript = null;
-      synchronized (_jspx_page_context) {
-        _encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("_encript", PageContext.PAGE_SCOPE);
-        if (_encript == null){
-          _encript = new Controlador.EncriptionController();
-          _jspx_page_context.setAttribute("_encript", _encript, PageContext.PAGE_SCOPE);
-        }
-      }
-      out.write('\n');
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       Controlador.A_ProcedimientoTareaController _proceso = null;
       synchronized (_jspx_page_context) {
         _proceso = (Controlador.A_ProcedimientoTareaController) _jspx_page_context.getAttribute("_proceso", PageContext.PAGE_SCOPE);
@@ -61,16 +58,27 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
         }
       }
       out.write('\n');
+      Controlador.A_PathProcedimientoTareaController _path = null;
+      synchronized (_jspx_page_context) {
+        _path = (Controlador.A_PathProcedimientoTareaController) _jspx_page_context.getAttribute("_path", PageContext.PAGE_SCOPE);
+        if (_path == null){
+          _path = new Controlador.A_PathProcedimientoTareaController();
+          _jspx_page_context.setAttribute("_path", _path, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
-    String idProceso = _encript.ValorADesencriptar(request.getParameter("id")); 
+    String[] id = request.getParameter("id").split("%"); 
     A_ProcedimientoTarea procedimiento = new A_ProcedimientoTarea();
-    procedimiento = _proceso.getProcedimientoById(Integer.parseInt(idProceso));
+    procedimiento = _proceso.getProcedimientoById(Integer.parseInt(id[0]));
+    List<A_Tarea> listaPath = new ArrayList<A_Tarea>();
+    listaPath = _path.getAllPathProcedimiento(Integer.parseInt(id[0])); 
   
 
       out.write("\n");
       out.write("<form id=\"formGuardarProceso\" method=\"post\" class=\"formGuardarProceso\">\n");
       out.write("    <input type=\"hidden\" value=\"");
-      out.print(idProceso);
+      out.print(id[0]);
       out.write("\" name=\"idProceso\" id=\"idProceso\">\n");
       out.write("    <input type=\"hidden\" value=\"0\" name=\"id\" id=\"id\">\n");
       out.write("                    <div class=\"box-body\">\n");
@@ -85,6 +93,27 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("                            <textarea disabled class=\"textarea\"  id=\"descripcion\"  name=\"descripcion\" style=\"width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;\">");
       out.print(procedimiento.getDescripcionProcedimiento());
       out.write("</textarea>\n");
+      out.write("                        </div>\n");
+      out.write("                        <div id=\"divImage\" class=\"form-group row\" style=\"margin: 2px;\">\n");
+      out.write("                            ");
+
+                                for (A_Tarea path : listaPath) {
+
+            
+      out.write("\n");
+      out.write("                            <div id=\"divimgSalida");
+      out.print(path.getIdPathProcedimiento());
+      out.write("\" class=\"col-md-2 text-center cont-image\" style=\"border: solid 1px #aba8a8; margin: 2px;padding: 0;border-radius: 5px;\">\n");
+      out.write("                                <label id=\"imgSalida\">");
+      out.print(path.getNombrePath());
+      out.write("</label>\n");
+      out.write("                                <img id=\"imgSalida\" width=\"100%\" height=\"100%\" src=\"../../folder_picture/Procesos/");
+      out.print(path.getPathImage());
+      out.write("\" />\n");
+      out.write("                            </div>\n");
+      out.write("    ");
+  } 
+      out.write("\n");
       out.write("                        </div>\n");
       out.write("                    </div>\n");
       out.write("                    <!-- /.box-body -->\n");
@@ -114,7 +143,7 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("        $(\".btn-cProcess\").click(function (e) {\n");
       out.write("        $(\"#titleModal\").html(\"Procesos\");\n");
       out.write("        e.preventDefault();\n");
-      out.write("        e.stopImmediatePropagation();\n");
+      out.write("        e.stopImmediatePropagation();   \n");
       out.write("            $('#formulario_registro').modal('show');\n");
       out.write("            $(\".cuerpo_registro\").html('');\n");
       out.write("            $(\".cuerpo_registro\").addClass('loader');\n");

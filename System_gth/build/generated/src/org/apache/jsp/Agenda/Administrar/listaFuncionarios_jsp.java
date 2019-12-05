@@ -74,7 +74,7 @@ public final class listaFuncionarios_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("    <label class=\"col-md-3 control-label\" style=\"padding: 2% 0 0 0;\">Funcionario: </label>\n");
       out.write("    <div class=\"col-md-9 col-xs-12 input-group\">\n");
       out.write("        <select id=\"idFuncionario\" name=\"idFuncionario\"  class=\"form-control select2\" style=\"width: 100%;\">\n");
-      out.write("            <option disabled value=\"0\" selected>Seleccionar funcionario</option>\n");
+      out.write("            <option value=\"0\" selected>Todos</option>\n");
       out.write("                ");
 
                 for (Usuario item : Usuarios) {
@@ -86,7 +86,7 @@ public final class listaFuncionarios_jsp extends org.apache.jasper.runtime.HttpJ
       out.print(item.getNombre());
       out.write("</option>                            \n");
       out.write("                ");
-}  
+ } 
       out.write("\n");
       out.write("            </select>\n");
       out.write("    </div>\n");

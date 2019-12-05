@@ -18,22 +18,24 @@ import java.util.List;
  */
 public class A_PathTareaModel {
     
-    public List<A_PathTarea> getAllPath(int idTarea) {
+    public List<A_PathTarea> getAllPath(String titulo, int idUser) {
         List<A_PathTarea> ps = new ArrayList<A_PathTarea>();
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT idPath, idTarea, nombre, path \n" +
-                        "FROM APath \n" +
-                        "WHERE idTarea = " + idTarea;
+            String sql = "SELECT pa.idPath, pa.idTarea, pa.nombre, pa.pathImage\n" +
+                        "FROM APath pa, ATarea ta\n" +
+                        "WHERE pa.idTarea = ta.idTarea\n" +
+                        "AND ta.titulo = '"+ titulo + "'\n" +
+                        "AND ta.idUsuarioCrea = " + idUser;
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 A_PathTarea p = new A_PathTarea();
                 p.setIdPath(res.getInt("idPath"));
                 p.setIdTarea(res.getInt("idTarea"));
                 p.setNombrePath(res.getString("nombre"));
-                p.setPath(res.getString("path"));
-                String[] partPath = p.getPath().split("\\.", 0);
+                p.setPathImage(res.getString("PathImage"));
+                String[] partPath = p.getPathImage().split("\\.", 0);
                 p.setTypeFilePath(partPath[1]);
                 ps.add(p);
             }
@@ -42,6 +44,25 @@ public class A_PathTareaModel {
             System.out.println("Modelo.A_PathTareaModel.getAllPath() " + e.getMessage());
         }
         return ps;
+    }
+    
+    public String savePathTarea(A_PathTarea path ){
+        String respuesta = "Ok";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "INSERT INTO APath\n"
+                    + "  (idTarea, nombre, pathImage)"
+                    + "  VALUES\n"
+                    + "  ("+path.getIdTarea()+", '"+path.getNombrePath()+"','"+path.getPathImage()+"')";
+
+            db.insertar(sql);
+            db.cierraConexion();
+                       
+        } catch (SQLException e) {
+            respuesta = "Modelo.AFileUploadHandler.savePathTarea() " + e.getMessage();
+        }
+        return respuesta;
     }
     
     public String DeletePath(int idPath) {

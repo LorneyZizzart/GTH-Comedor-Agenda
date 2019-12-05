@@ -1,0 +1,271 @@
+.skin-purple-light .main-header .navbar {
+-webkit-box-shadow: 1px 11px 10px -2px rgba(148,132,148,0.78);
+-moz-box-shadow: 1px 11px 10px -2px rgba(148,132,148,0.78);
+box-shadow: 1px 11px 10px -2px rgba(148,132,148,0.78)
+}
+
+.skin-purple-light .main-header .logo {
+    background-color: #f9fafc; 
+    color: #000000;
+    font-size: 28px;
+}
+.skin-purple-light .main-header .logo:hover {
+    background-color: #ecf0f5; 
+    color: #541686;
+}
+.skin-purple-light .main-header .logo-respuesta{
+    background-color: #541686;
+    color: #ffffff;
+    -webkit-box-shadow: 7px 11px 10px -2px rgba(148,132,148,0.78);
+    -moz-box-shadow: 7px 11px 10px -2px rgba(148,132,148,0.78);
+    box-shadow: 7px 11px 10px -2px rgba(148,132,148,0.78);
+}
+.skin-purple-light .main-header .logo-respuesta:hover {
+    background-color: #541686;
+    color: #ffffff;
+}
+.main-sidebar {
+    background-color: #f9fafc;
+     -webkit-box-shadow: 3px 0px 5px 0px rgba(122,106,122,1); 
+    -moz-box-shadow: 3px 0px 5px 0px rgba(122,106,122,1);
+    box-shadow: 3px 0px 5px 0px rgb(210, 210, 209);
+}
+.nav-tabs-custom>.nav-tabs>li.active {
+    border-top-color: #541686;
+}
+
+.btn-right_nivel{
+    float: right;
+}
+
+.modal-header{
+    background: #541686;
+    color: #fff;
+}
+
+.btn-min-purple{
+    background-color: #511583;
+    border-color: #511583;
+    color: #fff;
+}
+
+.btn-min-purple:hover{
+    background-color: #3b0e5f;
+    border-color: #3b0e5f;
+    color: #fff;
+}
+
+.btn-box-tool {
+    color: #fff;
+}
+
+.btn-block:hover{
+    border-bottom-color: #3b0e5f;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    background-color: #541686;
+    border-color: #541686;
+}
+
+.select2-dropdown .select2-search__field:focus, .select2-search--inline .select2-search__field:focus {
+    outline: none;
+   border: none;
+}
+/*para hacer desaparecer los border del multiselect*/
+dropdown .select2-search__field {
+     border-color: #3c8dbc !important; 
+}
+
+.btn-purple{color:#fff;background-color:#511583;border-color:#3b0e5f;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;border-radius: 3px;box-shadow: none;border: 1px solid transparent;}.btn-purple:hover,.btn-purple:active,.btn-purple.hover{background-color:#3b0e5f;color:#fff;text-decoration: none;outline: none;}
+.btn-purple.disabled, .btn-purple[disabled], fieldset[disabled] .btn-purple {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: .65;
+}
+button[disabled], html input[disabled] {
+    cursor: default;
+}
+/*para enviar cuestionario*/
+.btn-enviar{
+    padding: 0.5%;
+}
+/*el cuerpo de la encuesta*/
+    .content-encuesta{
+        min-height: 250px;
+        padding: 0;
+        margin-top: 3.5%;
+        margin-right: 20%;
+        margin-left: 20%;
+        margin-bottom: 4%;
+        -webkit-box-shadow: -10px 10px 29px -7px rgba(52,15,82,0.53);
+        -moz-box-shadow: -10px 10px 29px -7px rgba(52,15,82,0.53);
+        box-shadow: -10px 10px 29px -7px rgba(52,15,82,0.53);
+    }
+    .box-encuesta{
+        padding-left: 3%;
+        padding-right: 3%;
+        margin-bottom: 0;
+    }
+    .footer-encuesta{
+            margin-top: 7%;
+    }
+    .box-purple{
+       border-top-color: #541686; 
+    }
+    .nav-tabs-custom {
+    -webkit-box-shadow: 0px 5px 13px 0px rgba(120,107,120,0.54);
+    -moz-box-shadow: 0px 5px 13px 0px rgba(120,107,120,0.54);
+    box-shadow: 0px 15px 20px 0px rgba(120,107,120,0.54);
+    }
+.box {    
+    -webkit-box-shadow: 0px 5px 13px 0px rgba(120,107,120,0.54);
+    -moz-box-shadow: 0px 5px 13px 0px rgba(120,107,120,0.54);
+    box-shadow: 0px 15px 20px 0px rgba(120,107,120,0.54);
+}
+/*para la opcion de departamento al crear cuestionario*/
+.box-opcion-departamento{
+    border: none;
+    webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    margin-top: -4%;
+}
+.btn-opcion-departamento{
+    color: #000;
+    background-color: #f4f4f4;
+    border-color: #ddd;
+}
+/*Historial del funcionario*/
+.timeline {
+    margin: 0.5% 2% 5% 2%;
+}
+.modal-dialog-procedimiento {
+        width: 37%;
+    }
+    
+/*para describir las respuestas*/
+.group-pregunta{
+    margin-bottom: 5%;
+}
+.nombre-pregunta{
+    margin-bottom: 2%;
+}
+
+/*reserva*/
+.groupTipoAlimento{
+    margin: 3% 0 0 0;
+}
+
+.modal-comensal{
+        width: 25%;
+        margin: 3% 37.5% 0 37.5%;
+    }
+
+.bg-purple {
+    background-color: #605ca8d6 !important
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #337ab78f;
+    border-radius: 10px;
+}
+
+.modal-body .calendarBody{
+    padding: 0%;
+}
+
+.modelViewTarea{
+    background-color: #eaeaea
+}
+
+.modalTarea{
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 3%;
+}
+
+
+.form-cantidad{
+    width: 55%;
+    
+}
+
+.row-days {
+    padding: 0 0% 0 7%;
+}
+
+.col-day {
+    width: 13.333333%;
+    }
+
+div.bootstrap-wysihtml5-insert-image-modal div.modal-dialog div.modal-content div.modal-header{
+    height: 54px;
+    padding: 10px 16px 0px 0;
+}
+
+div.bootstrap-wysihtml5-insert-image-modal div.modal-dialog div.modal-content div.modal-header h3{
+    margin: 6px 0 0 16px;
+    font-size: 19px;
+}
+
+
+    
+@media only  screen and (max-width:480px){
+    .fc-scroller fc-day-grid-container{
+            height: 336px;
+    }
+    .content-encuesta{
+        padding: 0;
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-bottom: 2%;
+    }
+    
+    .modal-comensal{
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@media only  screen and (max-width:710px){    
+      
+    
+    .form-cantidad{
+        width: 100%;
+    }
+    
+    .row-days {
+        padding: 0 0% 0 0%;
+    }
+    
+    .modalTarea{
+        width: 100%;
+        margin: 0% 0% 0 0%;
+    }
+    
+    
+}
+
+@media only  screen and (max-width: 768px){
+    .col-day {
+        width: 13.333333%;
+    }
+    
+    .modal-comensal {
+        width: 100%;
+        margin: 0;
+    }
+}

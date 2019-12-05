@@ -21,11 +21,10 @@
                 
 </div>
                 <div class="box-footer" style="padding: 8px 0 0 0;background-color: #eaeaea;">
-                        <button type="button" class="btn-purple pull-right btn-cProcess" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Volver</button>
+                        <button type="button" class="btn-purple pull-left btn-cProcess" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Volver</button>
                     </div>
                 <script type="text/javascript">
                     $(".btn-cProcess").click(function (e) {
-                         $(".modal-dialog").removeClass( "modalTarea");
                         $("#formulario_registro #modelViewTarea").removeClass( "modelViewTarea");
         $("#titleModal").html("Procesos");
         e.preventDefault();

@@ -3,6 +3,9 @@ package org.apache.jsp.Agenda.tarea;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.A_Tarea;
+import java.util.ArrayList;
+import java.util.List;
 import Entidad.A_ProcedimientoTarea;
 
 public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBase
@@ -42,7 +45,10 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write('\n');
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       Controlador.EncriptionController _encript = null;
       synchronized (_jspx_page_context) {
         _encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("_encript", PageContext.PAGE_SCOPE);
@@ -61,19 +67,54 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
         }
       }
       out.write('\n');
+      Controlador.A_PathProcedimientoTareaController _path = null;
+      synchronized (_jspx_page_context) {
+        _path = (Controlador.A_PathProcedimientoTareaController) _jspx_page_context.getAttribute("_path", PageContext.PAGE_SCOPE);
+        if (_path == null){
+          _path = new Controlador.A_PathProcedimientoTareaController();
+          _jspx_page_context.setAttribute("_path", _path, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
-    String idProceso = _encript.ValorADesencriptar(request.getParameter("id")); 
+    String[] id = request.getParameter("id").split("%"); 
     A_ProcedimientoTarea procedimiento = new A_ProcedimientoTarea();
-    procedimiento = _proceso.getProcedimientoById(Integer.parseInt(idProceso));
-  
+    procedimiento = _proceso.getProcedimientoById(Integer.parseInt(id[0]));
+    List<A_Tarea> listaPath = new ArrayList<A_Tarea>();
+    listaPath = _path.getAllPathProcedimiento(Integer.parseInt(id[0]));  
 
       out.write("\n");
+      out.write("<style>\n");
+      out.write("    \n");
+      out.write("    \n");
+      out.write("    input[type=file] {\n");
+      out.write("    opacity: 0;\n");
+      out.write("    width: 100%;\n");
+      out.write("    height: 100%;\n");
+      out.write("    overflow: hidden;\n");
+      out.write("}\n");
+      out.write(" \n");
+      out.write("#upload { \n");
+      out.write("    width: 162px;\n");
+      out.write("    height: 35px;\n");
+      out.write("    color: #fff;\n");
+      out.write("    background-color: #511583;\n");
+      out.write("    border-color: #3b0e5f;\n");
+      out.write("    padding: 6px 12px;\n");
+      out.write("    font-size: 14px;\n");
+      out.write("    line-height: 1.42857143;\n");
+      out.write("    border-radius: 3px;\n");
+      out.write("    box-shadow: none;\n");
+      out.write("    border: 1px solid transparent;\n");
+      out.write("}\n");
+      out.write("</style>\n");
       out.write("<form id=\"formGuardarProceso\" method=\"post\" class=\"formGuardarProceso\">\n");
-      out.write("    <input type=\"hidden\" value=\"update\" name=\"proceso\" id=\"proceso\">\n");
+      out.write("    <input type=\"hidden\" value=\"update\" name=\"proceso\" id=\"proceso\">   \n");
       out.write("    <input type=\"hidden\" value=\"");
-      out.print(idProceso);
-      out.write("\" name=\"idProceso\" id=\"idProceso\">\n");
-      out.write("    <input type=\"hidden\" value=\"0\" name=\"id\" id=\"id\">\n");
+      out.print(request.getParameter("id"));
+      out.write('%');
+      out.print(procedimiento.getNombreProcedimiento());
+      out.write("\" name=\"id\" id=\"id\">\n");
       out.write("                    <div class=\"box-body\">\n");
       out.write("                        <div class=\"form-group\" >\n");
       out.write("                            <label>Nombre</label>\n");
@@ -88,6 +129,40 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.print(procedimiento.getDescripcionProcedimiento());
       out.write("</textarea>\n");
       out.write("                        </div>\n");
+      out.write("                        <div class=\"form-group\">\n");
+      out.write("                            <label class=\"col-md-12\" style=\"padding: 0\">Cargar imagen </label>\n");
+      out.write("                            <div class=\"col-md-8\" style=\"padding-left: 0;\">\n");
+      out.write("                              <input type=\"text\" class=\"form-control col-md-10\" id=\"tituloImage\"  name=\"tituloImage\" placeholder=\"Título de la imagen\"> \n");
+      out.write("                            </div> \n");
+      out.write("                            <div  id=\"upload\" class=\"text-center col-md-4\">                             \n");
+      out.write("                                <input style=\"position: absolute;\" name=\"file-input\" id=\"file-input\" type=\"file\" value=\"\" accept=\"image/jpg,image/jpeg,image/png,image/gif,image\"/>\n");
+      out.write("                                <label><i class=\"fa fa-upload\"></i>  Subir imagen </label>\n");
+      out.write("                            </div>\n");
+      out.write("                        </div>\n");
+      out.write("                        <div id=\"divImage\" class=\"form-group col-md-12\" style=\"margin: 10px 0 10px 0; padding: 0;\">\n");
+      out.write("                            ");
+
+                                for (A_Tarea path : listaPath) {
+
+            
+      out.write("\n");
+      out.write("                            <div id=\"divimgSalida");
+      out.print(path.getIdPathProcedimiento());
+      out.write("\" class=\"col-md-2 text-center cont-image\" style=\"border: solid 1px #aba8a8; margin: 2px;padding: 0; border-radius: 5px;\">\n");
+      out.write("                                <label id=\"imgSalida\">");
+      out.print(path.getNombrePath());
+      out.write("</label>\n");
+      out.write("                                <a onclick=\"eliminarImagen(");
+      out.print(path.getIdPathProcedimiento());
+      out.write(")\" id=\"imgSalida\" type=\"button\" class=\"btn-purple pull-right eliminarImage\" style=\"padding: 0px 4px;cursor:pointer;\"><i class=\"fa fa-close\"></i></a>\n");
+      out.write("                                <img id=\"imgSalida\" width=\"100%\" height=\"100%\" src=\"../../folder_picture/Procesos/");
+      out.print(path.getPathImage());
+      out.write("\" />\n");
+      out.write("                            </div>\n");
+      out.write("    ");
+  } 
+      out.write("\n");
+      out.write("                        </div>\n");
       out.write("                        \n");
       out.write("                    </div>\n");
       out.write("                    <!-- /.box-body -->\n");
@@ -99,6 +174,74 @@ public final class editarProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("                </form>\n");
       out.write("        <div id=\"mensaje\"></div>\n");
       out.write("<script type=\"text/javascript\">\n");
+      out.write("    var nombreFichero = '';\n");
+      out.write("    var numImage = 0;\n");
+      out.write("    var listaImage = [];\n");
+      out.write("    \n");
+      out.write("    $(function() {\n");
+      out.write("  $('#file-input').change(function(e) { \n");
+      out.write("      if(e != undefined){\n");
+      out.write("                var f = e.target.files,\n");
+      out.write("            len = f.length;\n");
+      out.write("        for (var i=0;i<len;i++){\n");
+      out.write("            nombreFichero = f[i].name;\n");
+      out.write("        }\n");
+      out.write("      addImage(e); \n");
+      out.write("      }      \n");
+      out.write("       \n");
+      out.write("     });\n");
+      out.write("\n");
+      out.write("     function addImage(e){\n");
+      out.write("      \n");
+      out.write("      var file = e.target.files[0],\n");
+      out.write("      imageType = /image.*/;\n");
+      out.write("    \n");
+      out.write("      if (!file.type.match(imageType))\n");
+      out.write("       return;\n");
+      out.write("  \n");
+      out.write("      var reader = new FileReader();\n");
+      out.write("      reader.onload = fileOnload;\n");
+      out.write("      reader.readAsDataURL(file);\n");
+      out.write("     }     \n");
+      out.write("  \n");
+      out.write("     function fileOnload(e) {\n");
+      out.write("        $('#divImage').append('<div id=\"divimgSalida'+numImage+'\" class=\"col-md-2 text-center cont-image\" style=\"border: solid 1px #aba8a8; margin: 2px;padding: 0;border-radius: 5px;\"> \\n\\\n");
+      out.write("                                <label id=\"imgSalida'+numImage+'\">'+$('#tituloImage').val()+'</label>\\n\\\n");
+      out.write("                                <a onclick=\"eliminarImagen('+numImage+')\" id=\"imgSalida'+numImage+'\" type=\"button\" class=\"btn-purple pull-right eliminarImage\" style=\"padding: 0px 4px;cursor:pointer;\"><i class=\"fa fa-close\"></i></a>\\n\\\n");
+      out.write("                                <img id=\"imgSalida'+numImage+'\" width=\"100%\" height=\"100%\" src=\"\" /> \\n\\\n");
+      out.write("                            </div>');\n");
+      out.write("      var result=e.target.result;\n");
+      out.write("      $('.cont-image #imgSalida'+numImage).attr(\"src\",result);\n");
+      out.write("      \n");
+      out.write("//      console.log(\"result: \", result);\n");
+      out.write("      listaImage.push({id:numImage, titulo:$('#tituloImage').val(), nameImage:nombreFichero, path:$('#file-input')[0].files[0]});\n");
+      out.write("  \n");
+      out.write("//      saveImageDB($('#tituloImage').val(), nombreFichero);\n");
+      out.write("\n");
+      out.write("     console.log(listaImage);\n");
+      out.write("//     saveImage(e);\n");
+      out.write("     numImage++; \n");
+      out.write("     $('#tituloImage').val('');\n");
+      out.write("     }\n");
+      out.write("    });\n");
+      out.write("    \n");
+      out.write("    function eliminarImagen(e){\n");
+      out.write("        $(\"#divimgSalida\"+e).remove();\n");
+      out.write("        \n");
+      out.write("        for (var i = 0; i < listaImage.length; i++) {\n");
+      out.write("            if (listaImage[i].id == e) {\n");
+      out.write("              listaImage.splice(i, 1);\n");
+      out.write("              break;\n");
+      out.write("            }\n");
+      out.write("          }\n");
+      out.write("          \n");
+      out.write("       $.ajax({\n");
+      out.write("            url: 'eliminarPathProceso.jsp',\n");
+      out.write("            data:{idPath:e},\n");
+      out.write("            type: 'post',\n");
+      out.write("            success: function(response) {}\n");
+      out.write("        });     \n");
+      out.write("    }\n");
       out.write("    \n");
       out.write("    $(document).ready(function () {\n");
       out.write("//      -- ocultar select multiple\n");

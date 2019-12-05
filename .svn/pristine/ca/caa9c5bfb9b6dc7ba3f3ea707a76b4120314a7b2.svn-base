@@ -1,0 +1,444 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controlador;
+
+import Entidad.A_RepeticionTarea;
+import Entidad.A_Tarea;
+import Controlador.A_RepeticionTareaController;
+import Entidad.A_PathTarea;
+import Entidad.Empleado;
+import Modelo.AFileUploadHandler;
+import Modelo.A_PathTareaModel;
+import Modelo.A_TareaModel;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse; 
+import javax.servlet.http.Part;
+
+public class A_TareaController {
+    public List<A_Tarea> getAllTarea(int idUsuario, int idRepeticion, String fIniio, String fFinal) throws ParseException {        
+        A_TareaModel x = new A_TareaModel();
+        String setenciaSql = null;
+        Calendar calendar = Calendar.getInstance();
+        Calendar calendarEnd = Calendar.getInstance();
+        SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        calendar.setTime(date);
+        calendarEnd.setTime(date);        
+        switch(idRepeticion){
+            case 1:
+//                hoy = 1
+                setenciaSql = " AND ta.fechaInicio = '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"'";
+                break;
+            case 2:
+//                Semanal = 2
+                calendar.add(Calendar.DATE, -(calendar.get(Calendar.DAY_OF_WEEK)-1));
+                calendarEnd.add(Calendar.DATE, 7);
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
+                break;
+            case 3:
+//                Quincenal = 3
+                calendar.add(Calendar.DATE, -(calendar.get(Calendar.DAY_OF_WEEK)-1));
+                calendarEnd.add(Calendar.DATE, 15);
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
+                break; 
+            case 4:
+//                Mensual = 4
+                calendar.set(Calendar.DATE, calendar.getActualMinimum(Calendar.DATE));
+                calendarEnd.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
+                break;
+            case 5:
+//                Semestral = 5
+                calendar.add(Calendar.DATE, -(calendar.get(Calendar.DAY_OF_WEEK)-1));
+                calendarEnd.add(Calendar.MONTH, 6);
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
+                break;
+            case 6:
+//                Anual = 6
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/01/01' and '"+calendar.get(Calendar.YEAR)+"/12/31'";
+                break;  
+            case 7:
+//                Predeterminado = 6
+                calendar.setTime(parseador.parse(fIniio));
+                calendarEnd.setTime(parseador.parse(fFinal));
+                setenciaSql = " AND ta.fechaInicio between '"+calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE)+"' and '"+calendarEnd.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.DATE)+"'";
+                break; 
+            default:
+                setenciaSql = "";
+        }
+        
+        setenciaSql = setenciaSql + " ORDER BY ta.fechaInicio ASC";
+        return x.getAllTarea(idUsuario, setenciaSql);
+    }
+    
+    public List<A_Tarea> getGroupTareaByUser(int idUsuario){
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getGroupTareaByUser(idUsuario);
+    }
+    
+    public A_Tarea getTareaById(int idTarea) throws ParseException {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getTareaById(idTarea);
+    }
+    
+    public A_Tarea getTareaByTitulo(String titulo, int idUser) throws ParseException{
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getTareaByTitulo(titulo, idUser );
+    }   
+    
+    public A_Tarea getMaxIdTarea(){
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getMaxIdTarea();
+    }
+    
+    public String UpdateTarea(A_Tarea tarea, String titulo){
+        A_TareaModel mod = new A_TareaModel();
+        return mod.SaveOrUpdate(tarea, titulo);
+    }
+    
+    public String CambiarEstadoTarea(int idTarea, int idEstado) {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.CambiarEstadoTarea(idTarea, idEstado);
+    }
+    
+    public String DeleteTareaById(String titulo, int idUsuario) {
+        A_TareaModel mod = new A_TareaModel();
+        return mod.DeleteTarea(titulo, idUsuario);
+    }
+    
+    public String SaveTarea(A_Tarea tarea) throws ParseException{
+        A_TareaModel mod = new A_TareaModel();
+        String resultado = null;
+        if(Integer.parseInt(mod.searchTarea(tarea.getTitulo(), tarea.getIdUserCrea())) == 0){
+            Calendar calendarStart = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
+            A_RepeticionTareaController _repeticionTarea = new A_RepeticionTareaController();
+            List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
+            listaRepeticionTarea =  _repeticionTarea.getAllRepeticionTarea();
+            Date dateStart = parseador.parse(tarea.getFechaInicio());
+            Date date = new Date();
+            calendar.setTime(date);
+            calendarStart.setTime(dateStart);
+            for(A_RepeticionTarea r : listaRepeticionTarea){
+                if(r.getIdRepeticionTarea() == tarea.getIdRepeticionTarea()){
+                    if(r.getSumarDias() == 0 && r.getSumarMes() == 0 && r.getSumarYear() == 0){return mod.SaveOrUpdate(tarea, null);}
+                    else{
+                        if(r.getIdRepeticionTarea() == 3){
+                            String[] strDays = new String[]{"Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
+
+                            while (calendarStart.get(Calendar.YEAR) <= calendar.get(Calendar.YEAR)) {
+                                switch(strDays[calendarStart.get(Calendar.DAY_OF_WEEK) - 1]){
+                                    case "Domingo" :
+                                        if(tarea.getDomingo() == 1){
+                                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                                            tarea.setFechaInicio(parseador.format(dateStart));
+                                            resultado = mod.SaveOrUpdate(tarea, null);
+                                        }                                    
+                                        break;
+                                    case "Lunes" :
+                                        if(tarea.getLunes() == 1){
+                                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                                            tarea.setFechaInicio(parseador.format(dateStart));
+                                            resultado = mod.SaveOrUpdate(tarea, null);
+                                        } 
+                                        break;
+                                    case "Martes" :
+                                        if(tarea.getMartes() == 1){
+                                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                                            tarea.setFechaInicio(parseador.format(dateStart));
+                                            resultado = mod.SaveOrUpdate(tarea, null);
+                                        } 
+                                        break;
+                                    case "Miercoles" :
+                                        if(tarea.getMiercoles() == 1){
+                                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                                            tarea.setFechaInicio(parseador.format(dateStart));
+                                            resultado = mod.SaveOrUpdate(tarea, null);
+                                        } 
+                                        break;
+                                    case "Jueves" :
+                                        if(tarea.getJueves() == 1){
+                                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                                            tarea.setFechaInicio(parseador.format(dateStart));
+                                            resultado = mod.SaveOrUpdate(tarea, null);
+                                        } 
+                                        break;    
+                                    case "Viernes" :
+                                        if(tarea.getViernes() == 1){
+                                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                                            tarea.setFechaInicio(parseador.format(dateStart));
+                                            resultado = mod.SaveOrUpdate(tarea, null);
+                                        } 
+                                        break; 
+                                    case "Sabado" :
+                                        if(tarea.getSabado() == 1){
+                                            dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                                            tarea.setFechaInicio(parseador.format(dateStart));
+                                            resultado = mod.SaveOrUpdate(tarea, null);
+                                        } 
+                                        break;   
+                                }
+
+                               calendarStart.add(Calendar.DATE, 1);
+                           }
+
+                        }else if(r.getIdRepeticionTarea() == 2  || r.getIdRepeticionTarea() == 6 || r.getIdRepeticionTarea() == 4){
+                           while (calendarStart.get(Calendar.YEAR) <= calendar.get(Calendar.YEAR)) {
+                               dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                               tarea.setFechaInicio(parseador.format(dateStart));
+                               resultado = mod.SaveOrUpdate(tarea, null);
+                               calendarStart.add(Calendar.DATE, r.getSumarDias());
+                               calendarStart.add(Calendar.MONTH, r.getSumarMes());
+                           }
+                       }else if(r.getIdRepeticionTarea() == 5 || r.getIdRepeticionTarea() == 7){
+                            for (int i = 0; i < 10; i++) {
+                               dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                               tarea.setFechaInicio(parseador.format(dateStart));
+                               resultado = mod.SaveOrUpdate(tarea, null);
+                               calendarStart.add(Calendar.MONTH, r.getSumarMes());
+                               calendarStart.add(Calendar.YEAR, r.getSumarYear());
+                            }
+                       }
+
+                   }
+                }
+            }
+        }else{
+            resultado = "El título de la tarea existe.";
+        }
+        
+        return resultado;
+    }
+    
+    public String SaveOrUpdateCalendar(A_Tarea tarea) throws ParseException {
+        A_TareaModel mod = new A_TareaModel();
+        String resultado = null;
+        Calendar calendarStart = Calendar.getInstance();
+        Calendar calendarEnd= Calendar.getInstance();  
+        Calendar calendarAuxEnd = Calendar.getInstance();
+        SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
+        A_RepeticionTareaController _repeticionTarea = new A_RepeticionTareaController();
+        List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
+        listaRepeticionTarea =  _repeticionTarea.getAllRepeticionTarea();
+        Date dateStart = parseador.parse(tarea.getFechaInicio());
+        Date dateEnd = parseador.parse(tarea.getFechaFinal());
+        Date dateAuxEnd = parseador.parse(tarea.getAuxFechaFinal());
+        calendarStart.setTime(dateStart);
+        calendarEnd.setTime(dateEnd);
+        calendarAuxEnd.setTime(dateAuxEnd);
+        for(A_RepeticionTarea r : listaRepeticionTarea){
+            if(r.getIdRepeticionTarea() == tarea.getIdRepeticionTarea()){
+               if(r.getSumarDias() == 0 && r.getSumarMes() == 0 && r.getSumarYear() == 0){return mod.SaveOrUpdate(tarea, null);}
+               else{
+                   while(calendarEnd.before(calendarAuxEnd) || calendarEnd.equals(calendarAuxEnd)){                       
+                       dateStart = parseador.parse(String.valueOf(calendarStart.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarStart.get(Calendar.MONTH)))+1)+"/"+calendarStart.get(Calendar.YEAR)));
+                       dateEnd = parseador.parse(String.valueOf(calendarEnd.get(Calendar.DATE)+"/"+(Integer.parseInt(String.valueOf(calendarEnd.get(Calendar.MONTH)))+1)+"/"+calendarEnd.get(Calendar.YEAR)));
+                       tarea.setFechaInicio(parseador.format(dateStart));
+                       tarea.setFechaFinal(parseador.format(dateEnd));
+                       resultado = mod.SaveOrUpdate(tarea, null);
+                       calendarStart.add(Calendar.DATE, r.getSumarDias());
+                       calendarStart.add(Calendar.MONTH, r.getSumarMes());
+                       calendarStart.add(Calendar.YEAR, r.getSumarYear());
+                       calendarEnd.add(Calendar.DAY_OF_MONTH, r.getSumarDias());
+                       calendarEnd.add(Calendar.MONTH, r.getSumarMes());
+                       calendarEnd.add(Calendar.YEAR, r.getSumarYear());
+                   }
+               }
+               break;
+            }
+        }
+        return resultado;
+    }
+    
+    
+    
+    public List<A_Tarea> getAllTareaCalendar(int idUsuario) throws ParseException {        
+        A_TareaModel x = new A_TareaModel();
+        List<A_Tarea> tareas = new ArrayList<A_Tarea>();
+        tareas = x.getAllTarea(idUsuario, "");
+        for(A_Tarea item : tareas){
+            String[] fechaInicio = item.getFechaInicio().split("/");
+            String[] fechaFinal = item.getFechaFinal().split("/");
+            item.setFechaInicio(fechaInicio[2]+"-"+fechaInicio[1]+"-"+fechaInicio[0]);
+            item.setFechaFinal(fechaFinal[2]+"-"+fechaFinal[1]+"-"+fechaFinal[0]);
+            String horaInicio = item.getHoraInicio().replace(" ","");
+            String horaFinal = item.getHoraFinal().replace(" ","");
+            item.setHoraInicio(horaInicio.substring(0, 5));
+            item.setHoraFinal(horaFinal.substring(0, 5));
+        }
+        return tareas;
+    }
+    
+    public void UploadFile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        AFileUploadHandler mod = new AFileUploadHandler();
+        try {
+                mod.doPost( request, response);
+            } catch (Exception ex) {
+               request.setAttribute("message", "File Upload Failed due to " + ex);
+            } 
+        
+    }
+    
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        A_Tarea tarea = new A_Tarea();
+        A_PathTarea path = new A_PathTarea();
+        A_TareaModel mod = new A_TareaModel();
+//        ImagenVO imagenvo = new ImagenVO();
+//        sql auto = new sql();
+//        int nuevoid = auto.auto_increm("SELECT MAX(codigoimg) FROM imagen;");
+//        para la imagenes
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        InputStream inputStream = null;
+                System.out.print("title image: "+request.getParameter("tituloImage"));        
+
+        System.out.print("file-path: ");        
+        System.out.print(request.getPart("file-input"));   
+   
+        try {
+            Part filePart = request.getPart("file-input");
+            if (filePart.getSize() > 0) {
+                System.out.println(filePart.getName());
+                System.out.println(filePart.getSize());
+                System.out.println(filePart.getContentType());
+                inputStream = filePart.getInputStream();
+            }
+        } catch (Exception ex) {
+            System.out.println("fichero: "+ex.getMessage());
+        }
+        
+        System.out.print("image: ");    
+
+        System.out.print(inputStream);
+        
+        try{
+            tarea.setIdUserCrea(Integer.parseInt(request.getParameter("idUsuario")));
+            tarea.setTitulo(request.getParameter("titulo"));
+            tarea.setDescripcion(request.getParameter("descripcion"));
+            if (inputStream != null) {
+                path.setNombrePath(request.getParameter("tituloImage"));
+                path.setArchivoimg(inputStream);
+            }
+            tarea.setIdRepeticionTarea(Integer.parseInt(request.getParameter("idRepeticion")));
+            tarea.setIdEstadoTarea(Integer.parseInt(request.getParameter("idEstado")));
+            tarea.setFechaInicio(String.valueOf(request.getParameter("fi")));
+            tarea.setHoraInicio(request.getParameter("horaInicio"));
+            System.out.print("titulo: "+tarea.getTitulo());
+//            String name = request.getParameter("txtname");
+//            imagenvo.setNombreimg(name);
+        }catch(Exception ex){
+            System.out.println("nombre: "+ex.getMessage());
+        }
+        
+        try{
+        if(request.getParameter("L").equalsIgnoreCase("on"))
+            tarea.setLunes(1);
+        }catch(Exception e){
+            tarea.setLunes(0);
+        }
+
+        try{
+            if(request.getParameter("Ma").equalsIgnoreCase("on"))
+                tarea.setMartes(1);
+        }catch(Exception e){
+            tarea.setMartes(0);
+        }
+
+        try{
+            if(request.getParameter("Mi").equalsIgnoreCase("on"))
+                tarea.setMiercoles(1);
+        }catch(Exception e){
+            tarea.setMiercoles(0);
+        }
+
+        try{
+            if(request.getParameter("J").equalsIgnoreCase("on"))
+                tarea.setJueves(1);
+        }catch(Exception e){
+            tarea.setJueves(0);
+        }
+        try{
+            if(request.getParameter("V").equalsIgnoreCase("on"))
+                tarea.setViernes(1);
+        }catch(Exception e){
+            tarea.setViernes(0);
+        }
+
+        try{
+            if(request.getParameter("S").equalsIgnoreCase("on"))
+                tarea.setSabado(1);;
+        }catch(Exception e){
+            tarea.setSabado(0);;
+        }
+
+        try{
+            if(request.getParameter("D").equalsIgnoreCase("on"))
+                tarea.setDomingo(1);            
+        }catch(Exception e){
+            tarea.setDomingo(0); 
+        }
+
+        
+
+//        try {
+            System.out.print("Entro al servlet");
+//            if (estado.equalsIgnoreCase("insert")) {
+//                imagenvo.setCodigoimg(nuevoid);
+//                if (inputStream != null) {
+//                    imagenvo.setArchivoimg(inputStream);
+//                }
+//                imagendao.Agregar_ImagenVO(imagenvo);
+//            } else {
+//                imagenvo.setCodigoimg(id_pdf);
+//                if (inputStream != null) {
+//                    imagenvo.setArchivoimg(inputStream);
+//                    imagendao.Modificar_ImagenVO(imagenvo);
+//                } else {
+//                    imagendao.Modificar_ImagenVO2(imagenvo);
+//                }
+//            }
+//        } catch (Exception ex) {
+//            System.out.println("textos: "+ex.getMessage());
+//        }
+        A_PathTareaModel pathMod = new A_PathTareaModel();
+//        String resultado = mod.SaveOrUpdate(tarea, null);       
+        String resultado = "Ok";
+
+        if(resultado.equals("Ok")){
+            path.setIdTarea(7229);
+            pathMod.savePathTarea(path);
+        }
+
+        out.println("<script type='text/javascript'>");
+            out.println("</script>");
+            out.close();
+        
+
+//        RequestDispatcher view = request.getRequestDispatcher("/Pagina1.jsp");
+//        view.forward(request, response);
+    }
+    
+    
+    public List<Empleado> getEmpleados(){
+        A_TareaModel mod = new A_TareaModel();
+        return mod.getEmpleados();
+    }
+}
