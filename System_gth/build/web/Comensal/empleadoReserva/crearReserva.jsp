@@ -94,18 +94,44 @@
                                 </label>
                                
                                 <div class="form-group">
-                                    <select class="form-control cantidad<%=contador%> form-cantidad" id="cantidad" name="cantidad<%=item.getNombreComida()%>" disabled>
+<!--                                    <select class="form-control cantidad<%=contador%> form-cantidad" id="cantidad" name="cantidad<%=item.getNombreComida()%>" disabled>
                                       <option disabled selected="selected">Cantidad</option>
                                       <option>1</option>
                                       <option>2</option>
                                       <option>3</option>
-                                    </select>
+                                    </select>-->
+                                    <div class="input-group margin">
+                                        <select class="form-control cantidad<%=contador%> form-cantidad" id="cantidad" name="cantidad<%=item.getNombreComida()%>" disabled>
+                                            <option disabled selected="selected">Cantidad</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option value="4">mas...</option>
+                                        </select>
+                                        <span class="input-group-btn">&#160;</span>
+                                        <span class="input-group-btn">&#160;</span>
+                                        <span class="input-group-btn">&#160;</span>
+                                        <span class="input-group-btn">&#160;</span>
+                                        <span class="input-group-btn">
+                                            <button id="btn<%=contador%>" type="button" class="btn btn-info" style="border-radius: 5px;" disabled><i class="fa fa-plus-square"></i></button>
+                                        </span>
+                                        <span class="input-group-btn">&#160;</span>
+                                        <span class="input-group-btn">&#160;</span>
+                                        <span class="input-group-btn">
+                                            <button id="btnMenos<%=contador%>" type="button" class="btn btn-warning" style="border-radius: 5px;" disabled><i class="fa fa-minus-square"></i></button>
+                                        </span>
+                                    </div>
+                                    <!--<button type="button" class="btn btn-info align-left" disabled><i class="fa fa-plus-square"></i></button>-->
                                 </div>
                               <% } } %>
                         </div>  
                         <div class="form-group">
                             <label>Observación</label>
-                            <textarea class="form-control" rows="3" id="observacion"  name="observacion"></textarea>
+                            <!--<input type="number" class="form-control cantidad<%=contador%> form-cantidad"/>-->
+                            <textarea class="form-control" rows="3" id="observacion"  name="observacion" readonly></textarea>
+                            <input type="text" id="observacionDes" name="observacionDes"/>
+                            <input type="text" id="observacionAlm" name="observacionAlm"/>
+                            <input type="text" id="observacionCen" name="observacionCen"/>
                         </div>
                     </div>
                     <!-- /.box-body -->
@@ -118,6 +144,14 @@
         <div id="mensaje"></div>
 <script type="text/javascript">
 $(document).ready(function () {
+    
+// ===============   varibles de reserva -> daniel
+    let Desayuno = 0;    
+    let Almuerzo = 0;
+    let Cena = 0;
+    var arrayReser = ["","",""];
+    
+    
     var array = [];
     for(var i = 1; i <= $("#lengthComida").val(); i++){
         array.push(i);
@@ -132,50 +166,183 @@ $(document).ready(function () {
               $('.cantidad'+element).val("Cantidad");
             }
        });  
-    })
+    });
+   
+//=============    cuando es mas de 4 platos -> daniel ===========================
+    function llenarObservacion(){
+        let palabra = "";
+        arrayReser.forEach(function (element){
+            palabra += element;
+        });
+        $("textarea#observacion").text(palabra);
+    }   
+    array.forEach(function (element){
+        $('.cantidad'+ element).change(function() {
+            if($(this).val() == 4){
+                if(element == 1){
+                    $('#btn'+ element).attr("disabled", false);
+                    $('#btnMenos'+ element).attr("disabled", false);
+                    Desayuno = 4;   
+                    arrayReser[0] = "4 Desayunos, ";
+                    $('#observacionDes').val("4 Desayunos");
+                    llenarObservacion();
+                }
+                if(element == 2){
+                    $('#btn'+ element).attr("disabled", false);
+                    $('#btnMenos'+ element).attr("disabled", false);
+                    Almuerzo = 4;
+                    arrayReser[1] = "4 Almuerzos, ";
+                    $('#observacionAlm').val("4 Almuerzos");
+                    llenarObservacion();
+                }
+                if(element == 3){
+                    $('#btn'+ element).attr("disabled", false);
+                    $('#btnMenos'+ element).attr("disabled", false);
+                    Cena = 4;
+                    arrayReser[2] = "4 Cenas, ";
+                    $('#observacionCen').val("4 Cenas");
+                    llenarObservacion();
+                }
+            }else{
+                if(element == 1){
+                    $('#btn'+ element).attr("disabled", true);
+                    $('#btnMenos'+ element).attr("disabled", true);   
+                    arrayReser[0] = "";
+                    $('#observacionDes').val("");
+                    llenarObservacion();
+                }
+                if(element == 2){
+                    $('#btn'+ element).attr("disabled", true);
+                    $('#btnMenos'+ element).attr("disabled", true); 
+                    arrayReser[1] = "";
+                    $('#observacionAlm').val("");
+                    llenarObservacion();
+                }
+                if(element == 3){
+                    $('#btn'+ element).attr("disabled", true);
+                    $('#btnMenos'+ element).attr("disabled", true); 
+                    arrayReser[2] = ""; 
+                    $('#observacionCen').val("");
+                    llenarObservacion();
+                }
+            }
+        });  
+    });
+    array.forEach(function (element){
+        $('#btn'+ element).click(function(){
+//            console.log(element);
+            if(element == 1){
+                Desayuno++;   
+                arrayReser[element-1] = Desayuno+" Desayunos, ";
+                $('#observacionDes').val(Desayuno+" Desayunos");
+                llenarObservacion();
+            }
+            if(element == 2){
+                Almuerzo++;  
+                arrayReser[element-1] = Almuerzo+" Almuerzos, ";
+                $('#observacionAlm').val(Almuerzo+" Almuerzos");
+                llenarObservacion();
+            }
+            if(element == 3){
+                Cena++;  
+                arrayReser[element-1] = Cena+" Cenas, ";
+                $('#observacionCen').val(Cena+" Cenas");
+                llenarObservacion();
+            }
+        });
+    });
+    array.forEach(function (element){
+        $('#btnMenos'+ element).click(function(){
+            console.log(element);
+            if(element == 1){
+                Desayuno--; 
+                if(Desayuno < 4){
+                    arrayReser[element-1] = "";
+                    $('#observacionDes').val("");
+                    llenarObservacion();
+                    $('.cantidad'+element).val("3");
+                    $('#btn'+ element).attr("disabled", true);
+                    $('#btnMenos'+ element).attr("disabled", true); 
+                }else{
+                    arrayReser[element-1] = Desayuno+" Desayunos, ";
+                    $('#observacionDes').val(Desayuno+" Desayunos");
+                    llenarObservacion();
+                }
+            }
+            if(element == 2){
+                Almuerzo--;
+                if(Almuerzo < 4){
+                    arrayReser[element-1] = "";
+                    $('#observacionAlm').val("");
+                    llenarObservacion();
+                    $('.cantidad'+element).val("3");
+                    $('#btn'+ element).attr("disabled", true);
+                    $('#btnMenos'+ element).attr("disabled", true); 
+                }else{
+                    arrayReser[element-1] = Almuerzo+" Almuerzos, ";
+                    $('#observacionAlm').val(Almuerzo+" Almuerzos");
+                    llenarObservacion();
+                }
+            }
+            if(element == 3){
+                Cena--;
+                if(Cena < 4){
+                    arrayReser[element-1] = "";
+                    $('#observacionCen').val("");
+                    llenarObservacion();
+                    $('.cantidad'+element).val("3");
+                    $('#btn'+ element).attr("disabled", true);
+                    $('#btnMenos'+ element).attr("disabled", true); 
+                }else{
+                    arrayReser[element-1] = Cena+" Cenas, ";
+                    $('#observacionCen').val(Cena+" Cenas");
+                    llenarObservacion();
+                }
+            }
+        });
+    });
     
-        $('.form_guardar').bootstrapValidator({
-            message: 'This value is not valid',
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                idTipoComensal: {
-                    validators: {
-                        notEmpty: {
-                            message: 'El tipo de comensal es requerido'
-                        }
+    $('.form_guardar').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            idTipoComensal: {
+                validators: {
+                    notEmpty: {
+                        message: 'El tipo de comensal es requerido'
                     }
                 }
             }
-        }).on('success.form.bv', function (e) {
-            // Prevent submit form
-            e.preventDefault();
-            $("#mensaje").show();
-            $("#mensaje").addClass("loader");
+        }
+    }).on('success.form.bv', function (e) {
+        // Prevent submit form
+        e.preventDefault();
+        $("#mensaje").show();
+        $("#mensaje").addClass("loader");
 
 
-            var $form = $(e.target),
-                    validator = $form.data('bootstrapValidator');
-            $.ajax({
-                type: "POST",
-                url: "guardarReservaEmpleado.jsp",
-                data: $(".form_guardar").serialize(),
-                success: function (data)
-                {
-                    $("#mensaje").removeClass("loader");
-                    $("#mensaje").html(data);
-                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $("#mensaje").removeClass("loader");
-                    var menn = "<p class='text-red'>Se produjo un error " + errorThrown + "  " + textStatus + "</p>";
-                    $("#mensaje").html(menn);
-                }
-            });
+        var $form = $(e.target),
+                validator = $form.data('bootstrapValidator');
+        $.ajax({
+            type: "POST",
+            url: "guardarReservaEmpleado.jsp",
+            data: $(".form_guardar").serialize(),
+            success: function (data)
+            {
+                $("#mensaje").removeClass("loader");
+                $("#mensaje").html(data);
+            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#mensaje").removeClass("loader");
+                var menn = "<p class='text-red'>Se produjo un error " + errorThrown + "  " + textStatus + "</p>";
+                $("#mensaje").html(menn);
+            }
         });
-        
-        
-        
     });
+    
+
+});
 </script>

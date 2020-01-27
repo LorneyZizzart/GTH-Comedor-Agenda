@@ -1,6 +1,20 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="Entidad.Login_Entidad"%>
+<%@page import="Entidad.C_TipoComensal"%>
+<jsp:useBean id="_empleadoReserva" class="Controlador.C_EmpleadoReservaController" />
 <jsp:useBean id="__encript" class="Controlador.EncriptionController" />
+<%
+    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+    listaReservas = _empleadoReserva.getNotificaionesDeReservas();
+    int contador = 0;
+    for (C_TipoComensal item : listaReservas) {
+        contador++;
+    }
+    int NotificaionMostrarTodo = 0; 
+%>
 <!DOCTYPE html>
+<a href="../../Comensal/editarReservas/listaReserva.jsp"></a>
 <html>
     <head>
         <meta charset="utf-8">
@@ -103,7 +117,37 @@
                     </a>
 
                     <div class="navbar-custom-menu">
-                        <ul class="nav navbar-nav">                            
+                        <ul class="nav navbar-nav"> 
+                            
+                            <!-- Notifications: mas de 3 platos -> Daniel-17/12/2019 -->
+                            <li class="dropdown notifications-menu">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning"><%=contador%></span>
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li class="header">Tienes <%=contador%> notificaciones</li>
+                                <li>
+                                  <!-- inner menu: contains the actual data -->
+                                  <ul class="menu">
+                                    <%
+                                        for (C_TipoComensal item : listaReservas) {
+                                    %>
+                                    <li>
+                                        <a href="../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=<%=item.getIdTipoComida()%>&IdEmpleado=<%=item.getIdEmpleado()%>&Fecha=<%=item.getFecha()%>">
+                                            <i class="fa fa-user text-aqua"></i> <b><%=item.getNombreEmpleado()%></b><br>&#160;&#160;&#160;&#160;<%= item.getObservacion()%>
+                                        </a>
+                                    </li>
+                                    <%
+                                        }
+                                    %>
+                                  </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="../../Comensal/editarReservas?ListarNotificaion=1">Ver todo</a>     
+                                </li>
+                              </ul>
+                            </li>
 
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
@@ -133,6 +177,7 @@
                                 </ul>
                             </li>
                             <!-- Control Sidebar Toggle Button -->
+                            
                             <li>
                                 <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                             </li>

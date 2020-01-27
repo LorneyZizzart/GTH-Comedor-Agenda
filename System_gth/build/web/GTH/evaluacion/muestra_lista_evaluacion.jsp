@@ -118,12 +118,15 @@
                                 for (Cliente j : item.getClientes()) {
                                     String selected_ = "";
                                     for (Cliente p : item.getSelect_Clientes()) {
-                                        if (j.getCliente_id() == p.getCliente_id()) {
+                                        String select_cliente=p.getCliente_id()+"-"+p.getTelefono();
+                                        String list_cliente = j.getCliente_id()+"-"+j.getTelefono();
+                                        //if (j.getCliente_id() == p.getCliente_id()) {
+                                        if (select_cliente.equalsIgnoreCase(list_cliente)) {
                                             selected_ = "selected";
                                         }
                                     }
                             %>
-                            <option value="<%=j.getCliente_id()%>" <%=selected_%>><%=j.getNombre()%></option>                            
+                            <option value="<%=j.getCliente_id()%>-<%=j.getTelefono()%>" <%=selected_%>><%=j.getNombre()%></option>                            
                             <%
                                 }
                             %>                 

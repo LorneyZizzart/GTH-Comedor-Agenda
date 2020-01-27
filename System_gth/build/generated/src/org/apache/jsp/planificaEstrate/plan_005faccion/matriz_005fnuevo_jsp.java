@@ -111,12 +111,12 @@ public final class matriz_005fnuevo_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("                                    <div class=\"box-body\">\n");
       out.write("                                        <div class=\"form-group\">\n");
       out.write("                                            <label>Que Hacer : </label>                    \n");
-      out.write("                                            <textarea class=\"matriz_quehacer_ form-control\" id=\"mat_quehacer\" name=\"mat_quehacer\" placeholder=\"Que hacer\">");
+      out.write("                                            <textarea style=\"width: 100%\" class=\"matriz_quehacer_ form-control\" id=\"mat_quehacer\" name=\"mat_quehacer\" placeholder=\"Que hacer\">");
 if (matriz != null) {
                                                     out.print(matriz.getQue_hacer());
                                                 }
       out.write("</textarea>\n");
-      out.write("                                        </div><br>\n");
+      out.write("                                        </div><br><br>\n");
       out.write("                                        <div class=\"form-group\">\n");
       out.write("                                            <label>Responsable:</label>\n");
       out.write("                                            <input type=\"text\" class=\"form-control\" name=\"mat_responsable\" id=\"mat_responsable\" placeholder=\"Responsable\" value=\"");
@@ -124,6 +124,9 @@ if (matriz != null) {
                                                     out.print(matriz.getResponsable());
                                                 }
       out.write("\">\n");
+      out.write("                                        </div>\n");
+      out.write("                                        <div class=\"box-footer\">                                            \n");
+      out.write("                                            <button type=\"button\" class=\"btn btn-purple pull-right btn-guarda-qhacer\">Guardar área</button>\n");
       out.write("                                        </div>\n");
       out.write("                                    </div>\n");
       out.write("                                </div>\n");
@@ -209,7 +212,7 @@ if (matriz != null) {
       out.write("    </div>\n");
       out.write("</section>\n");
       out.write("\n");
-      out.write("                                        <!-- Bootstrap WYSIHTML5 -->\n");
+      out.write("<!-- Bootstrap WYSIHTML5 -->\n");
       out.write("<script src=\"../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js\"></script>\n");
       out.write("\n");
       out.write("<script>\n");
@@ -318,7 +321,9 @@ if (matriz != null) {
       out.write("                }\n");
       out.write("            });\n");
       out.write("        });\n");
-      out.write("\n");
+      out.write("        $(\".btn-guarda-qhacer\").click(function () {\n");
+      out.write("            var \n");
+      out.write("        });\n");
       out.write("    });\n");
       out.write("</script>\n");
     } catch (Throwable t) {

@@ -145,29 +145,29 @@
         var fila = $('<div/>')
                 .addClass('loader')
                 .text(' Cargando ... ');
-        /*$.post('../plan_accion/matriz_nuevo.jsp',
-         {id_pla_ac: b},
-         function (html) {
-         fila.html(html);
-         fila.removeClass('loader');
-         });*/
-        $.ajax({
-            data: {"id_pla_ac": b},
-            type: "GET",
-            dataType: "html",
-            url: "../plan_accion/matriz_nuevo.jsp",
-        }).done(function (data, textStatus, jqXHR) {
-            if (console && console.log) {
-                console.log("La solicitud se ha completado correctamente.");
-                fila.html(data);
-            }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            if (console && console.log) {
-                console.log("La solicitud a fallado: " + textStatus);
-                fila.html("La solicitud a fallado: " + textStatus);
-            }
-        });
-        fila.removeClass('loader');
+        $.post('../plan_accion/matriz_nuevo.jsp',
+                {id_pla_ac: b},
+                function (html) {
+                    fila.html(html);
+                    fila.removeClass('loader');
+                });
+        /*$.ajax({
+         data: {"id_pla_ac": b},
+         type: "GET",
+         dataType: "html",
+         url: "../plan_accion/matriz_nuevo.jsp",
+         }).done(function (data, textStatus, jqXHR) {
+         if (console && console.log) {
+         console.log("La solicitud se ha completado correctamente.");
+         fila.html(data);
+         }
+         }).fail(function (jqXHR, textStatus, errorThrown) {
+         if (console && console.log) {
+         console.log("La solicitud a fallado: " + textStatus);
+         fila.html("La solicitud a fallado: " + textStatus);
+         }
+         });
+         fila.removeClass('loader');*/
         return fila;
     }
     $(document).ready(function () {

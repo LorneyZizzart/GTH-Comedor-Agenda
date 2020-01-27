@@ -29,7 +29,7 @@
           <div class="box box-purple">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
-              <div id="calendar" style="margin: 0.5%"></div>
+                <div id="calendar" style="margin: 0.5%"></div>
             </div>
             <!-- /.box-body -->
           </div>

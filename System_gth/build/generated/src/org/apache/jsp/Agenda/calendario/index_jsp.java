@@ -5,7 +5,10 @@ import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import java.util.List;
 import Entidad.A_Tarea;
+import java.util.ArrayList;
+import java.util.List;
 import Entidad.Login_Entidad;
+import Entidad.C_TipoComensal;
 import Entidad.Opcion;
 import Entidad.Login_Entidad;
 import java.util.ArrayList;
@@ -58,6 +61,18 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
 
       out.write('\n');
       out.write('\n');
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      Controlador.C_EmpleadoReservaController _empleadoReserva = null;
+      synchronized (_jspx_page_context) {
+        _empleadoReserva = (Controlador.C_EmpleadoReservaController) _jspx_page_context.getAttribute("_empleadoReserva", PageContext.PAGE_SCOPE);
+        if (_empleadoReserva == null){
+          _empleadoReserva = new Controlador.C_EmpleadoReservaController();
+          _jspx_page_context.setAttribute("_empleadoReserva", _empleadoReserva, PageContext.PAGE_SCOPE);
+        }
+      }
       out.write('\n');
       Controlador.EncriptionController __encript = null;
       synchronized (_jspx_page_context) {
@@ -67,8 +82,19 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
           _jspx_page_context.setAttribute("__encript", __encript, PageContext.PAGE_SCOPE);
         }
       }
+      out.write('\n');
+
+    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+    listaReservas = _empleadoReserva.getNotificaionesDeReservas();
+    int contador = 0;
+    for (C_TipoComensal item : listaReservas) {
+        contador++;
+    }
+    int NotificaionMostrarTodo = 0; 
+
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
+      out.write("<a href=\"../../Comensal/editarReservas/listaReserva.jsp\"></a>\n");
       out.write("<html>\n");
       out.write("    <head>\n");
       out.write("        <meta charset=\"utf-8\">\n");
@@ -175,7 +201,55 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    </a>\n");
       out.write("\n");
       out.write("                    <div class=\"navbar-custom-menu\">\n");
-      out.write("                        <ul class=\"nav navbar-nav\">                            \n");
+      out.write("                        <ul class=\"nav navbar-nav\"> \n");
+      out.write("                            \n");
+      out.write("                            <!-- Notifications: mas de 3 platos -> Daniel-17/12/2019 -->\n");
+      out.write("                            <li class=\"dropdown notifications-menu\">\n");
+      out.write("                              <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n");
+      out.write("                                <i class=\"fa fa-bell-o\"></i>\n");
+      out.write("                                <span class=\"label label-warning\">");
+      out.print(contador);
+      out.write("</span>\n");
+      out.write("                              </a>\n");
+      out.write("                              <ul class=\"dropdown-menu\">\n");
+      out.write("                                <li class=\"header\">Tienes ");
+      out.print(contador);
+      out.write(" notificaciones</li>\n");
+      out.write("                                <li>\n");
+      out.write("                                  <!-- inner menu: contains the actual data -->\n");
+      out.write("                                  <ul class=\"menu\">\n");
+      out.write("                                    ");
+
+                                        for (C_TipoComensal item : listaReservas) {
+                                    
+      out.write("\n");
+      out.write("                                    <li>\n");
+      out.write("                                        <a href=\"../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=");
+      out.print(item.getIdTipoComida());
+      out.write("&IdEmpleado=");
+      out.print(item.getIdEmpleado());
+      out.write("&Fecha=");
+      out.print(item.getFecha());
+      out.write("\">\n");
+      out.write("                                            <i class=\"fa fa-user text-aqua\"></i> <b>");
+      out.print(item.getNombreEmpleado());
+      out.write("</b><br>&#160;&#160;&#160;&#160;");
+      out.print( item.getObservacion());
+      out.write("\n");
+      out.write("                                        </a>\n");
+      out.write("                                    </li>\n");
+      out.write("                                    ");
+
+                                        }
+                                    
+      out.write("\n");
+      out.write("                                  </ul>\n");
+      out.write("                                </li>\n");
+      out.write("                                <li class=\"footer\">\n");
+      out.write("                                    <a href=\"../../Comensal/editarReservas?ListarNotificaion=1\">Ver todo</a>     \n");
+      out.write("                                </li>\n");
+      out.write("                              </ul>\n");
+      out.write("                            </li>\n");
       out.write("\n");
       out.write("                            <!-- User Account: style can be found in dropdown.less -->\n");
       out.write("                            <li class=\"dropdown user user-menu\">\n");
@@ -213,6 +287,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                </ul>\n");
       out.write("                            </li>\n");
       out.write("                            <!-- Control Sidebar Toggle Button -->\n");
+      out.write("                            \n");
       out.write("                            <li>\n");
       out.write("                                <a href=\"#\" data-toggle=\"control-sidebar\"><i class=\"fa fa-gears\"></i></a>\n");
       out.write("                            </li>\n");

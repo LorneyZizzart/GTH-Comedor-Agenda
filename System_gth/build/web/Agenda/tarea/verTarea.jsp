@@ -1,3 +1,4 @@
+<%@page import="Entidad.A_RepeticionTarea"%>
 <%@page import="Entidad.A_PathTarea"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -6,12 +7,15 @@
 <jsp:useBean id="_proceso" class="Controlador.A_ProcedimientoTareaController" />
 <jsp:useBean id="_path" class="Controlador.A_PathTareaController"/>
 <jsp:useBean id="_pathProceso" class="Controlador.A_PathProcedimientoTareaController" />
+<jsp:useBean id="_repeticionTarea" class="Controlador.A_RepeticionTareaController"/>
 <%
     String[] id = request.getParameter("id").split("%"); 
     A_Tarea tarea = new A_Tarea();
     List<A_Tarea> procesos = new ArrayList<A_Tarea>();
     List<A_PathTarea> listaPath = new ArrayList<A_PathTarea>();
     List<A_Tarea> listaPathProceso = new ArrayList<A_Tarea>();
+    List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
+    listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     tarea = _tarea.getTareaByTitulo(id[0], Integer.parseInt(id[1]));
 
     listaPath = _path.getAllPath(id[0], Integer.parseInt(id[1]));
@@ -20,6 +24,11 @@
         tarea = _tarea.getTareaById(tarea.getIdTarea());
         procesos = _proceso.getAllProcedimientoTarea(tarea.getTitulo(),tarea.getIdUserCrea());
     }else{
+        for(A_RepeticionTarea r : listaRepeticionTarea){
+            if(r.getIdRepeticionTarea() == tarea.getIdRepeticionTarea()){
+                tarea.setNombreRepeticion(r.getNombreRepeticion());
+            }
+        }
         procesos = _proceso.getAllProcedimientoTarea(id[0], Integer.parseInt(id[1]));
     }
 %>

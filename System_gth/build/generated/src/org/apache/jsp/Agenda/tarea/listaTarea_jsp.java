@@ -312,11 +312,11 @@ public final class listaTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            <div class=\"modal-content\">\n");
       out.write("                <div class=\"modal-header\">\n");
       out.write("                    \n");
-      out.write("                    <button type=\"button\" class=\"btn-purple pull-right\" data-dismiss=\"modal\" aria-label=\"Close\" style=\"border: solid 1px #9056bf;\"><i class=\"fa fa-close\"></i></button>\n");
-      out.write("                    <div id=\"btn-print\"><button id=\"btn-print-div\" type=\"button\" class=\"btn btn-primary pull-right\" ><i class=\"fa fa-print\"></i></button></div>\n");
+      out.write("                    <!--<button type=\"button\" class=\"btn-purple pull-right\" data-dismiss=\"modal\" aria-label=\"Close\" style=\"border: solid 1px #9056bf;\"><i class=\"fa fa-close\"></i></button>-->\n");
+      out.write("                    <!--<div id=\"btn-print\"><button id=\"btn-print-div\" type=\"button\" class=\"btn btn-primary pull-right\" ><i class=\"fa fa-print\"></i></button></div>-->\n");
       out.write("                    \n");
-      out.write("<!--                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n");
-      out.write("                        <span aria-hidden=\"true\">&times;</span></button>-->\n");
+      out.write("                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n");
+      out.write("                        <span aria-hidden=\"true\">&times;</span></button>\n");
       out.write("                    <h4 id=\"titleModal\" class=\"modal-title\"> title</h4>\n");
       out.write("                </div>\n");
       out.write("                <div id=\"modelViewTarea\" class=\"modal-body cuerpo_registro\"></div>\n");

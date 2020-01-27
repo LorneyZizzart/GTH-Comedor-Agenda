@@ -46,15 +46,18 @@
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label>Que Hacer : </label>                    
-                                            <textarea class="matriz_quehacer_ form-control" id="mat_quehacer" name="mat_quehacer" placeholder="Que hacer"><%if (matriz != null) {
+                                            <textarea style="width: 100%" class="matriz_quehacer_ form-control" id="mat_quehacer" name="mat_quehacer" placeholder="Que hacer"><%if (matriz != null) {
                                                     out.print(matriz.getQue_hacer());
                                                 }%></textarea>
-                                        </div><br>
+                                        </div><br><br>
                                         <div class="form-group">
                                             <label>Responsable:</label>
                                             <input type="text" class="form-control" name="mat_responsable" id="mat_responsable" placeholder="Responsable" value="<%if (matriz != null) {
                                                     out.print(matriz.getResponsable());
                                                 }%>">
+                                        </div>
+                                        <div class="box-footer">                                            
+                                            <button type="button" class="btn btn-purple pull-right btn-guarda-qhacer">Guardar área</button>
                                         </div>
                                     </div>
                                 </div>
@@ -130,7 +133,7 @@
     </div>
 </section>
 
-                                        <!-- Bootstrap WYSIHTML5 -->
+<!-- Bootstrap WYSIHTML5 -->
 <script src="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
 <script>
@@ -239,6 +242,8 @@
                 }
             });
         });
-
+        $(".btn-guarda-qhacer").click(function () {
+            var 
+        });
     });
 </script>

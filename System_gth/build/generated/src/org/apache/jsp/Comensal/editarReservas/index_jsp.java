@@ -6,7 +6,10 @@ import javax.servlet.jsp.*;
 import Entidad.C_TipoComensal;
 import Entidad.C_TipoComida;
 import Entidad.Usuario;
+import java.util.ArrayList;
+import java.util.List;
 import Entidad.Login_Entidad;
+import Entidad.C_TipoComensal;
 import Entidad.Opcion;
 import Entidad.Login_Entidad;
 import java.util.ArrayList;
@@ -60,6 +63,18 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      Controlador.C_EmpleadoReservaController _empleadoReserva = null;
+      synchronized (_jspx_page_context) {
+        _empleadoReserva = (Controlador.C_EmpleadoReservaController) _jspx_page_context.getAttribute("_empleadoReserva", PageContext.PAGE_SCOPE);
+        if (_empleadoReserva == null){
+          _empleadoReserva = new Controlador.C_EmpleadoReservaController();
+          _jspx_page_context.setAttribute("_empleadoReserva", _empleadoReserva, PageContext.PAGE_SCOPE);
+        }
+      }
       out.write('\n');
       Controlador.EncriptionController __encript = null;
       synchronized (_jspx_page_context) {
@@ -69,8 +84,19 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
           _jspx_page_context.setAttribute("__encript", __encript, PageContext.PAGE_SCOPE);
         }
       }
+      out.write('\n');
+
+    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+    listaReservas = _empleadoReserva.getNotificaionesDeReservas();
+    int contador = 0;
+    for (C_TipoComensal item : listaReservas) {
+        contador++;
+    }
+    int NotificaionMostrarTodo = 0; 
+
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
+      out.write("<a href=\"../../Comensal/editarReservas/listaReserva.jsp\"></a>\n");
       out.write("<html>\n");
       out.write("    <head>\n");
       out.write("        <meta charset=\"utf-8\">\n");
@@ -177,7 +203,55 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    </a>\n");
       out.write("\n");
       out.write("                    <div class=\"navbar-custom-menu\">\n");
-      out.write("                        <ul class=\"nav navbar-nav\">                            \n");
+      out.write("                        <ul class=\"nav navbar-nav\"> \n");
+      out.write("                            \n");
+      out.write("                            <!-- Notifications: mas de 3 platos -> Daniel-17/12/2019 -->\n");
+      out.write("                            <li class=\"dropdown notifications-menu\">\n");
+      out.write("                              <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n");
+      out.write("                                <i class=\"fa fa-bell-o\"></i>\n");
+      out.write("                                <span class=\"label label-warning\">");
+      out.print(contador);
+      out.write("</span>\n");
+      out.write("                              </a>\n");
+      out.write("                              <ul class=\"dropdown-menu\">\n");
+      out.write("                                <li class=\"header\">Tienes ");
+      out.print(contador);
+      out.write(" notificaciones</li>\n");
+      out.write("                                <li>\n");
+      out.write("                                  <!-- inner menu: contains the actual data -->\n");
+      out.write("                                  <ul class=\"menu\">\n");
+      out.write("                                    ");
+
+                                        for (C_TipoComensal item : listaReservas) {
+                                    
+      out.write("\n");
+      out.write("                                    <li>\n");
+      out.write("                                        <a href=\"../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=");
+      out.print(item.getIdTipoComida());
+      out.write("&IdEmpleado=");
+      out.print(item.getIdEmpleado());
+      out.write("&Fecha=");
+      out.print(item.getFecha());
+      out.write("\">\n");
+      out.write("                                            <i class=\"fa fa-user text-aqua\"></i> <b>");
+      out.print(item.getNombreEmpleado());
+      out.write("</b><br>&#160;&#160;&#160;&#160;");
+      out.print( item.getObservacion());
+      out.write("\n");
+      out.write("                                        </a>\n");
+      out.write("                                    </li>\n");
+      out.write("                                    ");
+
+                                        }
+                                    
+      out.write("\n");
+      out.write("                                  </ul>\n");
+      out.write("                                </li>\n");
+      out.write("                                <li class=\"footer\">\n");
+      out.write("                                    <a href=\"../../Comensal/editarReservas?ListarNotificaion=1\">Ver todo</a>     \n");
+      out.write("                                </li>\n");
+      out.write("                              </ul>\n");
+      out.write("                            </li>\n");
       out.write("\n");
       out.write("                            <!-- User Account: style can be found in dropdown.less -->\n");
       out.write("                            <li class=\"dropdown user user-menu\">\n");
@@ -215,6 +289,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                </ul>\n");
       out.write("                            </li>\n");
       out.write("                            <!-- Control Sidebar Toggle Button -->\n");
+      out.write("                            \n");
       out.write("                            <li>\n");
       out.write("                                <a href=\"#\" data-toggle=\"control-sidebar\"><i class=\"fa fa-gears\"></i></a>\n");
       out.write("                            </li>\n");
@@ -368,6 +443,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
     listaComensal = _tipoComensal.getAllTipoComensal();
 
     String[] listaRe = new String[]{"Todo", "Hoy", "Predeterminado"};
+    String palabra = request.getParameter("ListarNotificaion");
 
       out.write("\n");
       out.write("<section class=\"content-header\">\n");
@@ -375,6 +451,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        Registro\n");
       out.write("        <small> de reservas</small>\n");
       out.write("    </h1>\n");
+      out.write("    <!--<h2>");
+      out.print(palabra);
+      out.write("</h2>-->\n");
       out.write("    <ol class=\"breadcrumb\">\n");
       out.write("        <li><a href=\"#\"><i class=\"fa fa-dashboard\"></i> Inicio</a></li>\n");
       out.write("        <li class=\"active\">Lista de reservas</li>\n");
@@ -425,11 +504,11 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                               <select id=\"idTipoAl\" name=\"idTipoAl\" class=\"form-control selectComida\" multiple=\"multiple\" data-placeholder=\"Selecione una opción\"\n");
       out.write("                                        style=\"width: 100%;\">\n");
       out.write("                                   <option value=\"0\" selected>Todos</option>\n");
-      out.write("                                  ");
+      out.write("                                    ");
 
                                     for(C_TipoComida item : listaTipoComida){
                                         if(item.getEstado() == 1){
-                                            
+                                    
       out.write("\n");
       out.write("                                   <option value=\"");
       out.print(item.getIdTipoComida());
@@ -441,7 +520,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
 
                                         }
                                     }
-                                  
+                                    
       out.write("\n");
       out.write("                                </select> \n");
       out.write("                            </div>\n");
@@ -649,33 +728,51 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<script>\n");
       out.write("    var fechaInicio  = \"\", fechaFinal = \"\";\n");
       out.write("    $(document).ready(function() {\n");
-      out.write("        $('.selectComensal').select2();\n");
-      out.write("        $('.selectComida').select2();\n");
-      out.write("        $('.selectFuncionario').select2();\n");
-      out.write("        $('.formNuevo').tooltip({ boundary: 'window' });\n");
-      out.write("        $('#example').tooltip({ boundary: 'window' });\n");
-      out.write("        $('#dp1').datepicker({\n");
-      out.write("            format: 'dd/mm/yyyy',\n");
-      out.write("            autoclose: true\n");
-      out.write("        });\n");
-      out.write("        $('#dp2').datepicker({\n");
+      out.write("        if(");
+      out.print(palabra);
+      out.write(" == \"1\"){\n");
+      out.write("            $('.selectComensal').select2();\n");
+      out.write("            $('.selectComida').select2();\n");
+      out.write("            $('.selectFuncionario').select2();\n");
+      out.write("            renderTable( 0, 0, \"\", \"\", 0, 0, 1);\n");
+      out.write("        }else{\n");
+      out.write("            $('.selectComensal').select2();\n");
+      out.write("            $('.selectComida').select2();\n");
+      out.write("            $('.selectFuncionario').select2();\n");
+      out.write("            $('.formNuevo').tooltip({ boundary: 'window' });\n");
+      out.write("            $('#example').tooltip({ boundary: 'window' });\n");
+      out.write("            $('#dp1').datepicker({\n");
       out.write("                format: 'dd/mm/yyyy',\n");
       out.write("                autoclose: true\n");
-      out.write("        });\n");
-      out.write("        estadoDate(true);\n");
-      out.write("        renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());\n");
+      out.write("            });\n");
+      out.write("            $('#dp2').datepicker({\n");
+      out.write("                    format: 'dd/mm/yyyy',\n");
+      out.write("                    autoclose: true\n");
+      out.write("            });\n");
+      out.write("            estadoDate(true);\n");
+      out.write("            renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);\n");
+      out.write("        }\n");
       out.write("        \n");
       out.write("    });\n");
       out.write("    \n");
       out.write("    $('#filtrarTarea').click(function (){\n");
       out.write("        fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();\n");
-      out.write("        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());\n");
-      out.write("    })\n");
+      out.write("        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);\n");
+      out.write("    });\n");
+      out.write("    \n");
+      out.write("//    ====================== SillegaParametroListar todas\n");
       out.write("    \n");
       out.write("    function estadoDate(valor){\n");
       out.write("        $('#dp1').prop('disabled', valor);\n");
       out.write("        $('#dp2').prop('disabled', valor);\n");
       out.write("    }\n");
+      out.write("    \n");
+      out.write("    function VerTodasNotificaciones(){\n");
+      out.write("        console.log(\"daniasbfd\");\n");
+      out.write("//        $('#dp1').prop('disabled', valor);\n");
+      out.write("//        $('#dp2').prop('disabled', valor);\n");
+      out.write("    }\n");
+      out.write("    \n");
       out.write("    $('#idRepeat').on('change', function() {       \n");
       out.write("        if(this.value == '2'){\n");
       out.write("            estadoDate(false);\n");
@@ -684,9 +781,10 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            $('#dp1').val('');$('#dp2').val('');\n");
       out.write("        }        \n");
       out.write("    });\n");
-      out.write("    function renderTable(idE, idR, fi, ff, co, al){\n");
+      out.write("    \n");
+      out.write("    function renderTable(idE, idR, fi, ff, co, al, No){\n");
       out.write("        $.post('listaReserva.jsp',\n");
-      out.write("            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al},\n");
+      out.write("            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al, No:No},\n");
       out.write("                    function (html) {\n");
       out.write("                    $(\"#tablaReservas\").removeClass('loader');\n");
       out.write("                    $(\"#tablaReservas\").html(html);\n");
@@ -698,10 +796,6 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                $(\"#tablaReservas\").html(alerta);\n");
       out.write("       }); \n");
       out.write("    }\n");
-      out.write("        \n");
-      out.write("    \n");
-      out.write("    \n");
-      out.write("    \n");
       out.write("</script>\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){

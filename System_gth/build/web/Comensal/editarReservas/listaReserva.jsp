@@ -1,9 +1,11 @@
-        <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="Entidad.C_TipoComensal"%>
 <jsp:useBean id="_empleadoReserva" class="Controlador.C_EmpleadoReservaController" />
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%
+    int notificaion = Integer.parseInt(request.getParameter("No"));
+    
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
     int idEmpleado = Integer.parseInt(request.getParameter("idEmpleado"));
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
@@ -34,7 +36,13 @@
     } catch (Exception e) {
     }
     
-    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
+    
+    if(notificaion    == 1){
+        listaReservas = _empleadoReserva.getNotificaionesDeReservas();        
+    }else{
+        listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);        
+    }
+//    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
     
     for(C_TipoComensal c : listaReservas){
         if(c.getIdTipoComida() == 1){
@@ -84,7 +92,6 @@
                                 int contador = 0;
                                 for (C_TipoComensal item : listaReservas) {
                                     contador++;
-
                             %>
                             <tr>
                                 <td><%=contador%></td>

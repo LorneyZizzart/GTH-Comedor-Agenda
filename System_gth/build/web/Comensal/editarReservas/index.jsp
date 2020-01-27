@@ -23,12 +23,14 @@
     listaComensal = _tipoComensal.getAllTipoComensal();
 
     String[] listaRe = new String[]{"Todo", "Hoy", "Predeterminado"};
+    String palabra = request.getParameter("ListarNotificaion");
 %>
 <section class="content-header">
     <h1>
         Registro
         <small> de reservas</small>
     </h1>
+    <!--<h2><%=palabra%></h2>-->
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li class="active">Lista de reservas</li>
@@ -68,15 +70,15 @@
                                <select id="idTipoAl" name="idTipoAl" class="form-control selectComida" multiple="multiple" data-placeholder="Selecione una opción"
                                         style="width: 100%;">
                                    <option value="0" selected>Todos</option>
-                                  <%
+                                    <%
                                     for(C_TipoComida item : listaTipoComida){
                                         if(item.getEstado() == 1){
-                                            %>
+                                    %>
                                    <option value="<%=item.getIdTipoComida()%>"><%=item.getNombreComida()%></option>
                                     <%
                                         }
                                     }
-                                  %>
+                                    %>
                                 </select> 
                             </div>
                                 
@@ -163,33 +165,49 @@
 <script>
     var fechaInicio  = "", fechaFinal = "";
     $(document).ready(function() {
-        $('.selectComensal').select2();
-        $('.selectComida').select2();
-        $('.selectFuncionario').select2();
-        $('.formNuevo').tooltip({ boundary: 'window' });
-        $('#example').tooltip({ boundary: 'window' });
-        $('#dp1').datepicker({
-            format: 'dd/mm/yyyy',
-            autoclose: true
-        });
-        $('#dp2').datepicker({
+        if(<%=palabra%> == "1"){
+            $('.selectComensal').select2();
+            $('.selectComida').select2();
+            $('.selectFuncionario').select2();
+            renderTable( 0, 0, "", "", 0, 0, 1);
+        }else{
+            $('.selectComensal').select2();
+            $('.selectComida').select2();
+            $('.selectFuncionario').select2();
+            $('.formNuevo').tooltip({ boundary: 'window' });
+            $('#example').tooltip({ boundary: 'window' });
+            $('#dp1').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true
-        });
-        estadoDate(true);
-        renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());
+            });
+            $('#dp2').datepicker({
+                    format: 'dd/mm/yyyy',
+                    autoclose: true
+            });
+            estadoDate(true);
+            renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);
+        }
         
     });
     
     $('#filtrarTarea').click(function (){
         fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();
-        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());
-    })
+        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);
+    });
+    
+//    ====================== SillegaParametroListar todas
     
     function estadoDate(valor){
         $('#dp1').prop('disabled', valor);
         $('#dp2').prop('disabled', valor);
     }
+    
+    function VerTodasNotificaciones(){
+        console.log("daniasbfd");
+//        $('#dp1').prop('disabled', valor);
+//        $('#dp2').prop('disabled', valor);
+    }
+    
     $('#idRepeat').on('change', function() {       
         if(this.value == '2'){
             estadoDate(false);
@@ -198,9 +216,10 @@
             $('#dp1').val('');$('#dp2').val('');
         }        
     });
-    function renderTable(idE, idR, fi, ff, co, al){
+    
+    function renderTable(idE, idR, fi, ff, co, al, No){
         $.post('listaReserva.jsp',
-            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al},
+            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al, No:No},
                     function (html) {
                     $("#tablaReservas").removeClass('loader');
                     $("#tablaReservas").html(html);
@@ -212,8 +231,4 @@
                 $("#tablaReservas").html(alerta);
        }); 
     }
-        
-    
-    
-    
 </script>

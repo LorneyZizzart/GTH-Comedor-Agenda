@@ -44,7 +44,7 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write("        \n");
+      out.write("\n");
       out.write("\n");
       out.write("\n");
       Controlador.C_EmpleadoReservaController _empleadoReserva = null;
@@ -66,6 +66,8 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       }
       out.write('\n');
 
+    int notificaion = Integer.parseInt(request.getParameter("No"));
+    
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
     int idEmpleado = Integer.parseInt(request.getParameter("idEmpleado"));
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
@@ -96,7 +98,13 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
     } catch (Exception e) {
     }
     
-    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
+    
+    if(notificaion    == 1){
+        listaReservas = _empleadoReserva.getNotificaionesDeReservas();        
+    }else{
+        listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);        
+    }
+//    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
     
     for(C_TipoComensal c : listaReservas){
         if(c.getIdTipoComida() == 1){
@@ -148,7 +156,6 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
                                 int contador = 0;
                                 for (C_TipoComensal item : listaReservas) {
                                     contador++;
-
                             
       out.write("\n");
       out.write("                            <tr>\n");

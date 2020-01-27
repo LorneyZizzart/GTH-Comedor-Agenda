@@ -3,6 +3,7 @@ package org.apache.jsp.Agenda.tarea;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import Entidad.A_RepeticionTarea;
 import Entidad.A_PathTarea;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public final class verTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
       Controlador.A_TareaController _tarea = null;
       synchronized (_jspx_page_context) {
         _tarea = (Controlador.A_TareaController) _jspx_page_context.getAttribute("_tarea", PageContext.PAGE_SCOPE);
@@ -85,12 +87,23 @@ public final class verTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
         }
       }
       out.write('\n');
+      Controlador.A_RepeticionTareaController _repeticionTarea = null;
+      synchronized (_jspx_page_context) {
+        _repeticionTarea = (Controlador.A_RepeticionTareaController) _jspx_page_context.getAttribute("_repeticionTarea", PageContext.PAGE_SCOPE);
+        if (_repeticionTarea == null){
+          _repeticionTarea = new Controlador.A_RepeticionTareaController();
+          _jspx_page_context.setAttribute("_repeticionTarea", _repeticionTarea, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
     String[] id = request.getParameter("id").split("%"); 
     A_Tarea tarea = new A_Tarea();
     List<A_Tarea> procesos = new ArrayList<A_Tarea>();
     List<A_PathTarea> listaPath = new ArrayList<A_PathTarea>();
     List<A_Tarea> listaPathProceso = new ArrayList<A_Tarea>();
+    List<A_RepeticionTarea> listaRepeticionTarea = new ArrayList<A_RepeticionTarea>();
+    listaRepeticionTarea = _repeticionTarea.getAllRepeticionTarea();
     tarea = _tarea.getTareaByTitulo(id[0], Integer.parseInt(id[1]));
 
     listaPath = _path.getAllPath(id[0], Integer.parseInt(id[1]));
@@ -99,14 +112,18 @@ public final class verTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
         tarea = _tarea.getTareaById(tarea.getIdTarea());
         procesos = _proceso.getAllProcedimientoTarea(tarea.getTitulo(),tarea.getIdUserCrea());
     }else{
+        for(A_RepeticionTarea r : listaRepeticionTarea){
+            if(r.getIdRepeticionTarea() == tarea.getIdRepeticionTarea()){
+                tarea.setNombreRepeticion(r.getNombreRepeticion());
+            }
+        }
         procesos = _proceso.getAllProcedimientoTarea(id[0], Integer.parseInt(id[1]));
     }
 
       out.write("\n");
-      out.write("<div id=\"documento\" style=\" padding: 0 2% 2% 2%; border: solid 1px #d2d2d2; background-color: white;\">\n");
-      out.write("    <!--titulo-->\n");
-      out.write("\n");
-      out.write("        <div class=\"box-header\" style=\"margin: 27px 0 0 0\"> \n");
+      out.write("<div style=\" padding: 0 2% 2% 2%; border: solid 1px #d2d2d2; background-color: white;\">\n");
+      out.write("    <div id=\"documento\">\n");
+      out.write("                <div class=\"box-header\" style=\"margin: 27px 0 0 0\"> \n");
       out.write("            <div class=\"text-center\">\n");
       out.write("                <h4 class=\"box-title\" style=\"font-weight: bold\">");
       out.print(tarea.getTitulo());
@@ -114,7 +131,8 @@ public final class verTarea_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            </div>   \n");
       out.write("        </div>     \n");
       out.write("            <div class=\"box-body\">\n");
-      out.write("                                <div class=\"col-md-6 col-xs-12\" >\n");
+      out.write("                <div class=\"row\"></div>\n");
+      out.write("                <div class=\"col-md-6 col-xs-12\" >\n");
       out.write("                    <p> <a class=\"name\">Tipo de repetición: </a>");
       out.print(tarea.getNombreRepeticion());
       out.write("</p>\n");
@@ -241,30 +259,23 @@ if(tarea.getLunes()> 0){
       out.write("\n");
       out.write("    \n");
       out.write("                </div>\n");
+      out.write("    </div>\n");
+      out.write("\n");
+      out.write("\n");
       out.write("\n");
       out.write("</div>\n");
       out.write("<script>\n");
       out.write("    $(\"#formulario_registro #btn-print-div\").click(function () {\n");
       out.write("        \n");
-      out.write("         $(\"#ele4\").print({\n");
-      out.write("                    //Use Global styles\n");
-      out.write("                    globalStyles : false,\n");
-      out.write("                    //Add link with attrbute media=print\n");
-      out.write("                    mediaPrint : false,\n");
-      out.write("                    //Custom stylesheet\n");
-      out.write("                    stylesheet : \"http://fonts.googleapis.com/css?family=Inconsolata\",\n");
-      out.write("                    //Print in a hidden iframe\n");
-      out.write("                    iframe : false,\n");
-      out.write("                    //Don't print this\n");
-      out.write("                    noPrintSelector : \".avoid-this\",\n");
-      out.write("                    //Add this at top\n");
-      out.write("                    prepend : \"Hello World!!!<br/>\",\n");
-      out.write("                    //Add this on bottom\n");
-      out.write("                    append : \"<span><br/>Buh Bye!</span>\",\n");
-      out.write("                    //Log to console when printing is done via a deffered callback\n");
-      out.write("                    deferred: $.Deferred().done(function() { console.log('Printing done', arguments); })\n");
-      out.write("                });\n");
-      out.write("        \n");
+      out.write("         $(\"#documento\").print({\n");
+      out.write("            addGlobalStyles : true,\n");
+      out.write("            stylesheet : null,\n");
+      out.write("            rejectWindow : true,\n");
+      out.write("            noPrintSelector : \".no-print\",\n");
+      out.write("            iframe : true,\n");
+      out.write("            append : null,\n");
+      out.write("            prepend : null\n");
+      out.write("                });        \n");
       out.write("    }) \n");
       out.write("</script>");
     } catch (Throwable t) {

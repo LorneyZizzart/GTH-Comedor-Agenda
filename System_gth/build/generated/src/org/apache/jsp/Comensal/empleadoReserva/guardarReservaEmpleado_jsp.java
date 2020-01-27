@@ -131,8 +131,30 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
                 empleadoReserva.setIdTipoComida(tipoComida.getIdTipoComida());
                 empleadoReserva.setIdUser(Integer.parseInt(request.getParameter("idUsuario")));//OK
 //                se habilitara la opcion de cantidades cuando se registren la cantidad de miembros en la familia
-                empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad"+tipoComida.getNombreComida())));
-                empleadoReserva.setObservacion(String.valueOf(request.getParameter("observacion")));
+                if(Integer.parseInt(request.getParameter("cantidad"+tipoComida.getNombreComida())) == 4){
+                    empleadoReserva.setCantidad(3); 
+                }else{
+                    empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad"+tipoComida.getNombreComida())));
+                }
+                
+//                empleadoReserva.setObservacion(String.valueOf(request.getParameter("observacion")));
+                
+                if(empleadoReserva.getIdTipoComida() == 1){
+                    empleadoReserva.setObservacion(String.valueOf(request.getParameter("observacionDes")));
+                }
+                if(empleadoReserva.getIdTipoComida() == 2){
+                    empleadoReserva.setObservacion(String.valueOf(request.getParameter("observacionAlm")));
+                }
+                if(empleadoReserva.getIdTipoComida() == 3){
+                    empleadoReserva.setObservacion(String.valueOf(request.getParameter("observacionCen")));
+                }
+                
+//                si la reserva nesesita ser notificada -> Daniel
+                if(empleadoReserva.getObservacion().equalsIgnoreCase("")){
+                    empleadoReserva.setNotificacion(0);
+                }else{
+                    empleadoReserva.setNotificacion(1);
+                }
                 
                 calendar.setTime(dateStart);
                 fechaInicial.setTime(dateStart);
@@ -146,6 +168,7 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
                     }                      
 //                    System.out.print("Mes: "+((calendar.get(Calendar.MONTH))+1));
                     empleadoReserva.setFecha(calendar.get(Calendar.YEAR)+"/"+((calendar.get(Calendar.MONTH))+1)+"/"+calendar.get(Calendar.DATE));
+     
 //                    System.out.print("fecha repeticion: "+empleadoReserva.getFecha()); 
                     resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
 //                    resultado = "Ok";

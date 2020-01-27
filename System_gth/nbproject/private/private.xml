@@ -12,45 +12,17 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/verTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/deleteTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/crearTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/crearProceso.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/index.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/eliminarPathProceso.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/A_PathProcedimientoTareaModel.java</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/masterPage/complemento/head.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/bootstrap/css/myStyle.css</file>
             <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/A_TareaModel.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/eliminarProceso.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/guardarTarea.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/index.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/verReserva/index.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/verTarea.jsp</file>
             <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/guardarTarea.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/crearProceso.jsp</file>
             <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/editarTarea.jsp</file>
             <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/A_TareaController.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Evaluacion/EnviarCuestionario/index.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/guardarFile.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/deleteProceso.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/guardarFileProceso.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/eliminarPath.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/A_ProcedimientoTareaController.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/listaTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/guardarFileProcesoDB.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/procesosTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/editarProceso.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/editarTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/empleadoReserva/index.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/empleadoReserva/editarReserva.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/crearTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/A_PathProcedimientoTareaController.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/verProceso.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/verTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/verTareaPersonal.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/eliminarTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/empleadoReserva/eliminarReserva.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/eliminarTarea.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Evaluacion/EnviarCuestionario/guardarEncuestador.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/A_PathTareaController.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/A_ProcedimientoTareaModel.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/A_PathTareaModel.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/tarea/guardarProceso.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Agenda/calendario/index.jsp</file>
         </group>
     </open-files>
 </project-private>

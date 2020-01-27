@@ -109,11 +109,16 @@ public final class guardar_005fevaluadores_jsp extends org.apache.jasper.runtime
         System.out.println(" No tiene Bajos");
     }
 //optenemos los Clientes
+   //optenemos los Clientes
     try {
         String[] getclientes = request.getParameterValues("clientes[]");
         for (String b : getclientes) {
+            String[] parts = b.split("-");
+            String a = parts[0];//codigo
+            String bb = parts[1];//tipo E=Empleado, C=Ciente
             Cliente cliente = new Cliente();
-            cliente.setCliente_id(Integer.parseInt(b));
+            cliente.setCliente_id(Integer.parseInt(a));
+            cliente.setTelefono(bb);
             save_clientes.add(cliente);
         }
     } catch (Exception e) {
