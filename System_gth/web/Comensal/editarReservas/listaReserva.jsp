@@ -5,7 +5,7 @@
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%
     int notificaion = Integer.parseInt(request.getParameter("No"));
-    
+    List<C_TipoComensal> listaComensalExterno = new ArrayList();    
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
     int idEmpleado = Integer.parseInt(request.getParameter("idEmpleado"));
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
@@ -14,7 +14,12 @@
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
     double saldo = 0.0;
-    
+    int tipoFuncionario = 0;
+    try {
+        tipoFuncionario = Integer.parseInt(request.getParameter("tipoFuncionario"));
+    }catch(Exception e){
+        
+    }
     try { 
         
         if (request.getParameterValues("co[]") != null) {
@@ -37,10 +42,18 @@
     }
     
     
-    if(notificaion    == 1){
+    if(notificaion == 1){
         listaReservas = _empleadoReserva.getNotificaionesDeReservas();        
     }else{
-        listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);        
+        if(tipoFuncionario==0){
+            listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);        
+            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, fi, ff, idsComensal, idsComida);
+        }else if(tipoFuncionario == 1){
+            listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);      
+        }else if(tipoFuncionario == 2){     
+            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, fi, ff, idsComensal, idsComida);
+        }
+
     }
 //    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
     
@@ -54,6 +67,18 @@
        }
     }
     
+    for(C_TipoComensal c : listaComensalExterno){
+        if(c.getIdTipoComida() == 1){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoDesayuno())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 2){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoAlmuerzo())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 3){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoCena())-c.getDescuentoAdicional())*c.getCantidad();
+       }
+    }
+    
+    
+    
 %>
 
         <div class="col-xs-12">            
@@ -61,10 +86,12 @@
             <div class="box box-purple">
                 <div class="box-header">
                     <h3 class="box-title">Lista de reservas</h3>
-                    <button type="button" class="formNuevo btn-purple pull-right" data-toggle="modal tooltip" data-target="#modal-default" data-placement="bottom" title="Crear reporte">
+                    <button type="button" class="formNuevo btn-purple pull-right"  style="margin: 2px;" data-toggle="modal tooltip" data-target="#modal-default" data-placement="bottom" title="Crear reporte">
                         <i class="fa fa-file-pdf-o"></i>
                     </button>
-                    
+                    <button type="button" class="newReserva btn-purple pull-right" style="margin: 2px;" data-toggle="modal tooltip" data-target="#modal-default" data-placement="bottom" title="Nueva reserva">
+                        <i class="fa fa-user-plus"></i>
+                    </button>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive">
@@ -87,6 +114,9 @@
                                 <th style="width: 1%">Opciones</th>
                             </tr>
                         </thead>
+                        <%
+                                if(tipoFuncionario == 1 || tipoFuncionario == 0){
+                        %>
                         <tbody>
                             <%
                                 int contador = 0;
@@ -133,9 +163,80 @@
                             <%
                                 }
                             %>
+                                
+
                         </tbody>
-                        <tfoot>
+                        <%
+                                }
+                        %>
+                        <%
+                                if(tipoFuncionario == 0){
+                        %>
+                        <tbody>
+                            <tr style="background-color: #511583; color: #fff;">
+                                <th colspan="14" style="border-color: #511583;">COMENSALES EXTERNOS</th>
+                            </tr>
+                        </tbody>
+                        <%
+                                }
+                        %>
+                        <%
+                                if(tipoFuncionario == 2 || tipoFuncionario == 0){
+                        %>
+                        <tbody>
+                            <%
+                                int contadorE = 0;
+                                for (C_TipoComensal item : listaComensalExterno) {
+                                    contadorE++;
+                            %>
                             <tr>
+                                <td><%=contadorE%></td>
+                                <td><%=item.getNombreEmpleado()%></td>                         
+                                <td><%= item.getNombreComida()%></td>
+                                <td><%= item.getFecha()%></td>
+                                <td><%= item.getCantidad()%></td>
+                                <td><%= item.getObservacion()%></td>
+                                <td><%= item.getCosto()%> Bs.</td>                                
+                                <%
+                                   if(item.getIdTipoComida() == 1){
+                                      %><td><%= item.getDescuentoDesayuno()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      %><td><%= item.getDescuentoAlmuerzo()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      %><td><%= item.getDescuentoCena()%> Bs.</td><%  
+                                   }
+                                %>
+                                <td><%= item.getDescuentoAdicional()%> Bs.</td>
+                                <%
+                                   if(item.getIdTipoComida() == 1){
+                                      %><td><%=((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      %><td><%= ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      %><td><%= ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><%  
+                                   }
+                                %>
+                                <td><%= item.getNombreComensal()%></td>
+                                <td><%= item.getFechaRegistro()%></td>
+                                <td><%= item.getFechaActualizacion()%></td>
+                                <td class="text-center">
+                                    <div class="btn-group ">
+                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
+                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                                
+
+                        </tbody>
+                        <%
+                                }
+                        %>
+                        <tfoot>
+                            <tr>                                
                                 <th>#</th>
                                 <th>Nombre completo</th>
                                 <th>Tipo de alimento</th>
@@ -160,7 +261,7 @@
               <div class="row">
                 <div class="col-sm-6 col-xs-6">
                   <div class="description-block border-right">
-                    <h5 class="description-header"><%=listaReservas.size()%></h5>
+                    <h5 class="description-header"><%=listaReservas.size()+listaComensalExterno.size()%></h5>
                     <span class="description-text">CANTIDAD DE RESERVAS</span>
                   </div>
                   <!-- /.description-block -->
@@ -197,7 +298,29 @@
 <script>
     $(function () {
         $("#example1").DataTable();
-    });            
+    });      
+    
+    $(".newReserva").click(function (e) {
+        $("#titleModal").html("Nueva reserva");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+            $('#formulario_registro').modal('show');
+            $(".cuerpo_registro").html('');
+            $(".cuerpo_registro").addClass('loader');
+            $.post('crearReserva.jsp',
+            {id: $(this).attr('data-id')},
+                    function (html) {
+                    $(".cuerpo_registro").removeClass('loader');
+                    $(".cuerpo_registro").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $(".cuerpo_registro").removeClass('loader');
+                $(".cuerpo_registro").html(alerta);
+            });
+    });
+    
     $(".formNuevo").click(function (e) {
         $("#titleModal").html("Generar reporte");
         e.preventDefault();

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.2-b608 (trunk-7979; 2015-01-21T12:50:19+0000) JAXWS-RI/2.2.11-b150120.1832 JAXWS-API/2.2.12 JAXB-RI/2.2.12-b141219.1637 JAXB-API/2.2.13-b141020.1521 svn-revision#unknown. --><xs:schema xmlns:tns="http://service.web/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.web/">
+
+<xs:element name="ListaEmpleado" type="tns:ListaEmpleado"/>
+
+<xs:element name="ListaEmpleadoResponse" type="tns:ListaEmpleadoResponse"/>
+
+<xs:complexType name="ListaEmpleado">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="ListaEmpleadoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:empleado" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="empleado">
+<xs:sequence>
+<xs:element name="apellido_materno" type="xs:string" minOccurs="0"/>
+<xs:element name="apellido_paterno" type="xs:string" minOccurs="0"/>
+<xs:element name="cargo" type="tns:empleadoCargo" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+<xs:element name="empleado_id" type="xs:int"/>
+<xs:element name="estado" type="xs:int"/>
+<xs:element name="estado_civil_Nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="estado_civil_id" type="xs:int"/>
+<xs:element name="fecha_creacion" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_nacimiento" type="xs:string" minOccurs="0"/>
+<xs:element name="foto" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="paisNombre" type="xs:string" minOccurs="0"/>
+<xs:element name="pais_id" type="xs:string" minOccurs="0"/>
+<xs:element name="telefono" type="xs:string" minOccurs="0"/>
+<xs:element name="user_id" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="empleadoCargo">
+<xs:sequence>
+<xs:element name="activo" type="xs:int"/>
+<xs:element name="cargo" type="xs:string" minOccurs="0"/>
+<xs:element name="cargo_id" type="xs:int"/>
+<xs:element name="cargo_nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="departamento_id" type="xs:int"/>
+<xs:element name="departamento_nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="empleado_id" type="xs:int"/>
+<xs:element name="empleado_nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_creacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fecha_fin" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_inicio" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="nivel_id" type="xs:int"/>
+<xs:element name="nivel_nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

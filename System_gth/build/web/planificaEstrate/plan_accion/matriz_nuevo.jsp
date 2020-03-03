@@ -30,7 +30,7 @@
                     <form class="form_plan_accion_nuevo" id="form_plan_accion_nuevo">
                         <input type="hidden" class="form-control" id="plan_accion_id" name="plan_accion_id" value="<%=plan_accion_id%>">
                         <input type="hidden" class="form-control" id="plan_accion_estado" name="plan_accion_estado" value="1">
-                        <input type="hidden" class="form-control" id="Plan_matriz_id" name="Plan_matriz_id" value="<%=Plan_matriz_id%>">
+                        <input type="text" class="form-control" id="Plan_matriz_id" name="Plan_matriz_id" value="<%=Plan_matriz_id%>">
 
                         <div class="box-group" id="accordion">
                             <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
@@ -44,13 +44,13 @@
                                 </div>
                                 <div id="quehacer" class="panel-collapse collapse in">
                                     <div class="box-body">
-                                        <div class="form-group">
+                                        <div>
                                             <label>Que Hacer : </label>                    
                                             <textarea style="width: 100%" class="matriz_quehacer_ form-control" id="mat_quehacer" name="mat_quehacer" placeholder="Que hacer"><%if (matriz != null) {
                                                     out.print(matriz.getQue_hacer());
                                                 }%></textarea>
-                                        </div><br><br>
-                                        <div class="form-group">
+                                        </div><br>
+                                        <div>
                                             <label>Responsable:</label>
                                             <input type="text" class="form-control" name="mat_responsable" id="mat_responsable" placeholder="Responsable" value="<%if (matriz != null) {
                                                     out.print(matriz.getResponsable());
@@ -72,18 +72,23 @@
                                 </div>
                                 <div id="comohacer" class="panel-collapse collapse">
                                     <div class="box-body">
-                                        <div class="form-group">
+                                        <div class="">
                                             <label>Como:</label>
-                                            <textarea class="matriz_como_ form-control" id="mat_como" name="mat_como" placeholder="Como"><%if (matriz != null) {
+                                            <textarea class="matriz_como_ form-control" style="width: 100%" id="mat_como" name="mat_como" placeholder="Como"><%if (matriz != null) {
                                                     out.print(matriz.getComo());
                                                 }%></textarea>                    
                                         </div>
-                                        <div class="form-group">
+                                        <br>
+
+                                        <div class="">
                                             <label>Documento generado:</label>
                                             <input type="text" class="form-control" name="mat_documento" id="mat_documento" placeholder="Documento generado" value="<%if (matriz != null) {
                                                     out.print(matriz.getDocumento_generadi());
                                                 }%>">
                                         </div>   
+                                        <div class="box-footer">                                            
+                                            <button type="button" class="btn btn-purple pull-right btn-guarda-comohacer">Guardar Como hacer</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -113,17 +118,22 @@
                                             <input type="text" class="form-control" name="mat_indicador" id="mat_indicador" placeholder="Indicador" value="<%if (matriz != null) {
                                                     out.print(matriz.getIndicador());
                                                 }%>">
+
+                                            <button type="button" class="btn btn-purple pull-right btn-guarda-indicador">Guardar Indicador</button>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </di
+                        </div>
 
-                            <div class="box-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-purple pull-right">Guardar</button>
-                            </div>
-                            <div class="mensaje"></div>
+                        <!--
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-purple pull-right">Guardar</button>                            
+                        </div>
+                        -->
+                        <div class="mensaje"></div>
                     </form>
                 </div>
                 <!-- /.box -->
@@ -151,7 +161,7 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                quehacer: {
+                mat_quehacer: {
                     message: 'Que hacer no es valido.',
                     validators: {
                         notEmpty: {
@@ -242,8 +252,108 @@
                 }
             });
         });
-        $(".btn-guarda-qhacer").click(function () {
-            var 
+
+        $(".btn-guarda-qhacer").click(function (e) {
+            e.stopImmediatePropagation();
+            var que_hacer_ = $('#mat_quehacer').val();
+            if (1 > que_hacer_.length) {
+                toastr.error("Se requiere campo: Que Hacer");
+                return false;
+            }
+            var que_hacer_res = $('#mat_responsable').val();
+            if (1 > que_hacer_res.length) {
+                toastr.error("Se requiere Responsable");
+                return false;
+            }
+            var dataString = $('#form_plan_accion_nuevo').serialize();
+            //var $form = $(e.target);
+            $.ajax({
+                type: "POST",
+                url: "../plan_accion/matriz_nuevo_guardar.jsp",
+                data: dataString,
+                success: function (data)
+                {
+                    $(".mensaje").removeClass("loader");
+                    toastr.success(data);
+
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $(".mensaje").removeClass("loader");
+                    var menn = "Se produjo un error " + errorThrown + "  " + textStatus;
+                    //$(".mensaje").html(menn);
+                    toastr.error(menn);
+                }
+            });
+        });
+
+        $(".btn-guarda-comohacer").click(function (e) {
+            e.stopImmediatePropagation();
+            var como_hacer_ = $('#mat_como').val();
+            if (1 > como_hacer_.length) {
+                toastr.error("Se requiere campo: Como Hacer");
+                return false;
+            }
+            var mat_documento = $('#mat_documento').val();
+            if (1 > mat_documento.length) {
+                toastr.error("Se requiere campo: Documento generado");
+                return false;
+            }
+            var dataString = $('#form_plan_accion_nuevo').serialize();
+            //var $form = $(e.target);
+            $.ajax({
+                type: "POST",
+                url: "../plan_accion/matriz_nuevo_guardar.jsp",
+                data: dataString,
+                success: function (data)
+                {
+                    $(".mensaje").removeClass("loader");
+                    toastr.success(data);
+
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $(".mensaje").removeClass("loader");
+                    var menn = "Se produjo un error " + errorThrown + "  " + textStatus;
+                    //$(".mensaje").html(menn);
+                    toastr.error(menn);
+                }
+            });
+
+
+        });
+
+        $(".btn-guarda-indicador").click(function (e) {
+            e.stopImmediatePropagation();
+            var como_hacer_ = $('#mat_indicador_nombre').val();
+            if (1 > como_hacer_.length) {
+                toastr.error("Se requiere campo: Nombre");
+                return false;
+            }
+            var mat_documento = $('#mat_fecha').val();
+            if (1 > mat_documento.length) {
+                toastr.error("Se requiere campo: Fecha");
+                return false;
+            }
+
+            var mat_indicador = $('#mat_indicador').val();
+            if (1 > mat_documento.length) {
+                toastr.error("Se requiere campo: Indicador");
+                return false;
+            }
+            var dataString = $('#form_plan_accion_nuevo').serialize();
+            //var $form = $(e.target);
+            $.ajax({
+                type: "POST",
+                url: "../plan_accion/matriz_nuevo_guardar.jsp",
+                data: dataString,
+                success: function (data)
+                {
+                    $(".mensaje").removeClass("loader");
+                    toastr.success(data);
+                }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $(".mensaje").removeClass("loader");
+                    var menn = "Se produjo un error " + errorThrown + "  " + textStatus;
+                    //$(".mensaje").html(menn);
+                    toastr.error(menn);
+                }
+            });
         });
     });
 </script>

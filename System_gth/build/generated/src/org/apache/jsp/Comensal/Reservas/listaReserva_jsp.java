@@ -110,8 +110,6 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
     listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
 
       out.write("\n");
-      out.write("\n");
-      out.write("\n");
       out.write("        <div class=\"col-xs-12\">            \n");
       out.write("\n");
       out.write("            <div class=\"box box-purple\">\n");

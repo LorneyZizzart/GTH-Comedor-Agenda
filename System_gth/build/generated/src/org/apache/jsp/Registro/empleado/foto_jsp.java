@@ -80,16 +80,7 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
           _jspx_page_context.setAttribute("__encript", __encript, PageContext.PAGE_SCOPE);
         }
       }
-      out.write('\n');
-
-    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    listaReservas = _empleadoReserva.getNotificaionesDeReservas();
-    int contador = 0;
-    for (C_TipoComensal item : listaReservas) {
-        contador++;
-    }
-    int NotificaionMostrarTodo = 0; 
-
+      out.write("\n");
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<a href=\"../../Comensal/editarReservas/listaReserva.jsp\"></a>\n");
@@ -166,6 +157,16 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
             } else {
                 DatoUsuario = (Login_Entidad) sesion.getAttribute("USUARIO");
             }
+            List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+
+            int a = 0;
+            if(DatoUsuario.getUser_id() == 1 || DatoUsuario.getUser_id() == 3031){
+                listaReservas = _empleadoReserva.getNotificaionesDeReservas();
+                for (C_TipoComensal item : listaReservas) {
+                    a++;
+                }
+            }
+            int NotificaionMostrarTodo = 0; 
         
       out.write("\n");
       out.write("        <style>\n");
@@ -200,18 +201,22 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                    <div class=\"navbar-custom-menu\">\n");
       out.write("                        <ul class=\"nav navbar-nav\"> \n");
-      out.write("                            \n");
+      out.write("                            ");
+
+                                 if(DatoUsuario.getUser_id() == 1 || DatoUsuario.getUser_id() == 3031){
+                            
+      out.write("\n");
       out.write("                            <!-- Notifications: mas de 3 platos -> Daniel-17/12/2019 -->\n");
       out.write("                            <li class=\"dropdown notifications-menu\">\n");
       out.write("                              <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n");
       out.write("                                <i class=\"fa fa-bell-o\"></i>\n");
       out.write("                                <span class=\"label label-warning\">");
-      out.print(contador);
+      out.print(a);
       out.write("</span>\n");
       out.write("                              </a>\n");
       out.write("                              <ul class=\"dropdown-menu\">\n");
       out.write("                                <li class=\"header\">Tienes ");
-      out.print(contador);
+      out.print(a);
       out.write(" notificaciones</li>\n");
       out.write("                                <li>\n");
       out.write("                                  <!-- inner menu: contains the actual data -->\n");
@@ -219,9 +224,15 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                    ");
 
                                         for (C_TipoComensal item : listaReservas) {
+                                            String backColor = "";
+                                            if(item.getNotificacion()==1){
+                                                backColor = "#e4e7ea";
+                                            }
                                     
       out.write("\n");
-      out.write("                                    <li>\n");
+      out.write("                                    <li style=\"background-color: ");
+      out.print(backColor);
+      out.write("\" >\n");
       out.write("                                        <a href=\"../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=");
       out.print(item.getIdTipoComida());
       out.write("&IdEmpleado=");
@@ -229,11 +240,18 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("&Fecha=");
       out.print(item.getFecha());
       out.write("\">\n");
+      out.write("                                        <!--<a href=\"../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=");
+      out.print(item.getIdTipoComida());
+      out.write("&IdTipoComensal=");
+      out.print(item.getIdTipoComensal());
+      out.write("&Fecha=");
+      out.print(item.getFecha());
+      out.write("\">-->\n");
       out.write("                                            <i class=\"fa fa-user text-aqua\"></i> <b>");
       out.print(item.getNombreEmpleado());
-      out.write("</b><br>&#160;&#160;&#160;&#160;");
+      out.write("</b><br><p style=\"color: #a0a0a0; margin-left: 20px;\"><strong>Observaciones: </strong>");
       out.print( item.getObservacion());
-      out.write("\n");
+      out.write("</p>\n");
       out.write("                                        </a>\n");
       out.write("                                    </li>\n");
       out.write("                                    ");
@@ -248,6 +266,8 @@ public final class foto_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                </li>\n");
       out.write("                              </ul>\n");
       out.write("                            </li>\n");
+      out.write("                            ");
+}
       out.write("\n");
       out.write("                            <!-- User Account: style can be found in dropdown.less -->\n");
       out.write("                            <li class=\"dropdown user user-menu\">\n");

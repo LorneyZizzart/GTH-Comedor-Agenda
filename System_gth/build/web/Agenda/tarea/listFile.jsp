@@ -6,7 +6,7 @@
 <%
     String idTarea = request.getParameter("id");
     List<A_PathTarea> listaP = new ArrayList<A_PathTarea>();
-    listaP = _path.getAllPath(Integer.parseInt(idTarea));
+    listaP =null;// _path.getAllPath(Integer.parseInt(idTarea));
 %>
 <div class="box-header" style="padding: 0 0 2% 0">
         <h3 class="box-title">Lista de archivos</h3>
@@ -54,7 +54,7 @@
                                 <td><a href="downloadFile.jsp" target="_blank"><img style="width: 40px;" src="../../images/<%=typeFile%>.png" alt="message user image"> <%=p.getNombrePath()%></a></td>          
                                 <td class="text-center">
                                     <div class="btn-group ">                          
-                                        <button href="../../../../Files/" data-id="<%=p.getPath()%>" class="DownloadFile btn btn-success btn-xs" data-toggle="tooltip" data-placement="bottom" title="Descargar"> <i class="fa  fa-download"></i></button>                                
+                                        <button href="../../../../Files/" data-id="<%//=p.getPath()%>" class="DownloadFile btn btn-success btn-xs" data-toggle="tooltip" data-placement="bottom" title="Descargar"> <i class="fa  fa-download"></i></button>                                
                                         <a data-id="<%=p.getIdPath()%>" class="DeletFile btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>           
                                     </div>
                                     

@@ -1,0 +1,40 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Entidad;
+
+/**
+ *
+ * @author Invitado1
+ */
+public class C_ComensalExteno extends A_TipoTarea{
+    private int IdComensalExterno;
+    private String NombreCompleto;
+    private int Celular;
+    
+    public void setCelular(int celular ){
+        this.Celular = celular;
+    }
+    
+    public int getCelular(){
+        return Celular;
+    }
+    
+    public void setNombreCompleto(String nombreCompleto){
+        this.NombreCompleto = nombreCompleto;
+    }
+    
+    public String getNombreCompleto(){
+        return NombreCompleto;
+    }
+    
+    public void setIdComensalExterno(int idComensalExterno){
+        this.IdComensalExterno = idComensalExterno;
+    }
+    
+    public int getIdComensalExterno(){
+        return IdComensalExterno;
+    }
+}

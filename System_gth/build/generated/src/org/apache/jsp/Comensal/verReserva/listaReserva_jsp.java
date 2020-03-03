@@ -78,8 +78,8 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write('\n');
 
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-     List<Usuario> Usuarios = new ArrayList<Usuario>();
-    Usuarios = consultaUser.GetAllUser();
+    Usuario usuario = new Usuario();
+    
     int idEmpleado = Integer.parseInt(request.getParameter("idUsuario"));
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
     String fi = request.getParameter("fi");
@@ -87,12 +87,8 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
     double saldo = 0.0;
-    
-    for(Usuario u : Usuarios){
-        if(u.getUser_id() == idEmpleado){
-            idEmpleado = u.getEmpleado_id();
-        }
-    }
+    usuario = _empleadoReserva.getUsuarioById(idEmpleado);
+    idEmpleado = usuario.getEmpleado_id();
     
     try { 
         

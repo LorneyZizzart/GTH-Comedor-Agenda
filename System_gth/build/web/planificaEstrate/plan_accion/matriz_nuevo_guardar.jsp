@@ -43,18 +43,22 @@
     matriz.setEstado(Integer.parseInt(plan_accion_estado));
 
     String mensaje = crearPlanMatriz.SaveorUpdateMatriz(matriz);
-    if (mensaje.equalsIgnoreCase("Ok")) {
+    String[] palabras = mensaje.split("##");
+    String mensajeSave = palabras[0];
+    String idmatriz = palabras[1];
+    if (mensajeSave.equalsIgnoreCase("Ok")) {
 %>
-<div class=" text-center alert alert-success alert-dismissible">
-    <h4><i class="icon fa fa-check"></i> Guardado</h4>
-</div>
+Guardado
+
 <script type="text/javascript">
-    $(document).ready(function () {
-        $(".mensaje").hide(1500, function () {
-            location.reload();
-        });
-        $("form")[0].reset();
-    });
+    /*$(document).ready(function () {
+     $(".mensaje").hide(1500, function () {
+     location.reload();
+     });
+     $("form")[0].reset();
+     });*/
+
+    $('#Plan_matriz_id').val(<%=idmatriz%>)
 </script>
 <%
 } else {%>

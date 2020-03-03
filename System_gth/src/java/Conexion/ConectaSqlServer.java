@@ -31,7 +31,7 @@ public class ConectaSqlServer {
         //poner los datos apropiados
         this.usuario = "sa";        
         this.clave = "1844";        
-        this.url = "jdbc:sqlserver://192.168.3.30:1433;databaseName=GTH_COPIA";
+        this.url = "jdbc:sqlserver://192.168.3.30:1433;databaseName=GTH-COPIA";
         this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     }
 

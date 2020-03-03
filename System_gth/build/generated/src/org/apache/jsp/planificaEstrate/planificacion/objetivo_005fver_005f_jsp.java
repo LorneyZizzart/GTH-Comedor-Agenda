@@ -163,8 +163,8 @@ public final class objetivo_005fver_005f_jsp extends org.apache.jasper.runtime.H
       out.print(sub.getTitulo());
       out.write("</td>\n");
       out.write("                            <td>");
-if (sub.getDescripcion().length() == 50) {
-                                        out.print(sub.getDescripcion() + ".....");
+if (sub.getDescripcion().length() >= 50) {
+                                        out.print(sub.getDescripcion().substring(0,50) + ".....");
                                     } else {
                                         out.println(sub.getDescripcion());
                                     }

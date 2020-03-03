@@ -67,7 +67,7 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write('\n');
 
     int notificaion = Integer.parseInt(request.getParameter("No"));
-    
+    List<C_TipoComensal> listaComensalExterno = new ArrayList();    
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
     int idEmpleado = Integer.parseInt(request.getParameter("idEmpleado"));
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
@@ -76,7 +76,12 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
     double saldo = 0.0;
-    
+    int tipoFuncionario = 0;
+    try {
+        tipoFuncionario = Integer.parseInt(request.getParameter("tipoFuncionario"));
+    }catch(Exception e){
+        
+    }
     try { 
         
         if (request.getParameterValues("co[]") != null) {
@@ -99,10 +104,18 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
     }
     
     
-    if(notificaion    == 1){
+    if(notificaion == 1){
         listaReservas = _empleadoReserva.getNotificaionesDeReservas();        
     }else{
-        listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);        
+        if(tipoFuncionario==0){
+            listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);        
+            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, fi, ff, idsComensal, idsComida);
+        }else if(tipoFuncionario == 1){
+            listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);      
+        }else if(tipoFuncionario == 2){     
+            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, fi, ff, idsComensal, idsComida);
+        }
+
     }
 //    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
     
@@ -116,6 +129,18 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
        }
     }
     
+    for(C_TipoComensal c : listaComensalExterno){
+        if(c.getIdTipoComida() == 1){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoDesayuno())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 2){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoAlmuerzo())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 3){
+            saldo = saldo + ((c.getCosto()-c.getDescuentoCena())-c.getDescuentoAdicional())*c.getCantidad();
+       }
+    }
+    
+    
+    
 
       out.write("\n");
       out.write("\n");
@@ -124,10 +149,12 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("            <div class=\"box box-purple\">\n");
       out.write("                <div class=\"box-header\">\n");
       out.write("                    <h3 class=\"box-title\">Lista de reservas</h3>\n");
-      out.write("                    <button type=\"button\" class=\"formNuevo btn-purple pull-right\" data-toggle=\"modal tooltip\" data-target=\"#modal-default\" data-placement=\"bottom\" title=\"Crear reporte\">\n");
+      out.write("                    <button type=\"button\" class=\"formNuevo btn-purple pull-right\"  style=\"margin: 2px;\" data-toggle=\"modal tooltip\" data-target=\"#modal-default\" data-placement=\"bottom\" title=\"Crear reporte\">\n");
       out.write("                        <i class=\"fa fa-file-pdf-o\"></i>\n");
       out.write("                    </button>\n");
-      out.write("                    \n");
+      out.write("                    <button type=\"button\" class=\"newReserva btn-purple pull-right\" style=\"margin: 2px;\" data-toggle=\"modal tooltip\" data-target=\"#modal-default\" data-placement=\"bottom\" title=\"Nueva reserva\">\n");
+      out.write("                        <i class=\"fa fa-user-plus\"></i>\n");
+      out.write("                    </button>\n");
       out.write("                </div>\n");
       out.write("                <!-- /.box-header -->\n");
       out.write("                <div class=\"box-body table-responsive\">\n");
@@ -150,6 +177,11 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                                <th style=\"width: 1%\">Opciones</th>\n");
       out.write("                            </tr>\n");
       out.write("                        </thead>\n");
+      out.write("                        ");
+
+                                if(tipoFuncionario == 1 || tipoFuncionario == 0){
+                        
+      out.write("\n");
       out.write("                        <tbody>\n");
       out.write("                            ");
 
@@ -254,9 +286,148 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
                                 }
                             
       out.write("\n");
+      out.write("                                \n");
+      out.write("\n");
       out.write("                        </tbody>\n");
-      out.write("                        <tfoot>\n");
+      out.write("                        ");
+
+                                }
+                        
+      out.write("\n");
+      out.write("                        ");
+
+                                if(tipoFuncionario == 0){
+                        
+      out.write("\n");
+      out.write("                        <tbody>\n");
+      out.write("                            <tr style=\"background-color: #511583; color: #fff;\">\n");
+      out.write("                                <th colspan=\"14\" style=\"border-color: #511583;\">COMENSALES EXTERNOS</th>\n");
+      out.write("                            </tr>\n");
+      out.write("                        </tbody>\n");
+      out.write("                        ");
+
+                                }
+                        
+      out.write("\n");
+      out.write("                        ");
+
+                                if(tipoFuncionario == 2 || tipoFuncionario == 0){
+                        
+      out.write("\n");
+      out.write("                        <tbody>\n");
+      out.write("                            ");
+
+                                int contadorE = 0;
+                                for (C_TipoComensal item : listaComensalExterno) {
+                                    contadorE++;
+                            
+      out.write("\n");
       out.write("                            <tr>\n");
+      out.write("                                <td>");
+      out.print(contadorE);
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print(item.getNombreEmpleado());
+      out.write("</td>                         \n");
+      out.write("                                <td>");
+      out.print( item.getNombreComida());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getFecha());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getCantidad());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getObservacion());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getCosto());
+      out.write(" Bs.</td>                                \n");
+      out.write("                                ");
+
+                                   if(item.getIdTipoComida() == 1){
+                                      
+      out.write("<td>");
+      out.print( item.getDescuentoDesayuno());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      
+      out.write("<td>");
+      out.print( item.getDescuentoAlmuerzo());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      
+      out.write("<td>");
+      out.print( item.getDescuentoCena());
+      out.write(" Bs.</td>");
+  
+                                   }
+                                
+      out.write("\n");
+      out.write("                                <td>");
+      out.print( item.getDescuentoAdicional());
+      out.write(" Bs.</td>\n");
+      out.write("                                ");
+
+                                   if(item.getIdTipoComida() == 1){
+                                      
+      out.write("<td>");
+      out.print(((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      
+      out.write("<td>");
+      out.print( ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      
+      out.write("<td>");
+      out.print( ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+  
+                                   }
+                                
+      out.write("\n");
+      out.write("                                <td>");
+      out.print( item.getNombreComensal());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getFechaRegistro());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getFechaActualizacion());
+      out.write("</td>\n");
+      out.write("                                <td class=\"text-center\">\n");
+      out.write("                                    <div class=\"btn-group \">\n");
+      out.write("                                        <a data-id=\"");
+      out.print(_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva())));
+      out.write("\" class=\"formEdit btn btn-xs btn-primary edit_button\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Editar\"><i class=\"fa fa-edit\"></i></a>                                \n");
+      out.write("                                        <a data-id=\"");
+      out.print(_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva())));
+      out.write("\" class=\"formEliminar btn btn-danger btn-xs delete_button\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Eliminar\"> <i class=\"fa fa-trash-o\"></i></a>                                \n");
+      out.write("                                    </div>\n");
+      out.write("                                </td>\n");
+      out.write("                            </tr>\n");
+      out.write("                            ");
+
+                                }
+                            
+      out.write("\n");
+      out.write("                                \n");
+      out.write("\n");
+      out.write("                        </tbody>\n");
+      out.write("                        ");
+
+                                }
+                        
+      out.write("\n");
+      out.write("                        <tfoot>\n");
+      out.write("                            <tr>                                \n");
       out.write("                                <th>#</th>\n");
       out.write("                                <th>Nombre completo</th>\n");
       out.write("                                <th>Tipo de alimento</th>\n");
@@ -282,7 +453,7 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                <div class=\"col-sm-6 col-xs-6\">\n");
       out.write("                  <div class=\"description-block border-right\">\n");
       out.write("                    <h5 class=\"description-header\">");
-      out.print(listaReservas.size());
+      out.print(listaReservas.size()+listaComensalExterno.size());
       out.write("</h5>\n");
       out.write("                    <span class=\"description-text\">CANTIDAD DE RESERVAS</span>\n");
       out.write("                  </div>\n");
@@ -322,7 +493,29 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("<script>\n");
       out.write("    $(function () {\n");
       out.write("        $(\"#example1\").DataTable();\n");
-      out.write("    });            \n");
+      out.write("    });      \n");
+      out.write("    \n");
+      out.write("    $(\".newReserva\").click(function (e) {\n");
+      out.write("        $(\"#titleModal\").html(\"Nueva reserva\");\n");
+      out.write("        e.preventDefault();\n");
+      out.write("        e.stopImmediatePropagation();\n");
+      out.write("            $('#formulario_registro').modal('show');\n");
+      out.write("            $(\".cuerpo_registro\").html('');\n");
+      out.write("            $(\".cuerpo_registro\").addClass('loader');\n");
+      out.write("            $.post('crearReserva.jsp',\n");
+      out.write("            {id: $(this).attr('data-id')},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                    $(\".cuerpo_registro\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\".cuerpo_registro\").removeClass('loader');\n");
+      out.write("                $(\".cuerpo_registro\").html(alerta);\n");
+      out.write("            });\n");
+      out.write("    });\n");
+      out.write("    \n");
       out.write("    $(\".formNuevo\").click(function (e) {\n");
       out.write("        $(\"#titleModal\").html(\"Generar reporte\");\n");
       out.write("        e.preventDefault();\n");

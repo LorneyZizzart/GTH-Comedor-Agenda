@@ -1,0 +1,170 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Entidad;
+
+import java.sql.Date;
+
+/**
+ *
+ * @author pc
+ */
+public class C_Empleado_Reserva extends C_TipoComida{
+    private int IdUser;
+    private int IdEmpleadoReserva;
+    private int IdTipoComensal;
+    private int IdEmpleado;
+    private String Fecha;
+    private int Cantidad;
+    private int Estado;
+    private String Observacion;
+    private int Cancelar;
+    private String FechaCancelacion;
+    private Date FechaRegistro;
+    private Date FechaActualizacion;
+    private String NombreEmpleado;
+    private int Telefono;
+    private Double DescuentoAdicional;
+    private int Notificacion;
+    private int IdComensalExterno;
+    
+    public void setIdComensalExterno(int idComensalExterno){
+        this.IdComensalExterno = idComensalExterno;
+    }
+    
+    public int getIdComensalExterno(){
+        return IdComensalExterno;
+    }
+    
+    public Double getDescuentoAdicional (){
+        return DescuentoAdicional;
+    }
+    
+    public void setDescuentoAdicional(double descuento){
+        this.DescuentoAdicional = descuento;
+    }
+    
+    public int getTelefono(){
+        return Telefono;
+    }
+    
+    public void setTelefono(int telefono){
+        this.Telefono = telefono;
+    }
+    
+    public String getNombreEmpleado(){
+        return NombreEmpleado;
+    }
+    
+    public void setNombreEmpleado(String nombreEmpleado){
+        this.NombreEmpleado = nombreEmpleado;
+    }
+    
+    public int getIdUser(){
+        return IdUser;
+    }
+    
+    public void setIdUser(int idUser){
+        this.IdUser = idUser;
+    }
+    
+    public int getIdEmpleadoReserva(){
+        return IdEmpleadoReserva;
+    }
+    
+    public void setIdEmpleadoReserva(int idEmpleadoReserva){
+        this.IdEmpleadoReserva = idEmpleadoReserva;
+    }
+    
+    public int getIdTipoComensal(){
+        return IdTipoComensal;
+    }
+    
+    public void setIdTipoComensal(int idTipoComensal){
+        this.IdTipoComensal = idTipoComensal;
+    }
+    
+    public int getIdEmpleado(){
+        return IdEmpleado;
+    }
+    
+    public void setIdEmpleado(int idEmpleado){
+        this.IdEmpleado = idEmpleado;
+    }
+    
+    
+    public String getFecha(){
+        return Fecha;
+    }
+    
+    public void setFecha(String fecha){
+        this.Fecha = fecha;
+    }
+    
+    public int getCantidad(){
+        return Cantidad;
+    }
+    
+    public void setCantidad(int cantidad){
+        this.Cantidad = cantidad;
+    }
+    
+    public int getEstado(){
+        return Estado;
+    }
+    
+    public void setEstado(int estado){
+        this.Estado = estado;
+    }
+    
+    public String getObservacion(){
+        return Observacion;
+    }
+    
+    public void setObservacion(String observacion){
+        this.Observacion = observacion;
+    }
+    
+    public int getCancelar(){
+        return Cancelar;
+    }
+    
+    public void setCancelar(int cancelar){
+        this.Cancelar = cancelar;
+    }
+    
+    public String getFechaCancelacion(){
+        return FechaCancelacion;
+    }
+    
+    public void setFechaCancelacion(String fechaCancelacion){
+        this.FechaCancelacion = fechaCancelacion;
+    }
+    
+    public Date getFechaRegistro(){
+        return FechaRegistro;
+    }
+    
+    public void setFechaRegistro(Date fechaRegistro){
+        this.FechaRegistro = fechaRegistro;
+    }
+    
+    public Date getFechaActualizacion(){
+        return FechaActualizacion;
+    }
+    
+    public void setFechaActualizacion(Date fechaActualizacion){
+        this.FechaActualizacion = fechaActualizacion;
+    }
+    
+    public int getNotificacion(){
+        return Notificacion;
+    }
+    
+    public void setNotificacion(int notificacion){
+        this.Notificacion = notificacion;
+    }
+    
+}

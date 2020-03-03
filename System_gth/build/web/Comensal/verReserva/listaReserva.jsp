@@ -7,8 +7,8 @@
 <jsp:useBean id="consultaUser" class="Controlador.UsuarioController" />
 <%
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-     List<Usuario> Usuarios = new ArrayList<Usuario>();
-    Usuarios = consultaUser.GetAllUser();
+    Usuario usuario = new Usuario();
+    
     int idEmpleado = Integer.parseInt(request.getParameter("idUsuario"));
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
     String fi = request.getParameter("fi");
@@ -16,12 +16,8 @@
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
     double saldo = 0.0;
-    
-    for(Usuario u : Usuarios){
-        if(u.getUser_id() == idEmpleado){
-            idEmpleado = u.getEmpleado_id();
-        }
-    }
+    usuario = _empleadoReserva.getUsuarioById(idEmpleado);
+    idEmpleado = usuario.getEmpleado_id();
     
     try { 
         

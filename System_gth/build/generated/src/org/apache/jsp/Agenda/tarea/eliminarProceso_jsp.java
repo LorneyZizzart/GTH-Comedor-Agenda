@@ -52,12 +52,14 @@ public final class eliminarProceso_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write('\n');
 
     String respuesta = "";
-    int id = 0;
+    String id = null;
     try {
-        id = Integer.parseInt(request.getParameter("id"));
+        System.out.print(request.getParameter("id"));
+        id = request.getParameter("id");
+//        respuesta = "Ok";
         respuesta = _proceso.DeleteProcedimientoTarea(id);
     }catch (Exception e) {
-        id = 0;
+        respuesta = e.toString();
     }
     
     if(respuesta.equalsIgnoreCase("Ok"))

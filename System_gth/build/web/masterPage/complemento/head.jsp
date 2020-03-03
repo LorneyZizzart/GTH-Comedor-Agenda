@@ -4,15 +4,7 @@
 <%@page import="Entidad.C_TipoComensal"%>
 <jsp:useBean id="_empleadoReserva" class="Controlador.C_EmpleadoReservaController" />
 <jsp:useBean id="__encript" class="Controlador.EncriptionController" />
-<%
-    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    listaReservas = _empleadoReserva.getNotificaionesDeReservas();
-    int contador = 0;
-    for (C_TipoComensal item : listaReservas) {
-        contador++;
-    }
-    int NotificaionMostrarTodo = 0; 
-%>
+
 <!DOCTYPE html>
 <a href="../../Comensal/editarReservas/listaReserva.jsp"></a>
 <html>
@@ -85,6 +77,16 @@
             } else {
                 DatoUsuario = (Login_Entidad) sesion.getAttribute("USUARIO");
             }
+            List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+
+            int a = 0;
+            if(DatoUsuario.getUser_id() == 1 || DatoUsuario.getUser_id() == 3031){
+                listaReservas = _empleadoReserva.getNotificaionesDeReservas();
+                for (C_TipoComensal item : listaReservas) {
+                    a++;
+                }
+            }
+            int NotificaionMostrarTodo = 0; 
         %>
         <style>
             .loader{
@@ -118,24 +120,31 @@
 
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav"> 
-                            
+                            <%
+                                 if(DatoUsuario.getUser_id() == 1 || DatoUsuario.getUser_id() == 3031){
+                            %>
                             <!-- Notifications: mas de 3 platos -> Daniel-17/12/2019 -->
                             <li class="dropdown notifications-menu">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning"><%=contador%></span>
+                                <span class="label label-warning"><%=a%></span>
                               </a>
                               <ul class="dropdown-menu">
-                                <li class="header">Tienes <%=contador%> notificaciones</li>
+                                <li class="header">Tienes <%=a%> notificaciones</li>
                                 <li>
                                   <!-- inner menu: contains the actual data -->
                                   <ul class="menu">
                                     <%
                                         for (C_TipoComensal item : listaReservas) {
+                                            String backColor = "";
+                                            if(item.getNotificacion()==1){
+                                                backColor = "#e4e7ea";
+                                            }
                                     %>
-                                    <li>
+                                    <li style="background-color: <%=backColor%>" >
                                         <a href="../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=<%=item.getIdTipoComida()%>&IdEmpleado=<%=item.getIdEmpleado()%>&Fecha=<%=item.getFecha()%>">
-                                            <i class="fa fa-user text-aqua"></i> <b><%=item.getNombreEmpleado()%></b><br>&#160;&#160;&#160;&#160;<%= item.getObservacion()%>
+                                        <!--<a href="../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=<%=item.getIdTipoComida()%>&IdTipoComensal=<%=item.getIdTipoComensal()%>&Fecha=<%=item.getFecha()%>">-->
+                                            <i class="fa fa-user text-aqua"></i> <b><%=item.getNombreEmpleado()%></b><br><p style="color: #a0a0a0; margin-left: 20px;"><strong>Observaciones: </strong><%= item.getObservacion()%></p>
                                         </a>
                                     </li>
                                     <%
@@ -148,7 +157,7 @@
                                 </li>
                               </ul>
                             </li>
-
+                            <%}%>
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">

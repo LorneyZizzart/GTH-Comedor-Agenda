@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class C_EmpleadoReservaModel {
     
-    private Usuario SearchUserData(int idUser){
+    public Usuario SearchUserData(int idUser){
         Usuario usuario = new Usuario();
         try {
             ConectaSqlServer db = new ConectaSqlServer();
@@ -28,6 +28,7 @@ public class C_EmpleadoReservaModel {
             String sql = "Select User_id, Empleado_id, Usuario\n"
                     + "from Usuario \n"
                     + "where User_id = " + idUser ;
+
             ResultSet res = db.consulta(sql);
             if (res.next()) {
                 usuario.setUser_id(res.getInt("User_id"));
@@ -97,7 +98,7 @@ public class C_EmpleadoReservaModel {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
             
-            String sql = "SELECT IdEmpleadoReserva, IdEmpleado, tc.IdTipoComida, IdTipoComensal, Fecha, Cantidad, er.Estado, Observacion, Cancelar, FechaCancelacion, er.fechaRegistro, er.fechaActulizacion, er.descuento,\n" +
+            String sql = "SELECT IdEmpleadoReserva, IdEmpleado, tc.IdTipoComida, IdTipoComensal, Fecha, Cantidad, er.Estado, Observacion, Cancelar, FechaCancelacion, er.fechaRegistro, er.fechaActulizacion, er.descuento, 1 as funcionario,\n" +
                         "tc.Nombre as NombreComida, tc.Costo as CostoComida, tc.Hora as HoraComida, tc.color as ColorComida, tc.Detalles as DetalleComida, tc.horasAnticipacion as HorasAnticipacionComida,\n" +
                         "tco.Nombre as NombreComensal, tco.descuentoDesayuno, tco.descuentoAlmuerzo, tco.descuentoCena,\n" +
                         "em.Apellido_paterno, em.Apellido_materno, em.Nombre as NombreEmpleado, em.Telefono\n" +
@@ -107,7 +108,6 @@ public class C_EmpleadoReservaModel {
                         "AND er.IdEmpleado = em.Empleado_id\n" +
                         " " + auxReq + " " +
                         "AND er.Estado <> 6 ORDER BY er.Fecha ASC";
-
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 C_TipoComensal r = new C_TipoComensal();
@@ -134,6 +134,7 @@ public class C_EmpleadoReservaModel {
                 r.setDescuentoDesayuno(res.getDouble("descuentoDesayuno"));
                 r.setDescuentoAlmuerzo(res.getDouble("descuentoAlmuerzo"));
                 r.setDescuentoCena(res.getDouble("descuentoCena"));
+                r.setFuncionario(res.getInt("funcionario"));
                 listaReservaEmpleado.add(r);
             }
             db.cierraConexion();
@@ -278,9 +279,9 @@ public class C_EmpleadoReservaModel {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
             String sql = "INSERT INTO CEmpleado_Reserva\n"
-                    + "           (IdTipoComensal, IdEmpleado, Fecha, Cantidad, Estado, Observacion, Cancelar, FechaCancelacion, IdTipoComida, fechaRegistro, descuento, notificacion)\n"
+                    + "           (IdTipoComensal, IdEmpleado, Fecha, Cantidad, Estado, Observacion, Cancelar, FechaCancelacion, IdTipoComida, fechaRegistro, descuento, notificacion, listarNotificacion)\n"
                     + "     VALUES\n"
-                    + "           (" + empleadoReserva.getIdTipoComensal()+ ","+ empleadoReserva.getIdEmpleado()+",'"+ empleadoReserva.getFecha()+ "',"+ empleadoReserva.getCantidad()+", 1,'"+empleadoReserva.getObservacion()+"', 0, null,"+empleadoReserva.getIdTipoComida()+",  CONVERT(date, SYSDATETIME()), 0, "+empleadoReserva.getNotificacion()+")";
+                    + "           (" + empleadoReserva.getIdTipoComensal()+ ","+ empleadoReserva.getIdEmpleado()+",'"+ empleadoReserva.getFecha()+ "',"+ empleadoReserva.getCantidad()+", 1,'"+empleadoReserva.getObservacion()+"', 0, null,"+empleadoReserva.getIdTipoComida()+",  CONVERT(date, SYSDATETIME()), 0, "+empleadoReserva.getNotificacion()+","+empleadoReserva.getListarNotifiacion()+")";
             db.insertar(sql);
             db.cierraConexion();
         } catch (SQLException e) {
@@ -299,6 +300,8 @@ public class C_EmpleadoReservaModel {
                     + "       IdTipoComensal = "+reservaEmpleado.getIdTipoComensal()+ ","
                     + "       Observacion = '"+reservaEmpleado.getObservacion() + "',"
                     + "       descuento = "+reservaEmpleado.getDescuentoAdicional()+ ","
+                    + "       notificacion = "+reservaEmpleado.getNotificacion()+ ","
+                    + "       listarNotificacion = "+reservaEmpleado.getListarNotifiacion()+ ","
                     + "       fechaActulizacion = CONVERT(date, SYSDATETIME())"
                     + " WHERE IdEmpleadoReserva  = " + idReservaEmpleado ;
             respuesta = "Ok";
@@ -336,7 +339,7 @@ public class C_EmpleadoReservaModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "SELECT IdEmpleadoReserva, IdEmpleado, tc.IdTipoComida, IdTipoComensal, Fecha, Cantidad, er.Estado, Observacion, Cancelar, FechaCancelacion, er.fechaRegistro, er.fechaActulizacion, er.descuento,\n" +
+            String sql = "SELECT IdEmpleadoReserva, IdEmpleado, tc.IdTipoComida, IdTipoComensal, Fecha, Cantidad, er.Estado, Observacion, Cancelar, FechaCancelacion, er.fechaRegistro, er.fechaActulizacion, er.descuento, er.notificacion, er.listarNotificacion,\n" +
                         "tc.Nombre as NombreComida, tc.Costo as CostoComida, tc.Hora as HoraComida, tc.color as ColorComida, tc.Detalles as DetalleComida, tc.horasAnticipacion as HorasAnticipacionComida,\n" +
                         "tco.Nombre as NombreComensal, tco.descuentoDesayuno, tco.descuentoAlmuerzo, tco.descuentoCena,\n" +
                         "em.Apellido_paterno, em.Apellido_materno, em.Nombre as NombreEmpleado, em.Telefono\n" +
@@ -346,7 +349,6 @@ public class C_EmpleadoReservaModel {
                         "AND er.IdEmpleado = em.Empleado_id\n" +
                         "AND er.Estado <> 6\n"+
                         "AND er.notificacion = 1\n";
-            System.out.print(sql);
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 C_TipoComensal r = new C_TipoComensal();
@@ -373,6 +375,8 @@ public class C_EmpleadoReservaModel {
                 r.setDescuentoDesayuno(res.getDouble("descuentoDesayuno"));
                 r.setDescuentoAlmuerzo(res.getDouble("descuentoAlmuerzo"));
                 r.setDescuentoCena(res.getDouble("descuentoCena"));
+                r.setNotificacion(res.getInt("notificacion"));
+                r.setListarNotifiacion(res.getInt("listarNotificacion"));
                 listaReservaEmpleado.add(r);
             }
             db.cierraConexion();

@@ -1,12 +1,14 @@
 <jsp:useBean id="_proceso" class="Controlador.A_ProcedimientoTareaController"/>
 <%
     String respuesta = "";
-    int id = 0;
+    String id = null;
     try {
-        id = Integer.parseInt(request.getParameter("id"));
+        System.out.print(request.getParameter("id"));
+        id = request.getParameter("id");
+//        respuesta = "Ok";
         respuesta = _proceso.DeleteProcedimientoTarea(id);
     }catch (Exception e) {
-        id = 0;
+        respuesta = e.toString();
     }
     
     if(respuesta.equalsIgnoreCase("Ok"))

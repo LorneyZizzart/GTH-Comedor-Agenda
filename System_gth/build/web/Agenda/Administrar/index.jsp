@@ -64,14 +64,14 @@
                             <div class="col-md-10 col-xs-12 input-group">
                               <select id="idRepeat" name="idRepeticion"  class="form-control selectRepeticion" style="width: 100%;">
                                   <%
-                                      int c = 0;
+                                      int contador = 0;
                                       for(String r : listaRe){
                                           String select = "";
-                                          if(c==1)
+                                          if(contador==1)
                                               select = "Selected";
                                           %>
-                                          <option value="<%=c%>" <%=select%>><%=r%></option>                            
-                                  <% c++; }  %>
+                                          <option value="<%=contador%>" <%=select%>><%=r%></option>                            
+                                  <% contador++; }  %>
                               </select>
                             </div>
                             </div>

@@ -28,6 +28,42 @@ public class C_Empleado_Reserva extends C_TipoComida{
     private int Telefono;
     private Double DescuentoAdicional;
     private int Notificacion;
+    private int ListarNotifiacion;
+    private String NombreCompleto;
+    private int Celular;
+    private int Funcionario;
+    
+     public void setFuncionario(int Funcionario){
+        this.Funcionario = Funcionario;
+    }
+    
+    public int getFuncionario(){
+        return Funcionario;
+    }
+    
+    public void setNombreCompleto(String NombreCompleto){
+        this.NombreCompleto = NombreCompleto;
+    }
+    
+    public String getNombreCompleto(){
+        return NombreCompleto;
+    }
+    
+    public void setCelular(int Celular){
+        this.Celular = Celular;
+    }
+    
+    public int getCelular(){
+        return Celular;
+    }
+    
+    public void setListarNotifiacion(int ListarNotifiacion){
+        this.ListarNotifiacion = ListarNotifiacion;
+    }
+    
+    public int getListarNotifiacion(){
+        return ListarNotifiacion;
+    }
     
     public Double getDescuentoAdicional (){
         return DescuentoAdicional;

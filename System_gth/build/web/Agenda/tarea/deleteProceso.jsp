@@ -5,7 +5,7 @@
 <jsp:useBean id="_proceso" class="Controlador.A_ProcedimientoTareaController"/>
 <jsp:useBean id="_path" class="Controlador.A_PathProcedimientoTareaController" />
 <%
-    String[] id = request.getParameter("id").split("%"); 
+    String[] id = request.getParameter("id").split("%");
     A_ProcedimientoTarea procedimiento = new A_ProcedimientoTarea();
     procedimiento = _proceso.getProcedimientoById(Integer.parseInt(id[0]));
     List<A_Tarea> listaPath = new ArrayList<A_Tarea>();
@@ -13,7 +13,7 @@
   
 %>
 <form id="formGuardarProceso" method="post" class="formGuardarProceso">
-    <input type="hidden" value="<%=id[0]%>" name="idProceso" id="idProceso">
+    <input type="hidden" value="<%=request.getParameter("id")%>" name="idProceso" id="idProceso">
     <input type="hidden" value="0" name="id" id="id">
                     <div class="box-body">
                         <div class="form-group" >

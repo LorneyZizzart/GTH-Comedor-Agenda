@@ -97,19 +97,25 @@ public final class matriz_005fnuevo_005fguardar_jsp extends org.apache.jasper.ru
     matriz.setEstado(Integer.parseInt(plan_accion_estado));
 
     String mensaje = crearPlanMatriz.SaveorUpdateMatriz(matriz);
-    if (mensaje.equalsIgnoreCase("Ok")) {
+    String[] palabras = mensaje.split("##");
+    String mensajeSave = palabras[0];
+    String idmatriz = palabras[1];
+    if (mensajeSave.equalsIgnoreCase("Ok")) {
 
       out.write("\n");
-      out.write("<div class=\" text-center alert alert-success alert-dismissible\">\n");
-      out.write("    <h4><i class=\"icon fa fa-check\"></i> Guardado</h4>\n");
-      out.write("</div>\n");
+      out.write("Guardado\n");
+      out.write("\n");
       out.write("<script type=\"text/javascript\">\n");
-      out.write("    $(document).ready(function () {\n");
-      out.write("        $(\".mensaje\").hide(1500, function () {\n");
-      out.write("            location.reload();\n");
-      out.write("        });\n");
-      out.write("        $(\"form\")[0].reset();\n");
-      out.write("    });\n");
+      out.write("    /*$(document).ready(function () {\n");
+      out.write("     $(\".mensaje\").hide(1500, function () {\n");
+      out.write("     location.reload();\n");
+      out.write("     });\n");
+      out.write("     $(\"form\")[0].reset();\n");
+      out.write("     });*/\n");
+      out.write("\n");
+      out.write("    $('#Plan_matriz_id').val(");
+      out.print(idmatriz);
+      out.write(")\n");
       out.write("</script>\n");
 
 } else {

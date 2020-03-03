@@ -111,7 +111,6 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
     }
     
     try {        
-        
         Date dateStart = formatter.parse(request.getParameter("fechaInicio"));
         Date dateEnd = formatter.parse(request.getParameter("fechaFin"));
 //        System.out.print("dateStart "+dateStart);
@@ -152,8 +151,11 @@ public final class guardarReservaEmpleado_jsp extends org.apache.jasper.runtime.
 //                si la reserva nesesita ser notificada -> Daniel
                 if(empleadoReserva.getObservacion().equalsIgnoreCase("")){
                     empleadoReserva.setNotificacion(0);
+                    empleadoReserva.setListarNotifiacion(0);
                 }else{
                     empleadoReserva.setNotificacion(1);
+                    empleadoReserva.setListarNotifiacion(1);
+
                 }
                 
                 calendar.setTime(dateStart);

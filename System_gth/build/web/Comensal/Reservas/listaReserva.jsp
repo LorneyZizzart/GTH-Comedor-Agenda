@@ -38,8 +38,6 @@
     
     listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
 %>
-
-
         <div class="col-xs-12">            
 
             <div class="box box-purple">

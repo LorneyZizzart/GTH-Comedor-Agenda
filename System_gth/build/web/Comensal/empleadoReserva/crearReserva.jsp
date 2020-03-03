@@ -113,12 +113,12 @@
                                         <span class="input-group-btn">&#160;</span>
                                         <span class="input-group-btn">&#160;</span>
                                         <span class="input-group-btn">
-                                            <button id="btn<%=contador%>" type="button" class="btn btn-info" style="border-radius: 5px;" disabled><i class="fa fa-plus-square"></i></button>
+                                            <button id="btn<%=contador%>" type="button" class="btn btn-xs btn-primary" disabled><i class="fa fa-plus-square"></i></button>
                                         </span>
                                         <span class="input-group-btn">&#160;</span>
                                         <span class="input-group-btn">&#160;</span>
                                         <span class="input-group-btn">
-                                            <button id="btnMenos<%=contador%>" type="button" class="btn btn-warning" style="border-radius: 5px;" disabled><i class="fa fa-minus-square"></i></button>
+                                            <button id="btnMenos<%=contador%>" type="button" class="btn btn-xs btn-info" disabled><i class="fa fa-minus-square"></i></button>
                                         </span>
                                     </div>
                                     <!--<button type="button" class="btn btn-info align-left" disabled><i class="fa fa-plus-square"></i></button>-->
@@ -129,9 +129,9 @@
                             <label>Observación</label>
                             <!--<input type="number" class="form-control cantidad<%=contador%> form-cantidad"/>-->
                             <textarea class="form-control" rows="3" id="observacion"  name="observacion" readonly></textarea>
-                            <input type="text" id="observacionDes" name="observacionDes"/>
-                            <input type="text" id="observacionAlm" name="observacionAlm"/>
-                            <input type="text" id="observacionCen" name="observacionCen"/>
+                            <input type="hidden" id="observacionDes" name="observacionDes"/>
+                            <input type="hidden" id="observacionAlm" name="observacionAlm"/>
+                            <input type="hidden" id="observacionCen" name="observacionCen"/>
                         </div>
                     </div>
                     <!-- /.box-body -->

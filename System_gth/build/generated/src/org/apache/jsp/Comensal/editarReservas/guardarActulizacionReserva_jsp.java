@@ -61,6 +61,8 @@ public final class guardarActulizacionReserva_jsp extends org.apache.jasper.runt
         empleadoReserva.setIdTipoComensal(Integer.parseInt(request.getParameter("idTipoCo")));
         empleadoReserva.setObservacion(request.getParameter("observacion"));
         empleadoReserva.setDescuentoAdicional(Double.parseDouble(request.getParameter("descuentoAdicional")));
+        empleadoReserva.setNotificacion(0);
+        empleadoReserva.setListarNotifiacion(0);
         resultado = _empleadoReserva.EditEmpleadoReservaById(Integer.parseInt(request.getParameter("idReserva")), empleadoReserva);
     }catch(Exception e){
         resultado = "Se ha producido un error, no llegaron todos los atributos.";

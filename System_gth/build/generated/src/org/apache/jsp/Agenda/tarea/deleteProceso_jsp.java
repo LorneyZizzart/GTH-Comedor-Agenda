@@ -68,7 +68,7 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       }
       out.write('\n');
 
-    String[] id = request.getParameter("id").split("%"); 
+    String[] id = request.getParameter("id").split("%");
     A_ProcedimientoTarea procedimiento = new A_ProcedimientoTarea();
     procedimiento = _proceso.getProcedimientoById(Integer.parseInt(id[0]));
     List<A_Tarea> listaPath = new ArrayList<A_Tarea>();
@@ -78,7 +78,7 @@ public final class deleteProceso_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("\n");
       out.write("<form id=\"formGuardarProceso\" method=\"post\" class=\"formGuardarProceso\">\n");
       out.write("    <input type=\"hidden\" value=\"");
-      out.print(id[0]);
+      out.print(request.getParameter("id"));
       out.write("\" name=\"idProceso\" id=\"idProceso\">\n");
       out.write("    <input type=\"hidden\" value=\"0\" name=\"id\" id=\"id\">\n");
       out.write("                    <div class=\"box-body\">\n");

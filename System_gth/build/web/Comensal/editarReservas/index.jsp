@@ -24,6 +24,10 @@
 
     String[] listaRe = new String[]{"Todo", "Hoy", "Predeterminado"};
     String palabra = request.getParameter("ListarNotificaion");
+   
+    String IdTipoComida = request.getParameter("IdTipoComida");
+    String IdTipoComensal = request.getParameter("IdEmpleado");
+    String Fecha = request.getParameter("Fecha");
 %>
 <section class="content-header">
     <h1>
@@ -42,7 +46,19 @@
     <div class="box box-purple" >
             <div class="box-header">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-3">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="padding: 0;">Tipo funcionario:</label>
+                            <div class="col-md-9 col-xs-12 input-group">
+                              <select id="tipoFuncionario" name="tipoFuncionario" class="form-control" style="width: 100%;">
+                                <option value="0" selected>Todos</option>
+                                <option value="1">Funcionario</option>
+                                <option value="2">No Funcionario</option>
+                            </select>  
+                            </div>                        
+                        </div>  
+                    </div>
+                    <div class="col-sm-12 col-md-4">
                          <div class="form-group">
                                 <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de comensal:</label>
                                 <div class="col-md-9 col-xs-12 input-group">
@@ -63,7 +79,7 @@
                                 
                               </div>      
                     </div>
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-5">
                         <div class="form-group">
                             <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de alimento:</label>
                             <div class="col-md-9 col-xs-12 input-group">
@@ -163,36 +179,43 @@
 </section>
 <%@ include file= "../../masterPage/complemento/footer.jsp" %> 
 <script>
+    function formato(texto){
+        return texto.replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3/$2/$1');
+    }
+    
     var fechaInicio  = "", fechaFinal = "";
     $(document).ready(function() {
-        if(<%=palabra%> == "1"){
-            $('.selectComensal').select2();
-            $('.selectComida').select2();
-            $('.selectFuncionario').select2();
-            renderTable( 0, 0, "", "", 0, 0, 1);
-        }else{
-            $('.selectComensal').select2();
-            $('.selectComida').select2();
-            $('.selectFuncionario').select2();
-            $('.formNuevo').tooltip({ boundary: 'window' });
-            $('#example').tooltip({ boundary: 'window' });
-            $('#dp1').datepicker({
+        $('.selectComensal').select2();
+        $('.selectComida').select2();
+        $('.selectFuncionario').select2();
+        $('.formNuevo').tooltip({ boundary: 'window' });
+        $('#example').tooltip({ boundary: 'window' });
+        $('#dp1').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        });
+        $('#dp2').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true
-            });
-            $('#dp2').datepicker({
-                    format: 'dd/mm/yyyy',
-                    autoclose: true
-            });
-            estadoDate(true);
-            renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);
+        });
+        estadoDate(true);
+        if(<%=palabra%> == "1"){
+            renderTable( 0, 0, "", "", 0, 0, 1, $('#tipoFuncionario').val());
+        }else{
+            if(<%=palabra%> == "2"){
+                fechaInicio = '<%=Fecha%>'; 
+                fechaFinal = '<%=Fecha%>';
+                renderTable( <%=IdTipoComensal%>, 2, formato(fechaInicio), formato(fechaFinal), ['0'], ['<%=IdTipoComida%>'], 0, $('#tipoFuncionario').val());
+            }else{
+                renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0, $('#tipoFuncionario').val());
+            }
         }
         
     });
     
     $('#filtrarTarea').click(function (){
         fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();
-        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);
+        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0, $('#tipoFuncionario').val());
     });
     
 //    ====================== SillegaParametroListar todas
@@ -217,9 +240,9 @@
         }        
     });
     
-    function renderTable(idE, idR, fi, ff, co, al, No){
+    function renderTable(idE, idR, fi, ff, co, al, No, tipoFuncionario){
         $.post('listaReserva.jsp',
-            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al, No:No},
+            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al, No:No, tipoFuncionario:tipoFuncionario},
                     function (html) {
                     $("#tablaReservas").removeClass('loader');
                     $("#tablaReservas").html(html);

@@ -73,8 +73,8 @@
                             <td class="details-control-subob" data-id="<%=id%>" ></td>
                             <td><%=contador%></td>
                             <td><%=sub.getTitulo()%></td>
-                            <td><%if (sub.getDescripcion().length() == 50) {
-                                        out.print(sub.getDescripcion() + ".....");
+                            <td><%if (sub.getDescripcion().length() >= 50) {
+                                        out.print(sub.getDescripcion().substring(0,50) + ".....");
                                     } else {
                                         out.println(sub.getDescripcion());
                                     }

@@ -148,6 +148,19 @@
     <!-- /.row -->
     <!-- /.row -->
   </section>
+    <section>
+        <div style="text-align: center; margin-top: 100px;">
+            <div style="border-top: 1px solid #716f6f;
+                        margin: 0 30% 0 30%;
+                        border-style: dotted;
+                        border-bottom: none;
+                        border-left: none;
+                        border-right: none;">
+                <p style="margin: 0;">Dina Gladys Mena Sarco</p>
+                <span style="text-transform: uppercase; color: #909090;">ADMINISTRADOR DEL COMEDOR</span>
+            </div>
+        </div>                        
+    </section>
   <!-- /.content -->
 </div>
 <!-- ./wrapper -->

@@ -7,7 +7,9 @@ package Controlador;
 
 import Entidad.C_Empleado_Reserva;
 import Entidad.C_TipoComensal;
+import Entidad.Usuario;
 import Modelo.C_EmpleadoReservaModel;
+import Modelo.C_ComensalExterno;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,11 @@ import java.util.List;
  * @author pc
  */
 public class C_EmpleadoReservaController {
+    
+    public Usuario getUsuarioById(int idUsuario){
+        C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
+        return mod.SearchUserData(idUsuario);
+    }
     
     public List<C_TipoComensal> getReservasForParams(String fechaInicio, String fechaFinal, List<String> idsComensal, List<String> idsComidas, boolean orderAlpha, boolean orderDate, int idComensal) {
         C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
@@ -95,7 +102,6 @@ public class C_EmpleadoReservaController {
         C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
         String query = "";
         
-        
         if(idComensal != 0){
            query =  " AND er.IdEmpleado = " + idComensal + " ";
         }
@@ -140,8 +146,7 @@ public class C_EmpleadoReservaController {
                 String dateEnd = date2[2]+"/"+date2[1]+"/"+date2[0];
                 query = query + "AND er.Fecha BETWEEN '" + dateStart +"' AND '"+dateEnd+"'";
                 break;
-        }
-            
+        }            
         
         return mod.getAllReservaEmpleado(query);
     }
@@ -233,10 +238,64 @@ public class C_EmpleadoReservaController {
     
     
 //    lista todas las reservas que tengan la varible notificaion en 1
-//    echo por Daniel
     public List<C_TipoComensal> getNotificaionesDeReservas(){
         C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
         return mod.getReservasDeNotificaiones();
+    }
+    
+//    COMENSAL EXTERNO
+    
+    public List<C_TipoComensal> getAllComensalExterno(int ver, String fi, String ff, List<String> idsComensal, List<String> idsComidas) {
+        C_ComensalExterno mod = new C_ComensalExterno();
+        String query = "";
+        
+        if(idsComensal.size() !=0 && Integer.parseInt(idsComensal.get(0)) != 0){
+            query = query + " AND tc.Id IN ( ";
+            int i = 0;
+            for(String c : idsComensal){
+                if(i==0)
+                    query = query + c;
+                else if(i>0)
+                    query = query + ", " + c;
+                i++;
+            }
+            query = query + " ) ";
+        }
+        
+        if(idsComidas.size() !=0 && Integer.parseInt(idsComidas.get(0)) != 0){
+            query = query + " AND tco.IdTipoComida IN ( ";
+            int i = 0;
+            for(String c : idsComidas){
+                if(i==0)
+                    query = query + c;
+                else if(i>0)
+                    query = query + ", " + c;
+                i++;
+            }
+            query = query + " ) ";
+        }
+        
+        switch(ver){
+            case 1:
+                Calendar calendar = Calendar.getInstance();
+                Date date = new Date();
+                calendar.setTime(date);
+                query = query + "AND ce.Fecha = '" + calendar.get(Calendar.YEAR)+"/"+(Integer.parseInt(String.valueOf(calendar.get(Calendar.MONTH)))+1)+"/"+calendar.get(Calendar.DATE) +"'";
+                break;
+            case 2:
+                String date1[] =  fi.split("/");
+                String date2[] = ff.split("/");
+                String dateStart =  date1[2]+"/"+date1[1]+"/"+date1[0];
+                String dateEnd = date2[2]+"/"+date2[1]+"/"+date2[0];
+                query = query + "AND ce.Fecha BETWEEN '" + dateStart +"' AND '"+dateEnd+"'";
+                break;
+        }  
+        return mod.getAllComensalExterno(query);
+    }
+    
+    public String SaveComensalExterno(C_Empleado_Reserva empleadoReserva) {
+        C_ComensalExterno mod = new C_ComensalExterno();
+        return mod.SaveComensalExterno(empleadoReserva);
     }
       
 }

@@ -68,7 +68,7 @@ public final class listFile_jsp extends org.apache.jasper.runtime.HttpJspBase
 
     String idTarea = request.getParameter("id");
     List<A_PathTarea> listaP = new ArrayList<A_PathTarea>();
-    listaP = _path.getAllPath(Integer.parseInt(idTarea));
+    listaP =null;// _path.getAllPath(Integer.parseInt(idTarea));
 
       out.write("\n");
       out.write("<div class=\"box-header\" style=\"padding: 0 0 2% 0\">\n");
@@ -132,7 +132,7 @@ public final class listFile_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                <td class=\"text-center\">\n");
       out.write("                                    <div class=\"btn-group \">                          \n");
       out.write("                                        <button href=\"../../../../Files/\" data-id=\"");
-      out.print(p.getPath());
+//=p.getPath()
       out.write("\" class=\"DownloadFile btn btn-success btn-xs\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Descargar\"> <i class=\"fa  fa-download\"></i></button>                                \n");
       out.write("                                        <a data-id=\"");
       out.print(p.getIdPath());

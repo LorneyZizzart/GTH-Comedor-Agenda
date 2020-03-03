@@ -83,10 +83,10 @@
                                 <td><%=contador%></td>
                                 <td><%=p.getTitulo()%></td>
                                 <td><%
-                                    if (p.getCreditacion().length() == 50) {
-                                        out.print(p.getCreditacion() + "......");
+                                    if (p.getCreditacion().length() >= 50) {
+                                        out.print(p.getCreditacion().substring(0,50) + "......");
                                     } else {
-                                        out.print(p.getCreditacion());
+                                        out.print("---"+p.getCreditacion());
                                     }%></td>
                                 <td><%=p.getGestion()%></td>
                                 <td>

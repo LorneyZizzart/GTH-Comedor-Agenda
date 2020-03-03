@@ -20,7 +20,7 @@
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <jsp:useBean id="_character" class="Controlador.CharacterController" />
 <% int idEmpleado = 0;
-    String idEncript = request.getParameter("i");
+    String idEncript = request.getParameter("i").replace(' ','+');
 
     List<Estado_civil> listaEstadoCivil = new ArrayList<Estado_civil>();
     listaEstadoCivil = _estadoCivil.GetAllEstadoCivil();

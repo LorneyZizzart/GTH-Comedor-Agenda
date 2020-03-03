@@ -134,7 +134,7 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group row\">\n");
       out.write("                            <label class=\"col-md-3 \" style=\"padding-right: 0;\">Ordenar :</label>\n");
-      out.write("                            <label class=\"col-md-5 \"><input type=\"checkbox\" name=\"oA\" id=\"oA\"  class=\"flat-red\"> Alfabéticamente</label>\n");
+      out.write("                            <label class=\"col-md-5 \" style=\"padding: 0;\"><input type=\"checkbox\" name=\"oA\" id=\"oA\"  class=\"flat-red\"> Alfabéticamente</label>\n");
       out.write("                            <label class=\"col-md-4 \"><input type=\"checkbox\" name=\"oF\" id=\"oF\"  class=\"flat-red\" checked> Fecha</label>\n");
       out.write("                        </div> \n");
       out.write("                        <div class=\"form-group\">\n");

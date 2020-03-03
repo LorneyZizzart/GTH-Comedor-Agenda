@@ -4,6 +4,9 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import Entidad.C_Empleado_Reserva;
+import Entidad.C_TipoComida;
+import Entidad.C_TipoComensal;
+import Entidad.C_Empleado_Reserva;
 import java.util.ArrayList;
 import java.util.List;
 import Entidad.Login_Entidad;
@@ -58,7 +61,11 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write('\n');
+      out.write("\n");
+      out.write("\n");
+      out.write(" \n");
+      out.write("\n");
+      out.write("\n");
       out.write("\n");
       out.write("\n");
       out.write("\n");
@@ -80,16 +87,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
           _jspx_page_context.setAttribute("__encript", __encript, PageContext.PAGE_SCOPE);
         }
       }
-      out.write('\n');
-
-    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    listaReservas = _empleadoReserva.getNotificaionesDeReservas();
-    int contador = 0;
-    for (C_TipoComensal item : listaReservas) {
-        contador++;
-    }
-    int NotificaionMostrarTodo = 0; 
-
+      out.write("\n");
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<a href=\"../../Comensal/editarReservas/listaReserva.jsp\"></a>\n");
@@ -166,6 +164,16 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
             } else {
                 DatoUsuario = (Login_Entidad) sesion.getAttribute("USUARIO");
             }
+            List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+
+            int a = 0;
+            if(DatoUsuario.getUser_id() == 1 || DatoUsuario.getUser_id() == 3031){
+                listaReservas = _empleadoReserva.getNotificaionesDeReservas();
+                for (C_TipoComensal item : listaReservas) {
+                    a++;
+                }
+            }
+            int NotificaionMostrarTodo = 0; 
         
       out.write("\n");
       out.write("        <style>\n");
@@ -200,18 +208,22 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                    <div class=\"navbar-custom-menu\">\n");
       out.write("                        <ul class=\"nav navbar-nav\"> \n");
-      out.write("                            \n");
+      out.write("                            ");
+
+                                 if(DatoUsuario.getUser_id() == 1 || DatoUsuario.getUser_id() == 3031){
+                            
+      out.write("\n");
       out.write("                            <!-- Notifications: mas de 3 platos -> Daniel-17/12/2019 -->\n");
       out.write("                            <li class=\"dropdown notifications-menu\">\n");
       out.write("                              <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n");
       out.write("                                <i class=\"fa fa-bell-o\"></i>\n");
       out.write("                                <span class=\"label label-warning\">");
-      out.print(contador);
+      out.print(a);
       out.write("</span>\n");
       out.write("                              </a>\n");
       out.write("                              <ul class=\"dropdown-menu\">\n");
       out.write("                                <li class=\"header\">Tienes ");
-      out.print(contador);
+      out.print(a);
       out.write(" notificaciones</li>\n");
       out.write("                                <li>\n");
       out.write("                                  <!-- inner menu: contains the actual data -->\n");
@@ -219,9 +231,15 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                    ");
 
                                         for (C_TipoComensal item : listaReservas) {
+                                            String backColor = "";
+                                            if(item.getNotificacion()==1){
+                                                backColor = "#e4e7ea";
+                                            }
                                     
       out.write("\n");
-      out.write("                                    <li>\n");
+      out.write("                                    <li style=\"background-color: ");
+      out.print(backColor);
+      out.write("\" >\n");
       out.write("                                        <a href=\"../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=");
       out.print(item.getIdTipoComida());
       out.write("&IdEmpleado=");
@@ -229,11 +247,18 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("&Fecha=");
       out.print(item.getFecha());
       out.write("\">\n");
+      out.write("                                        <!--<a href=\"../../Comensal/editarReservas?ListarNotificaion=2&IdTipoComida=");
+      out.print(item.getIdTipoComida());
+      out.write("&IdTipoComensal=");
+      out.print(item.getIdTipoComensal());
+      out.write("&Fecha=");
+      out.print(item.getFecha());
+      out.write("\">-->\n");
       out.write("                                            <i class=\"fa fa-user text-aqua\"></i> <b>");
       out.print(item.getNombreEmpleado());
-      out.write("</b><br>&#160;&#160;&#160;&#160;");
+      out.write("</b><br><p style=\"color: #a0a0a0; margin-left: 20px;\"><strong>Observaciones: </strong>");
       out.print( item.getObservacion());
-      out.write("\n");
+      out.write("</p>\n");
       out.write("                                        </a>\n");
       out.write("                                    </li>\n");
       out.write("                                    ");
@@ -248,6 +273,8 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                </li>\n");
       out.write("                              </ul>\n");
       out.write("                            </li>\n");
+      out.write("                            ");
+}
       out.write("\n");
       out.write("                            <!-- User Account: style can be found in dropdown.less -->\n");
       out.write("                            <li class=\"dropdown user user-menu\">\n");
@@ -402,33 +429,337 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
         }
       }
       out.write('\n');
+      Controlador.C_TipoComidaController _tipoComida = null;
+      synchronized (_jspx_page_context) {
+        _tipoComida = (Controlador.C_TipoComidaController) _jspx_page_context.getAttribute("_tipoComida", PageContext.PAGE_SCOPE);
+        if (_tipoComida == null){
+          _tipoComida = new Controlador.C_TipoComidaController();
+          _jspx_page_context.setAttribute("_tipoComida", _tipoComida, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
+      Controlador.C_TipoComensalesController _tipoComensal = null;
+      synchronized (_jspx_page_context) {
+        _tipoComensal = (Controlador.C_TipoComensalesController) _jspx_page_context.getAttribute("_tipoComensal", PageContext.PAGE_SCOPE);
+        if (_tipoComensal == null){
+          _tipoComensal = new Controlador.C_TipoComensalesController();
+          _jspx_page_context.setAttribute("_tipoComensal", _tipoComensal, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
+      Controlador.CharacterController _character = null;
+      synchronized (_jspx_page_context) {
+        _character = (Controlador.CharacterController) _jspx_page_context.getAttribute("_character", PageContext.PAGE_SCOPE);
+        if (_character == null){
+          _character = new Controlador.CharacterController();
+          _jspx_page_context.setAttribute("_character", _character, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
+      out.write('\n');
 
     List<C_Empleado_Reserva> listaReservasEmpleado = new ArrayList<C_Empleado_Reserva>();
     listaReservasEmpleado = _reservaEmpleado.getReservasEmpleado(DatoUsuario.getUser_id());
 
+      out.write('\n');
+      out.write('\n');
+
+    List<C_TipoComida> listaTipoComida = new ArrayList<C_TipoComida>();
+    listaTipoComida = _tipoComida.getAllTipoComida();
+
+      out.write('\n');
+      out.write('\n');
+
+    List<C_TipoComensal> lista = new ArrayList<C_TipoComensal>();
+    lista = _tipoComensal.getAllTipoComensal();
+
+      out.write("\n");
       out.write("\n");
       out.write("        <style>\n");
       out.write("        .disabled{\n");
       out.write("        background-color: #eee;\n");
       out.write("        }\n");
+      out.write("        \n");
+      out.write("        .call-reservas:hover{\n");
+      out.write("            color: #000;\n");
+      out.write("        }\n");
       out.write("        </style>\n");
-      out.write("<section class=\"content-header\">\n");
-      out.write("    <h1>\n");
-      out.write("        Registro\n");
-      out.write("        <small> de Reservas</small>\n");
-      out.write("    </h1>   \n");
-      out.write("</section>\n");
-      out.write("<section class=\"content\">\n");
+      out.write("<!--informacion de descuentos y precio de las comidas raul navarro -->\n");
+      out.write("<section class=\"content\">    \n");
+      out.write("    <h1 style=\"margin: 0\"><small> Informaciones</small></h1>   \n");
+      out.write("    <div class=\"row\">\n");
+      out.write("        <div class=\"col-sm-12 col-md-6\">\n");
+      out.write("          <!-- small box -->\n");
+      out.write("          <div class=\"small-box bg-yellow\">\n");
+      out.write("            <div class=\"inner\">\n");
+      out.write("              <h4>");
+      out.print(lista.get(0).getNombreComensal());
+      out.write("</h4>\n");
+      out.write("\n");
+      out.write("               <table class=\"table table-bordered\">\n");
+      out.write("                <tr>\n");
+      out.write("                  <th>Comida</th>\n");
+      out.write("                  <th>Costo</th>\n");
+      out.write("                  <th>Descuento</th>\n");
+      out.write("                  <th>Anticipación</th>\n");
+      out.write("                  <th>Precio total</th>\n");
+      out.write("                </tr>               \n");
+      out.write("                    ");
+
+                    int contadorO = 0;
+                    for (C_TipoComida item : listaTipoComida) {
+                    
+      out.write("\n");
+      out.write("                  <tr>\n");
+      out.write("                  <td>");
+      out.print(item.getNombreComida());
+      out.write("</td>\n");
+      out.write("                  <td>");
+      out.print(item.getCosto());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+
+                    if (contadorO  == 0) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(lista.get(0).getDescuentoDesayuno());
+      out.write(" Bs.</td>\n");
+      out.write("                  <td>");
+      out.print(lista.get(0).getDiasAnticipacion());
+      out.write(" Dia</td>\n");
+      out.write("                  ");
+            
+                    }
+                  if (contadorO  == 1) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(lista.get(0).getDescuentoAlmuerzo());
+      out.write(" Bs.</td>\n");
+      out.write("                  <td>");
+      out.print(lista.get(0).getDiasAnticipacion());
+      out.write(" Dia</td>\n");
+      out.write("                  ");
+            
+                   }
+                   if (contadorO  == 2) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(lista.get(0).getDescuentoCena());
+      out.write(" Bs.</td>\n");
+      out.write("                  <td>");
+      out.print(lista.get(0).getDiasAnticipacion());
+      out.write(" Dia</td>\n");
+      out.write("                  ");
+            
+                   }
+                  
+      out.write("\n");
+      out.write("                  ");
+
+                    if (contadorO  == 0) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(item.getCosto()-lista.get(0).getDescuentoDesayuno());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+            
+                    }
+                  if (contadorO  == 1) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(item.getCosto()-lista.get(0).getDescuentoAlmuerzo());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+            
+                   }
+                   if (contadorO  == 2) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(item.getCosto()-lista.get(0).getDescuentoCena());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+            
+                   }
+                  
+      out.write("\n");
+      out.write("                </tr>\n");
+      out.write("                ");
+contadorO++;}
+      out.write("\n");
+      out.write("              </table>\n");
+      out.write("            </div>\n");
+      out.write("            <div class=\"icon\">\n");
+      out.write("                <i class=\"fa fa-fw fa-user\"></i>\n");
+      out.write("            </div>\n");
+      out.write("            \n");
+      out.write("          </div>\n");
+      out.write("        </div>\n");
+      out.write("        <div class=\"col-sm-12 col-md-6\">\n");
+      out.write("          <!-- small box -->\n");
+      out.write("          <div class=\"small-box bg-green\">\n");
+      out.write("            <div class=\"inner\">\n");
+      out.write("              <h4>");
+      out.print(lista.get(1).getNombreComensal());
+      out.write("</h4>\n");
+      out.write("\n");
+      out.write("               <table class=\"table table-bordered\">\n");
+      out.write("                <tr>\n");
+      out.write("                  <th>Comida</th>\n");
+      out.write("                  <th>Costo</th>\n");
+      out.write("                  <th>Descuento</th>\n");
+      out.write("                  <th>Anticipación</th>\n");
+      out.write("                  <th>Precio total</th>\n");
+      out.write("                </tr>\n");
+      out.write("                ");
+
+                    int contadorM = 0;
+                    for (C_TipoComida item : listaTipoComida) {
+                
+      out.write(" \n");
+      out.write("                <tr>\n");
+      out.write("                  <th>");
+      out.print(item.getNombreComida());
+      out.write("</th>\n");
+      out.write("                  <td>");
+      out.print(item.getCosto());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+
+                  if (contadorM  == 0) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(lista.get(1).getDescuentoDesayuno());
+      out.write(" Bs.</td>\n");
+      out.write("                  <td>");
+      out.print(lista.get(1).getDiasAnticipacion());
+      out.write(" Dias</td>\n");
+      out.write("                  ");
+            
+                    }
+                    if (contadorM  == 1) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(lista.get(1).getDescuentoAlmuerzo());
+      out.write(" Bs.</td>\n");
+      out.write("                  <td>");
+      out.print(lista.get(1).getDiasAnticipacion());
+      out.write(" Dias</td>\n");
+      out.write("                  ");
+            
+                    }
+                  if (contadorM  == 2) {
+                 
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(lista.get(1).getDescuentoCena());
+      out.write(" Bs.</td>\n");
+      out.write("                  <td>");
+      out.print(lista.get(1).getDiasAnticipacion());
+      out.write(" Dias</td>\n");
+      out.write("                  ");
+            
+                    }
+                  
+      out.write("\n");
+      out.write("                  ");
+
+                  if (contadorM  == 0) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(item.getCosto()-lista.get(1).getDescuentoDesayuno());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+            
+                    }
+                    if (contadorM  == 1) {
+                  
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(item.getCosto()-lista.get(1).getDescuentoAlmuerzo());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+            
+                    }
+                  if (contadorM  == 2) {
+                 
+      out.write("\n");
+      out.write("                  <td>");
+      out.print(item.getCosto()-lista.get(1).getDescuentoCena());
+      out.write(" Bs.</td>\n");
+      out.write("                  ");
+            
+                    }
+                  
+      out.write("\n");
+      out.write("                </tr>\n");
+      out.write("                ");
+contadorM++;}
+      out.write("\n");
+      out.write("              </table>\n");
+      out.write("            </div>\n");
+      out.write("            <div class=\"icon\">\n");
+      out.write("                <i class=\"fa fa-fw fa-user\"></i>\n");
+      out.write("            </div>\n");
+      out.write("          </div>\n");
+      out.write("        </div>\n");
+      out.write("        <!-- ./col -->\n");
+      out.write("        \n");
+      out.write("        \n");
+      out.write("    </div>\n");
+      out.write("    <h1 style=\"margin: 0\"><small> Calendario</small></h1>   \n");
       out.write("<input type=\"hidden\" value=\"");
       out.print(DatoUsuario.getUser_id());
       out.write("\" name=\"idUsuario\" id=\"idUsuario\">\n");
-      out.write("          <div class=\"box box-purple\">\n");
-      out.write("            <div class=\"box-body no-padding\">\n");
+      out.write("<div class=\"box box-purple \" id=\"he\">\n");
+      out.write("            <div class=\"box-body no-padding \">\n");
       out.write("              <!-- THE CALENDAR -->\n");
-      out.write("                <div id=\"calendar\" style=\"margin: 0.5%\"></div>\n");
+      out.write("              <div id=\"calendar\" style=\"margin: 0.5%p;\"></div>\n");
+      out.write("                <!--!important;-->\n");
       out.write("            </div>\n");
       out.write("            <!-- /.box-body -->\n");
-      out.write("          </div>\n");
+      out.write("</div>\n");
+      out.write("\n");
+      out.write("<div class=\"row\">\n");
+      out.write("\n");
+      out.write("        <!-- ./col -->\n");
+      out.write("        <div class=\"col-sm-12\">\n");
+      out.write("            <div class=\"box-footer\" style=\"background-color: transparent; border: transparent;\">\n");
+      out.write("              <div class=\"row\">\n");
+      out.write("                <div class=\"col-sm-12 col-md-6 border-right\">\n");
+      out.write("                  <div class=\"description-block\">\n");
+      out.write("                    <p style=\"color: #909090; margin: 0;\">Victor Hugo Lima Carrillo</p>\n");
+      out.write("                    <span class=\"description-text\">Recursos Humanos</span>\n");
+      out.write("                    <h5 class=\"description-header\">72137304</h5>\n");
+      out.write("                  </div>\n");
+      out.write("                  <!-- /.description-block -->\n");
+      out.write("                </div>\n");
+      out.write("                <!-- /.col -->\n");
+      out.write("                <div class=\"col-sm-12 col-md-6\">\n");
+      out.write("                  <div class=\"description-block\">\n");
+      out.write("                    <p style=\"color: #909090; margin: 0;\">Dina Gladys Mena Sarco</p>\n");
+      out.write("                    <span class=\"description-text\">Administrador del comedor</span>\n");
+      out.write("                    <h5 class=\"description-header\">71737615</h5>\n");
+      out.write("                  </div>\n");
+      out.write("                  <!-- /.description-block -->\n");
+      out.write("                </div>\n");
+      out.write("                <!-- /.col -->\n");
+      out.write("              </div>\n");
+      out.write("              <!-- /.row -->\n");
+      out.write("            </div>\n");
+      out.write("        </div>\n");
+      out.write("        <!-- ./col -->\n");
+      out.write("        \n");
+      out.write("        \n");
+      out.write("    </div>\n");
       out.write("          <!-- /. box -->\n");
       out.write("    <!-- /.row -->\n");
       out.write("    <!--Modal-->\n");
@@ -550,6 +881,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("</body>\n");
       out.write("</html>\n");
       out.write(" \n");
+      out.write("<!--<script src=\"https://code.jquery.com/jquery-3.4.1.js\"></script>-->\n");
       out.write("<script type=\"text/javascript\">   \n");
       out.write("    document.addEventListener('DOMContentLoaded', function() {\n");
       out.write("    var calendarEl = document.getElementById('calendar');\n");
@@ -568,7 +900,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("      navLinks: true, // can click day/week names to navigate views\n");
       out.write("      selectable: true,\n");
       out.write("      selectMirror: true,\n");
-      out.write("      select: function(e) {          \n");
+      out.write("      select: function(e) {\n");
       out.write("        $(\"#titleModal\").html(\"Crear Reserva\");\n");
       out.write("        $('#formulario_registro').modal('show');\n");
       out.write("        $(\".cuerpo_registro\").html('');\n");
@@ -679,8 +1011,13 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("    calendar.render();\n");
       out.write("    \n");
-      out.write("  });   \n");
       out.write("    \n");
+      out.write("  });   \n");
+      out.write("        $(document).ready(function(){\n");
+      out.write("        $(\"button\").click(function(){\n");
+      out.write("          $(\"div\").attr(\"height\", \"500\");\n");
+      out.write("        });\n");
+      out.write("      });\n");
       out.write("</script>");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){

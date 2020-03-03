@@ -52,7 +52,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 " style="padding-right: 0;">Ordenar :</label>
-                            <label class="col-md-5 "><input type="checkbox" name="oA" id="oA"  class="flat-red"> Alfabéticamente</label>
+                            <label class="col-md-5 " style="padding: 0;"><input type="checkbox" name="oA" id="oA"  class="flat-red"> Alfabéticamente</label>
                             <label class="col-md-4 "><input type="checkbox" name="oF" id="oF"  class="flat-red" checked> Fecha</label>
                         </div> 
                         <div class="form-group">
