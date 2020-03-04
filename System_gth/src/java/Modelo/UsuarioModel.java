@@ -15,7 +15,7 @@ public class UsuarioModel {
         try {
             ConectaSqlServer db = new ConectaSqlServer();
             db.conectar();
-            String sql = "Select u.User_id, e.Empleado_id, u.Usuario, u.email, u.Perfil, u.Estado, e.Nombre, e.Apellido_paterno, e.Apellido_materno\n" +
+            String sql = "Select u.User_id, e.Empleado_id, u.Usuario, u.email, u.Perfil, u.Estado, e.Nombre, e.Apellido_paterno, e.Apellido_materno, 1 as funcionario\n" +
                          "From Usuario u \n" +
                          "inner join Empleado  e \n" +
                          "on e.Empleado_id = u.Empleado_id order by u.Usuario";
@@ -29,6 +29,7 @@ public class UsuarioModel {
                 u.setEmail(res.getString("email"));
                 u.setPerfil(res.getString("Perfil"));
                 u.setEstado(res.getInt("Estado"));
+                u.setFuncionario(res.getInt("funcionario"));
                 u.setNombre(res.getString("Apellido_paterno")+" "+res.getString("Apellido_materno")+" "+res.getString("Nombre"));
                 usuarios.add(u);
             }

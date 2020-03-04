@@ -68,8 +68,7 @@ public class C_EmpleadoReservaController {
             query = query + " ORDER BY em.Apellido_paterno ASC ";
         }else if(orderDate == true){
             query = query + " ORDER BY er.Fecha ASC ";
-        }
-        
+        }        
         return mod.getReservasForParams(query);
     }
     /*
@@ -225,6 +224,11 @@ public class C_EmpleadoReservaController {
         C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
         return mod.EditReservaEmpleado(idReservaEmpleado, empleadoReserva);
     }
+    
+    public String EditEmpleadoReservaCalendario(int idReservaEmpleado, C_Empleado_Reserva empleadoReserva) {
+        C_EmpleadoReservaModel mod = new C_EmpleadoReservaModel();
+        return mod.EditReservaEmpleadoCalendario(idReservaEmpleado, empleadoReserva);
+    }
     /*
     / Para eliminar la reserva necesitamos el ID de reserva   
     / seguira guardado en la DB solo se cambiara de estado a 6
@@ -245,7 +249,59 @@ public class C_EmpleadoReservaController {
     
 //    COMENSAL EXTERNO
     
-    public List<C_TipoComensal> getAllComensalExterno(int ver, String fi, String ff, List<String> idsComensal, List<String> idsComidas) {
+    public List<Usuario> getNombresComensalesExternos(){
+        C_ComensalExterno mod = new C_ComensalExterno();
+        return mod.getListComensalExterno();
+    }
+    
+    public List<C_TipoComensal> getReservasExternasForParams(String fechaInicio, String fechaFinal, List<String> idsComensal, List<String> idsComidas, boolean orderAlpha, boolean orderDate, int idComensal) {
+        C_ComensalExterno mod = new C_ComensalExterno();
+        String date1[] =  fechaInicio.split("/");
+        String date2[] = fechaFinal.split("/");
+        String dateStart =  date1[2]+"/"+date1[1]+"/"+date1[0];
+        String dateEnd = date2[2]+"/"+date2[1]+"/"+date2[0];
+        String query = "";
+        
+        if(idComensal != 0){
+            query = " AND cd.idComensalExterno  = " + idComensal + " ";
+        }
+        
+        if(dateStart.equals(dateEnd)){
+            query = query + " AND ce.Fecha = '" + dateStart+"' ";
+        }else{
+            query = query + " AND ce.Fecha BETWEEN '"+dateStart+"' AND '"+dateEnd+"' ";
+        }
+        query = query + " AND ce.IdTipoComensal IN ( ";
+        int i = 0;
+        for(String c : idsComensal){
+            if(i==0)
+                query = query + c;
+            else if(i>0)
+                query = query + ", " + c;
+            i++;
+        }
+        query = query + " ) AND ce.IdTipoComida IN ( ";
+        int f = 0;
+        for(String a : idsComidas){
+            if(f==0)
+                query = query + a;
+            if(f>0)
+                query =  query + ", " + a;
+            f++;
+        }
+        query = query + ") ";        
+        
+        if(orderAlpha == true && orderDate == true){
+            query = query + " ORDER BY cd.nombreCompleto, ce.Fecha ASC ";
+        }else if(orderAlpha == true){
+            query = query + " ORDER BY cd.nombreCompleto ASC ";
+        }else if(orderDate == true){
+            query = query + " ORDER BY ce.Fecha ASC ";
+        }        
+        return mod.getReservasExternasForParams(query);
+    }
+    
+    public List<C_TipoComensal> getAllComensalExterno(int ver, int idComensalExterno, String fi, String ff, List<String> idsComensal, List<String> idsComidas) {
         C_ComensalExterno mod = new C_ComensalExterno();
         String query = "";
         
@@ -260,6 +316,10 @@ public class C_EmpleadoReservaController {
                 i++;
             }
             query = query + " ) ";
+        }
+        
+        if(idComensalExterno !=0 ){
+            query = query + " AND ce.idComensalExterno = " + idComensalExterno + " ";
         }
         
         if(idsComidas.size() !=0 && Integer.parseInt(idsComidas.get(0)) != 0){
@@ -293,9 +353,44 @@ public class C_EmpleadoReservaController {
         return mod.getAllComensalExterno(query);
     }
     
-    public String SaveComensalExterno(C_Empleado_Reserva empleadoReserva) {
+    public C_Empleado_Reserva getReservaExternoById(int IdEmpleadoReserva) {
         C_ComensalExterno mod = new C_ComensalExterno();
-        return mod.SaveComensalExterno(empleadoReserva);
+        return mod.getReservaExternoById(IdEmpleadoReserva);
+    }
+    
+    public List<C_Empleado_Reserva> getReservaExternoByIdDate(int idUsuario, String fecha, int idTipoComida){
+        C_ComensalExterno mod = new C_ComensalExterno();
+        return mod.getReservaExternaByIdDate(idUsuario, fecha, idTipoComida);
+    }
+    
+    public String SaveComensalExterno(int calidad, C_Empleado_Reserva empleadoReserva) {
+        C_ComensalExterno mod = new C_ComensalExterno();
+        if(calidad == 0){
+            String insertComensalExterno = mod.SaveComensalExterno(empleadoReserva);
+            if(insertComensalExterno.equalsIgnoreCase("Ok")){
+                int idComensal = mod.getMaxComensalExterno();
+                if(idComensal != 0){
+                    return mod.SaveReservaExterno(idComensal, empleadoReserva);
+                }else{
+                    return "No se logro obtener el ultimo registro de comensal externo";
+                }
+            }else{
+                return insertComensalExterno;
+            }  
+        }else{
+            return mod.SaveReservaExterno(empleadoReserva.getIdEmpleado(), empleadoReserva);
+        }
+      
+    }
+    
+     public String EditReservaExterno(int idReservaEmpleado, C_Empleado_Reserva empleadoReserva) {
+        C_ComensalExterno mod = new C_ComensalExterno();
+        return mod.EditReservaExteno(idReservaEmpleado, empleadoReserva);
+    }
+     
+     public String DeleteReservaExterna(int idReservaExterna){
+        C_ComensalExterno mod = new C_ComensalExterno();
+        return mod.DeleteReservaExterno(idReservaExterna);
     }
       
 }

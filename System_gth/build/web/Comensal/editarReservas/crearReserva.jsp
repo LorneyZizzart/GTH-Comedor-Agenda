@@ -9,6 +9,7 @@
 <jsp:useBean id="_consultaUser" class="Controlador.UsuarioController" />
 <jsp:useBean id="_tipoComida" class="Controlador.C_TipoComidaController"/>
 <jsp:useBean id="_tipoComensal" class="Controlador.C_TipoComensalesController"/>
+<jsp:useBean id="consultarComensal" class="Controlador.C_EmpleadoReservaController" />
 <%
     List<Usuario> Usuarios = new ArrayList<Usuario>();
     Usuarios = _consultaUser.GetAllUser();
@@ -19,6 +20,8 @@
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     listaComensal = _tipoComensal.getAllTipoComensal();
     
+    List<Usuario> listExternos = new ArrayList<Usuario>();
+    listExternos = consultarComensal.getNombresComensalesExternos();
 //    DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 //    String dataStart = request.getParameter("fechaInicio");
 //    String dataNow = request.getParameter("fechaNow");
@@ -38,6 +41,30 @@
                                 No funcionario
                             </label>
                         </div>
+                        <div id="calidad" class="form-group">
+                            <label >En calidad:</label>
+                                   <select id="idCalidad" name="idCalidad" class="form-control" data-placeholder="Selelcione una opción"style="width: 100%;">
+                                   <option value="0">Nuevo</option>
+                                   <option value="1">Antiguo</option>
+                            </select>                                
+                        </div>
+                        <div id="idComensalExterno" class="form-group">
+                            <label class="control-label" style="padding: 2% 0 0 0;">Comensal externo</label>
+                            <div class="input-group" style="width: 100%;">
+                              <select id="idEmpleadoExterno" name="idEmpleadoExterno" class="form-control selectFuncionario" style="width: 100%;">
+                                  <option value="0" selected disabled>Selecione un comensal</option>
+                              <%
+                                        for(Usuario item : listExternos){
+                                            if(item.getEstado() == 1){
+                                                %>
+                                       <option value="<%=item.getEmpleado_id()%>"><%=item.getNombre()%></option>
+                                        <%
+                                            }
+                                        }
+                             %>
+                            </select>  
+                            </div>                        
+                        </div>
                         <div id="nombreComensal" class="form-group">
                             <label for="nombreCompleto">Nombre completo</label>
                             <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto">
@@ -47,22 +74,22 @@
                             <input type="number" class="form-control" id="celular" name="celular">
                         </div>
                         <div id="idComensal" class="form-group">
-                        <label class="control-label" style="padding: 2% 0 0 0;">Comensal</label>
-                        <div class="input-group" style="width: 100%;">
-                          <select id="idEmpleado" name="idEmpleado" class="form-control selectFuncionario" style="width: 100%;">
-                              <option value="0" selected disabled>Selecione un funcionario</option>
-                          <%
-                                    for(Usuario item : Usuarios){
-                                        if(item.getEstado() == 1){
-                                            %>
-                                   <option value="<%=item.getUser_id()%>"><%=item.getNombre()%></option>
-                                    <%
+                            <label class="control-label" style="padding: 2% 0 0 0;">Comensal</label>
+                            <div class="input-group" style="width: 100%;">
+                              <select id="idEmpleado" name="idEmpleado" class="form-control selectFuncionario" style="width: 100%;">
+                                  <option value="0" selected disabled>Selecione un funcionario</option>
+                              <%
+                                        for(Usuario item : Usuarios){
+                                            if(item.getEstado() == 1){
+                                                %>
+                                       <option value="<%=item.getUser_id()%>"><%=item.getNombre()%></option>
+                                        <%
+                                            }
                                         }
-                                    }
-                         %>
-                        </select>  
-                        </div>                        
-                      </div>
+                             %>
+                            </select>  
+                            </div>                        
+                        </div>
                         <div class="form-group">
                             <label>Fecha</label>
                             <div class="input-group date">
@@ -123,6 +150,8 @@
         $('#errorDate').hide();
         $('#nombreComensal').hide(); 
         $('#celularComensal').hide()
+        $('#calidad').hide();
+        $('#idComensalExterno').hide()
         for(var i = 0; i <= $('#lengthComida').val(); i++){
                     $('.posicion'+i).attr('disabled', true)
         } 
@@ -155,14 +184,29 @@
                 celularComensal
                 $('#nombreComensal').hide('fast'); 
                 $('#celularComensal').hide('fast'); 
+                $('#calidad').hide('fast');
+                $('#idComensalExterno').hide('fast');
                 $('#idComensal').show('slow');
             }else{
-                $('#idComensal').hide('fast');
+                $('#idComensal').hide();
                 $('#nombreComensal').show('slow');
                 $('#celularComensal').show('slow');
-
+                $('#calidad').show('slow');
             }                
         })
+        
+        $('#idCalidad').on('change', function(){
+            if(this.value == 0){
+                $('#idComensalExterno').hide();
+                $('#nombreComensal').show('slow');
+                $('#celularComensal').show('slow');                
+                
+            }else{
+                $('#nombreComensal').hide(); 
+                $('#celularComensal').hide(); 
+                $('#idComensalExterno').show('slow');
+            }
+         })
         
         $('#datepicker1').on('change', function() {
             var dateNow = new Date();
@@ -222,11 +266,11 @@
                         }
                     }
                 },
-                celular:{
-                    message: 'El celular no es valido.',
+                calidad:{
+                    message: 'El empleado no es valido.',
                     validators: {
                         notEmpty: {
-                            message: 'El campo no puede ser vacio. '
+                            message: 'Debe seleccionar una opción. '
                         }
                     }
                 },
@@ -289,6 +333,7 @@
                 }
             });
         });
+
         
     })
     

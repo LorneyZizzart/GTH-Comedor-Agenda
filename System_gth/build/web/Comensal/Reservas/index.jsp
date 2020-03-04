@@ -37,7 +37,19 @@
     <div class="box box-purple" >
             <div class="box-header">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="padding: 0;">Tipo funcionario:</label>
+                            <div class="col-md-9 col-xs-12 input-group">
+                              <select id="tipoFuncionario" name="tipoFuncionario" class="form-control" style="width: 100%;">
+                                <option value="0" selected>Todos</option>
+                                <option value="1">Funcionario</option>
+                                <option value="2">No Funcionario</option>
+                            </select>  
+                            </div>                        
+                        </div>  
+                    </div>
+                    <div class="col-sm-12 col-md-4">
                          <div class="form-group">
                                 <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de comensal:</label>
                                 <div class="col-md-9 col-xs-12 input-group">
@@ -58,7 +70,7 @@
                                 
                               </div>      
                     </div>
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-4">
                         <div class="form-group">
                             <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de alimento:</label>
                             <div class="col-md-9 col-xs-12 input-group">
@@ -83,18 +95,7 @@
                         <div class="form-group">
                         <label class="col-md-3 control-label" style="padding: 2% 0 0 0;">Comensal:</label>
                         <div class="col-md-9 col-xs-12 input-group">
-                          <select id="idEmpleado" name="idEmpleado" class="form-control selectFuncionario" style="width: 100%;">
-                              <option value="0" selected>Todos</option>
-                          <%
-                                    for(Usuario item : Usuarios){
-                                        if(item.getEstado() == 1){
-                                            %>
-                                   <option value="<%=item.getEmpleado_id()%>"><%=item.getNombre()%></option>
-                                    <%
-                                        }
-                                    }
-                         %>
-                        </select>  
+                          <div id="listaComensal"></div> 
                         </div>                        
                       </div>
                     </div>
@@ -195,12 +196,19 @@
                 autoclose: true
         });
         estadoDate(true);
-        renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());
+        renderTable("0%2", $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);
+        
+        renderListComensal(0)
+
+        
+        $('#tipoFuncionario').on('change', function() { 
+            renderListComensal(this.value)
+        });
         
     });
     $('#filtrarTarea').click(function (){
         fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();
-        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());
+        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), $('#tipoFuncionario').val());
     })
      $('#idRepeat').on('change', function() {       
         if(this.value == '2'){
@@ -236,9 +244,9 @@
         $('#dp1').prop('disabled', valor);
         $('#dp2').prop('disabled', valor);
     }
-    function renderTable(idE, idR, fi, ff, co, al){
+    function renderTable(idE, idR, fi, ff, co, al, tipoFuncionario){
         $.post('listaReserva.jsp',
-            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al},
+            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al, tipoFuncionario:tipoFuncionario},
                     function (html) {
                     $("#tablaReservas").removeClass('loader');
                     $("#tablaReservas").html(html);
@@ -249,5 +257,21 @@
                 $("#tablaReservas").removeClass('loader');
                 $("#tablaReservas").html(alerta);
        }); 
+    }
+    
+    function renderListComensal(idTipoComensal){
+        $.post('listaComensal.jsp',
+            {idTipoComensal:idTipoComensal},
+                    function (html) {
+                    $("#listaComensal").removeClass('loader');
+                    $("#listaComensal").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+        {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $("#listaComensal").removeClass('loader');
+                $("#listaComensal").html(alerta);
+       }); 
+
     }
 </script>

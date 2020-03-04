@@ -160,9 +160,9 @@ button[disabled], html input[disabled] {
 }
 
 .modal-comensal{
-        width: 25%;
-        margin: 3% 37.5% 0 37.5%;
-    }
+    width: 30%;
+    margin: 3% 35% 0 35%;
+}
 
 .bg-purple {
     background-color: #605ca8d6 !important

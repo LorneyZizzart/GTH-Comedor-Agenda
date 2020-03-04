@@ -56,7 +56,6 @@ public class C_EmpleadoReservaModel {
                         "AND er.IdTipoComensal = tco.Id\n" +
                         "AND er.IdEmpleado = em.Empleado_id\n" +
                         "AND er.Estado <> 6 " + parameter;
-
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 C_TipoComensal r = new C_TipoComensal();
@@ -158,6 +157,7 @@ public class C_EmpleadoReservaModel {
                     + "AND re.Estado <> 6 " 
                     + "AND re.IdEmpleado = "+usuario.getEmpleado_id()
                     + " AND re.Fecha = '" + fecha + "'";
+            System.out.println(sql);
             ResultSet res = db.consulta(sql);
             while (res.next()) {
                 C_Empleado_Reserva r = new C_Empleado_Reserva();
@@ -237,7 +237,8 @@ public class C_EmpleadoReservaModel {
                          "em.Apellido_paterno, em.Apellido_materno, em.Nombre as NombreEmpleado, em.Telefono\n" 
                         + "FROM CEmpleado_Reserva er, CTipoComida tc, CTipoComensal tco, Empleado em\n "
                         + "WHERE er.IdTipoComida = tc.IdTipoComida\n" +
-                          "AND er.IdTipoComensal = tco.Id\n" +
+                          " AND er.IdEmpleado = em.Empleado_id\n" +
+                        "AND er.IdTipoComensal = tco.Id\n" +
                           "AND IdEmpleadoReserva = " + idReservaEmpleado;
             ResultSet res = db.consulta(sql);
             if (res.next()) {
@@ -260,6 +261,7 @@ public class C_EmpleadoReservaModel {
                 empleadoReserva.setDetalle(res.getString("DetalleComida"));
                 empleadoReserva.setHorasAnticipacion(res.getString("HorasAnticipacionComida"));
                 empleadoReserva.setNombreEmpleado(res.getString("Apellido_paterno")+" "+res.getString("Apellido_materno")+" "+res.getString("NombreEmpleado"));
+                empleadoReserva.setTelefono(res.getInt("Telefono"));
                 empleadoReserva.setDescuentoAdicional(res.getInt("descuento"));
             }
             db.cierraConexion();
@@ -314,6 +316,26 @@ public class C_EmpleadoReservaModel {
         return respuesta;
     }
     
+    public String EditReservaEmpleadoCalendario(int idReservaEmpleado, C_Empleado_Reserva reservaEmpleado){
+        String respuesta = "";
+        try {
+            ConectaSqlServer db = new ConectaSqlServer();
+            db.conectar();
+            String sql = "UPDATE CEmpleado_Reserva \n"
+                    + "   SET Cantidad = "+reservaEmpleado.getCantidad()+","
+                    + "       Observacion = '"+reservaEmpleado.getObservacion() + "',"
+                    + "       fechaActulizacion = CONVERT(date, SYSDATETIME())"
+                    + " WHERE IdEmpleadoReserva  = " + idReservaEmpleado ;
+            respuesta = "Ok";
+            db.actualizar(sql);
+            db.cierraConexion();
+        } catch (SQLException e) {
+            respuesta = "Modelo.C_EmpleadoReservaModel.EditReservaEmpleadoCalendario() " + e.getMessage();
+            System.out.println(respuesta);
+        }
+        return respuesta;
+    }
+    
     public String DeleteReservaEmpleado(int idReservaEmpleado){
         String respuesta = "";
         try {
@@ -326,7 +348,7 @@ public class C_EmpleadoReservaModel {
             db.actualizar(sql);
             db.cierraConexion();
         } catch (SQLException e) {
-            respuesta = "Modelo.C_EmpleadoReservaModel.DeleteTipoComensal() " + e.getMessage();
+            respuesta = "Modelo.C_EmpleadoReservaModel.DeleteReservaEmpleado() " + e.getMessage();
             System.out.println(respuesta);
         }
         return respuesta;

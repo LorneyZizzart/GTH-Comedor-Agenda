@@ -7,7 +7,8 @@
     int notificaion = Integer.parseInt(request.getParameter("No"));
     List<C_TipoComensal> listaComensalExterno = new ArrayList();    
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    int idEmpleado = Integer.parseInt(request.getParameter("idEmpleado"));
+    String idEmpleado[] = request.getParameter("idEmpleado").split("%");
+
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
     String fi = request.getParameter("fi");
     String ff = request.getParameter("ff");
@@ -45,17 +46,26 @@
     if(notificaion == 1){
         listaReservas = _empleadoReserva.getNotificaionesDeReservas();        
     }else{
-        if(tipoFuncionario==0){
-            listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);        
-            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, fi, ff, idsComensal, idsComida);
+        if(tipoFuncionario==0){   
+            if(Integer.parseInt(idEmpleado[1]) == 1){
+               listaReservas = _empleadoReserva.getAllReservaEmpleado(Integer.parseInt(idEmpleado[0]), idRepeticion, fi, ff, idsComensal, idsComida);       
+            }else if(Integer.parseInt(idEmpleado[1]) == 2){
+                listaReservas = _empleadoReserva.getAllReservaEmpleado(0, idRepeticion, fi, ff, idsComensal, idsComida);       
+                listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, 0, fi, ff, idsComensal, idsComida);
+            }else{
+                int idComensalExterno =  0;
+                if(Integer.parseInt(idEmpleado[1]) == 0) idComensalExterno =  Integer.parseInt(idEmpleado[0]);
+                listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, idComensalExterno, fi, ff, idsComensal, idsComida);
+            }
         }else if(tipoFuncionario == 1){
-            listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);      
-        }else if(tipoFuncionario == 2){     
-            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, fi, ff, idsComensal, idsComida);
+            listaReservas = _empleadoReserva.getAllReservaEmpleado(Integer.parseInt(idEmpleado[0]), idRepeticion, fi, ff, idsComensal, idsComida);      
+        }else if(tipoFuncionario == 2){   
+            int idComensalExterno =  0;
+            if(Integer.parseInt(idEmpleado[1]) == 0) idComensalExterno =  Integer.parseInt(idEmpleado[0]);
+            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, idComensalExterno, fi, ff, idsComensal, idsComida);
         }
 
     }
-//    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
     
     for(C_TipoComensal c : listaReservas){
         if(c.getIdTipoComida() == 1){
@@ -76,11 +86,7 @@
             saldo = saldo + ((c.getCosto()-c.getDescuentoCena())-c.getDescuentoAdicional())*c.getCantidad();
        }
     }
-    
-    
-    
 %>
-
         <div class="col-xs-12">            
 
             <div class="box box-purple">
@@ -155,8 +161,8 @@
                                 <td><%= item.getFechaActualizacion()%></td>
                                 <td class="text-center">
                                     <div class="btn-group ">
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
+                                        <a data-id="<%=item.getIdEmpleadoReserva()%>%<%=1%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
+                                        <a data-id="<%=item.getIdEmpleadoReserva()%>%<%=1%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
                                     </div>
                                 </td>
                             </tr>
@@ -221,8 +227,8 @@
                                 <td><%= item.getFechaActualizacion()%></td>
                                 <td class="text-center">
                                     <div class="btn-group ">
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
-                                        <a data-id="<%=_encript.ValorAEncriptar(Integer.toString(item.getIdEmpleadoReserva()))%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
+                                        <a data-id="<%=item.getIdEmpleadoReserva()%>%<%=0%>" class="formEdit btn btn-xs btn-primary edit_button" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>                                
+                                        <a data-id="<%=item.getIdEmpleadoReserva()%>%<%=0%>" class="formEliminar btn btn-danger btn-xs delete_button" data-toggle="tooltip" data-placement="bottom" title="Eliminar"> <i class="fa fa-trash-o"></i></a>                                
                                     </div>
                                 </td>
                             </tr>

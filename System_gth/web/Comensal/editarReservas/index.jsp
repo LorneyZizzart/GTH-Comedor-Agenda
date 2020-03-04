@@ -102,22 +102,11 @@
                     </div>
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
-                        <label class="col-md-3 control-label" style="padding: 2% 0 0 0;">Comensal:</label>
-                        <div class="col-md-9 col-xs-12 input-group">
-                          <select id="idEmpleado" name="idEmpleado" class="form-control selectFuncionario" style="width: 100%;">
-                              <option value="0" selected>Todos</option>
-                          <%
-                                    for(Usuario item : Usuarios){
-                                        if(item.getEstado() == 1){
-                                            %>
-                                   <option value="<%=item.getEmpleado_id()%>"><%=item.getNombre()%></option>
-                                    <%
-                                        }
-                                    }
-                         %>
-                        </select>  
-                        </div>                        
-                      </div>
+                            <label class="col-md-3 control-label" style="padding: 2% 0 0 0;">Comensal:</label>
+                            <div class="col-md-9 col-xs-12 input-group">
+                                <div id="listaComensal"></div>
+                            </div>                            
+                        </div>
                     </div>
                     
                     <div class="col-sm-12 col-md-3">
@@ -187,7 +176,7 @@
     $(document).ready(function() {
         $('.selectComensal').select2();
         $('.selectComida').select2();
-        $('.selectFuncionario').select2();
+        
         $('.formNuevo').tooltip({ boundary: 'window' });
         $('#example').tooltip({ boundary: 'window' });
         $('#dp1').datepicker({
@@ -199,15 +188,24 @@
                 autoclose: true
         });
         estadoDate(true);
+        
+        renderListComensal(0)
+
+        
+        $('#tipoFuncionario').on('change', function() { 
+            renderListComensal(this.value)
+        });
+        
+        
         if(<%=palabra%> == "1"){
-            renderTable( 0, 0, "", "", 0, 0, 1, $('#tipoFuncionario').val());
+            renderTable("0%2", 0, "", "", 0, 0, 1, $('#tipoFuncionario').val());
         }else{
             if(<%=palabra%> == "2"){
                 fechaInicio = '<%=Fecha%>'; 
                 fechaFinal = '<%=Fecha%>';
                 renderTable( <%=IdTipoComensal%>, 2, formato(fechaInicio), formato(fechaFinal), ['0'], ['<%=IdTipoComida%>'], 0, $('#tipoFuncionario').val());
             }else{
-                renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0, $('#tipoFuncionario').val());
+                renderTable("0%2", $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0, $('#tipoFuncionario').val());
             }
         }
         
@@ -253,5 +251,21 @@
                 $("#tablaReservas").removeClass('loader');
                 $("#tablaReservas").html(alerta);
        }); 
+    }
+    
+    function renderListComensal(idTipoComensal){
+        $.post('listaComensal.jsp',
+            {idTipoComensal:idTipoComensal},
+                    function (html) {
+                    $("#listaComensal").removeClass('loader');
+                    $("#listaComensal").html(html);
+                    }
+             ).fail(function (jqXHR, textStatus, errorThrown)
+        {
+                var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                $("#listaComensal").removeClass('loader');
+                $("#listaComensal").html(alerta);
+       }); 
+
     }
 </script>

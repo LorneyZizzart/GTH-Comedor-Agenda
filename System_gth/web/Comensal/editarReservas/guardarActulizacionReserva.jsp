@@ -2,8 +2,8 @@
 <jsp:useBean id="_empleadoReserva" class="Controlador.C_EmpleadoReservaController"/>
 <%
     C_Empleado_Reserva empleadoReserva = new C_Empleado_Reserva();
-    String resultado = "Ok";
-    
+    String resultado = "";
+    String[] idReserva = request.getParameter("idReserva").split("%");
     try{
         empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
         empleadoReserva.setIdTipoComensal(Integer.parseInt(request.getParameter("idTipoCo")));
@@ -11,7 +11,12 @@
         empleadoReserva.setDescuentoAdicional(Double.parseDouble(request.getParameter("descuentoAdicional")));
         empleadoReserva.setNotificacion(0);
         empleadoReserva.setListarNotifiacion(0);
-        resultado = _empleadoReserva.EditEmpleadoReservaById(Integer.parseInt(request.getParameter("idReserva")), empleadoReserva);
+        if(Integer.parseInt(idReserva[1]) == 1){
+             resultado = _empleadoReserva.EditEmpleadoReservaById(Integer.parseInt(idReserva[0]), empleadoReserva);  
+        }else{
+            resultado = _empleadoReserva.EditReservaExterno(Integer.parseInt(idReserva[0]), empleadoReserva);  
+        }
+
     }catch(Exception e){
         resultado = "Se ha producido un error, no llegaron todos los atributos.";
     }    

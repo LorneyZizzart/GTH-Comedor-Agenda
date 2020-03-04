@@ -8,13 +8,19 @@
 
 <%
    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    int idEmpleado = Integer.parseInt(request.getParameter("idEmpleado"));
+   List<C_TipoComensal> listaComensalExterno = new ArrayList();  
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
     String fi = request.getParameter("fi");
     String ff = request.getParameter("ff");
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
-    
+    String idEmpleado[] = request.getParameter("idEmpleado").split("%");
+    int tipoFuncionario = 0;
+    try {
+        tipoFuncionario = Integer.parseInt(request.getParameter("tipoFuncionario"));
+    }catch(Exception e){
+        
+    }
     try { 
         
         if (request.getParameterValues("co[]") != null) {
@@ -35,8 +41,24 @@
         }
     } catch (Exception e) {
     }
-    
-    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
+        if(tipoFuncionario==0){   
+            if(Integer.parseInt(idEmpleado[1]) == 1){
+               listaReservas = _empleadoReserva.getAllReservaEmpleado(Integer.parseInt(idEmpleado[0]), idRepeticion, fi, ff, idsComensal, idsComida);       
+            }else if(Integer.parseInt(idEmpleado[1]) == 2){
+                listaReservas = _empleadoReserva.getAllReservaEmpleado(0, idRepeticion, fi, ff, idsComensal, idsComida);       
+                listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, 0, fi, ff, idsComensal, idsComida);
+            }else{
+                int idComensalExterno =  0;
+                if(Integer.parseInt(idEmpleado[1]) == 0) idComensalExterno =  Integer.parseInt(idEmpleado[0]);
+                listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, idComensalExterno, fi, ff, idsComensal, idsComida);
+            }
+        }else if(tipoFuncionario == 1){
+            listaReservas = _empleadoReserva.getAllReservaEmpleado(Integer.parseInt(idEmpleado[0]), idRepeticion, fi, ff, idsComensal, idsComida);      
+        }else if(tipoFuncionario == 2){   
+            int idComensalExterno =  0;
+            if(Integer.parseInt(idEmpleado[1]) == 0) idComensalExterno =  Integer.parseInt(idEmpleado[0]);
+            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, idComensalExterno, fi, ff, idsComensal, idsComida);
+        }
 %>
         <div class="col-xs-12">            
 
@@ -64,6 +86,9 @@
                                 <th>Comensal</th>
                             </tr>
                         </thead>
+                        <%
+                                if(tipoFuncionario == 1 || tipoFuncionario == 0){
+                        %>
                         <tbody>
                             <%
                                 int contador = 0;
@@ -103,6 +128,67 @@
                                 }
                             %>
                         </tbody>
+                        <%
+                                }
+                        %>
+                        <%
+                                if(tipoFuncionario == 0){
+                        %>
+                        <tbody>
+                            <tr style="background-color: #511583; color: #fff;">
+                                <th colspan="14" style="border-color: #511583;">COMENSALES EXTERNOS</th>
+                            </tr>
+                        </tbody>
+                        <%
+                                }
+                        %>
+                        <%
+                                if(tipoFuncionario == 2 || tipoFuncionario == 0){
+                        %>
+                        <tbody>
+                            <%
+                                int contadorE = 0;
+                                for (C_TipoComensal item : listaComensalExterno) {
+                                    contadorE++;
+                            %>
+                            <tr>
+                                <td><%=contadorE%></td>
+                                <td><%=item.getNombreEmpleado()%></td>                         
+                                <td><%= item.getNombreComida()%></td>
+                                <td><%= item.getFecha()%></td>
+                                <td><%= item.getCantidad()%></td>
+                                <td><%= item.getCosto()%> Bs.</td>  
+                                                             
+                                <%
+                                   if(item.getIdTipoComida() == 1){
+                                      %><td><%= item.getDescuentoDesayuno()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      %><td><%= item.getDescuentoAlmuerzo()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      %><td><%= item.getDescuentoCena()%> Bs.</td><%  
+                                   }
+                                %>
+                                <td><%= item.getDescuentoAdicional()%> Bs.</td>
+                                <%
+                                   if(item.getIdTipoComida() == 1){
+                                      %><td><%=((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      %><td><%= ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      %><td><%= ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><%  
+                                   }
+                                %>
+                                <td><%= item.getNombreComensal()%></td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                                
+
+                        </tbody>
+                        <%
+                                }
+                        %>
                         <tfoot>
                             <tr>
                                 <th>#</th>

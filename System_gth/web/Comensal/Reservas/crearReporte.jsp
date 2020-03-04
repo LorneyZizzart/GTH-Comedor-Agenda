@@ -18,20 +18,16 @@
              
                     <div class="box-body" style="padding-top: 0;">
                         <div class="form-group">
+                            <label>Tipo funcionario:</label>
+                              <select id="tipoRFuncionario" name="tipoRFuncionario" class="form-control" style="width: 100%;">
+                                <option value="0" selected>Todos</option>
+                                <option value="1">Funcionario</option>
+                                <option value="2">No Funcionario</option>
+                            </select>                       
+                        </div> 
+                        <div class="form-group">
                                 <h4 style="color: #501482;" class="page-header"><i class="fa fa-user"></i> Comensal: </h4>
-                                <select name="e" class="form-control selectComensal" data-placeholder="Selelcione una opción"
-                                        style="width: 100%;">
-                                     <option value="0" selected>Todos</option>
-                                  <%
-                                    for(Usuario item : Usuarios){
-                                        if(item.getEstado() == 1){
-                                            %>
-                                   <option value="<%=item.getEmpleado_id()%>"><%=item.getNombre()%></option>
-                                    <%
-                                        }
-                                    }
-                         %>
-                                </select>
+                                <div id="listaRComensales"></div>
                         </div>
                         <div class="form-group col-md-6" style="padding-right: 0;padding-left: 0;">
                             <label>Fecha incio:</label>
@@ -113,6 +109,12 @@
           autoclose: true
         });
         
+        renderListComensales(0);
+        
+        $('#tipoRFuncionario').on('change', function() { 
+            renderListComensales(this.value)
+        });
+        
          $('.form_guardar').bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
@@ -165,18 +167,20 @@
             
         });
         
-//        $(".btnReport").click(function () {
-//            var a = document.createElement("a");
-//            a.target = "_blank";
-//            a.href = "generarReporte.jsp";
-//            a.click();
-//            $.post('generarReporte.jsp',
-//                  {fechaInicio : $('#datepicker1').val(),
-//                   fechaFinal : $('#datepicker2').val(),
-//                   tipoComensal: $('idComensal').val(),
-//                   tipoComida: $('idComida').val()}
-//            );
-//        });
+        function renderListComensales(idTipoComensal){
+            $.post('listaComensal.jsp',
+                {idTipoComensal:idTipoComensal},
+                        function (html) {
+                        $("#listaRComensales").removeClass('loader');
+                        $("#listaRComensales").html(html);
+                        }
+                 ).fail(function (jqXHR, textStatus, errorThrown)
+            {
+                    var alerta = "<p class='bg-danger'>error: "+errorThrown+"</p>";
+                    $("#listaRComensales").removeClass('loader');
+                    $("#listaRComensales").html(alerta);
+           }); 
+        }
     });
 
 

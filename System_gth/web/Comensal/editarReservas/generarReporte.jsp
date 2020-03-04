@@ -33,14 +33,18 @@
 <jsp:useBean id="_encript" class="Controlador.EncriptionController" />
 <%
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+    List<C_TipoComensal> listaReservasExternas = new ArrayList<C_TipoComensal>();
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
     String fechaInicio = null;  String fechaFinal = null;
     Boolean orderAlfa = false, orderDate = false;
     double saldo = 0.0;
-    int idComensal = Integer.parseInt(request.getParameter("idComensal"));
+    double saldoExterno = 0.0;
+    int tipoFuncionario = 0;
+    String[] idComensal = null;
     try {
-        
+        tipoFuncionario = Integer.parseInt(request.getParameter("tipoRFuncionario"));
+        idComensal = request.getParameter("idEmpleado").split("%");
         fechaInicio =  request.getParameter("fi");
         fechaFinal = request.getParameter("ff");
         
@@ -75,8 +79,15 @@
     }catch(Exception e){
         orderDate = false;
     }
-        
-    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, idComensal);
+    if(tipoFuncionario == 0){
+        listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+        listaReservasExternas = _empleadoReserva.getReservasExternasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+    }else if(tipoFuncionario == 1){
+        listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+    }else if(tipoFuncionario == 2){
+       listaReservasExternas = _empleadoReserva.getReservasExternasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+    }
+    
     
     for(C_TipoComensal c : listaReservas){
         if(c.getIdTipoComida() == 1){
@@ -87,6 +98,18 @@
             saldo = saldo + ((c.getCosto()-c.getDescuentoCena())-c.getDescuentoAdicional())*c.getCantidad();
        }
     }
+    
+    for(C_TipoComensal c : listaReservasExternas){
+        if(c.getIdTipoComida() == 1){
+            saldoExterno = saldoExterno + ((c.getCosto()-c.getDescuentoDesayuno())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 2){
+            saldoExterno = saldoExterno + ((c.getCosto()-c.getDescuentoAlmuerzo())-c.getDescuentoAdicional())*c.getCantidad();
+        }else if(c.getIdTipoComida() == 3){
+            saldoExterno = saldoExterno + ((c.getCosto()-c.getDescuentoCena())-c.getDescuentoAdicional())*c.getCantidad();
+       }
+    }
+    
+   
 
 %>
 
@@ -103,6 +126,9 @@
         </div>
     </div>
     <!-- Table row -->
+    <%
+    if(tipoFuncionario == 0 || tipoFuncionario == 1){
+    %>
     <div class="row">
       <div class="col-xs-12 table-responsive">
         <table class="table table-bordered table-striped">
@@ -167,11 +193,82 @@
       </div>
       <!-- /.col -->
     </div>
+                            <%
+    }
+    if(tipoFuncionario == 0 || tipoFuncionario == 2){
+                            %>
+                            <h4 style="font-weight: bold;">COMENSALES EXTERNOS</h4>                       
+    <div class="row">
+      <div class="col-xs-12 table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead
+                            
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre completo</th>
+                                <th>Tipo de alimento</th>
+                                <th style="width: 8%">Fecha</th>
+                                <th>Cantidad</th>
+                                <th style="width: 10%">Costo</th>
+                                <th style="width: 10%">Descuento de comensal</th>
+                                <th style="width: 10%">Descuento de adicional</th>
+                                <th style="width: 10%">Precio total</th>
+                                <th>Comensal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                int contadorE = 0;
+                                for (C_TipoComensal item : listaReservasExternas) {
+                                    contadorE++;
+
+                            %>
+                            <tr>
+                                <td><%=contadorE%></td>
+                                <td><%=item.getNombreEmpleado()%></td>                         
+                                <td><%= item.getNombreComida()%></td>
+                                <td><%= item.getFecha()%></td>
+                                <td><%= item.getCantidad()%></td>
+                                <td><%= item.getCosto()%> Bs.</td>                                
+                                <%
+                                   if(item.getIdTipoComida() == 1){
+                                      %><td><%= item.getDescuentoDesayuno()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      %><td><%= item.getDescuentoAlmuerzo()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      %><td><%= item.getDescuentoCena()%> Bs.</td><%  
+                                   }
+                                %>
+                                <td><%= item.getDescuentoAdicional()%> Bs.</td>
+                                <%
+                                   if(item.getIdTipoComida() == 1){
+                                      %><td><%=((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      %><td><%= ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><% 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      %><td><%= ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad()%> Bs.</td><%  
+                                   }
+                                %>
+                                <td><%= item.getNombreComensal()%></td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                            <tr>
+                                <td colspan="8" class="text-right"><strong>COSTO TOTAL</strong></td>
+                                <td colspan="2"><%=saldoExterno%> Bs.</td>
+                            </tr>
+                        </tbody>
+        </table>
+      </div>
+      <!-- /.col -->
+    </div>
+                            <%}%>
     <!-- /.row -->
     <!-- /.row -->
   </section>
     <section>
-        <div style="text-align: center; margin-top: 100px;">
+        <div style="text-align: center; margin-top: 100px;  padding-top: 100px;">
             <div style="border-top: 1px solid #716f6f;
                         margin: 0 30% 0 30%;
                         border-style: dotted;

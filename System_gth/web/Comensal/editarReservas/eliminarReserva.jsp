@@ -3,11 +3,15 @@
 <jsp:useBean id="_empleadoReserva" class="Controlador.C_EmpleadoReservaController"/>
 <%
     C_Empleado_Reserva empleadoReserva = new C_Empleado_Reserva();
-    String idReserva = _encript.ValorADesencriptar(request.getParameter("id"));
-    empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva));
+    String[] idReserva = request.getParameter("id").split("%");
+    if(Integer.parseInt(idReserva[1]) == 1){
+        empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva[0]));
+    }else{
+        empleadoReserva = _empleadoReserva.getReservaExternoById(Integer.parseInt(idReserva[0]));
+    }
 %>
 <form id="form_guardar" method="post" class="form_guardar">
-            <input type="hidden" value="<%=idReserva%>" name="idReserva" id="idReserva">
+            <input type="hidden" value="<%=idReserva[0]%>%<%=idReserva[1]%>" name="idReserva" id="idReserva">
                     <div class="box-body">
                         <div class="form-group">
                             <label>Nombre completo: </label>

@@ -11,8 +11,17 @@ public class Usuario {
     private Date Fecha_creacion;
     private int Estado;
     private int Empleado_id;
-    private String Perfil;
+    private String Perfil; 
+    //auxiliar para los comensales internos externos
+    private int Funcionario;
     
+    public int getFuncionario() {
+        return Funcionario;
+    }
+
+    public void setFuncionario(int Funcionario) {
+        this.Funcionario = Funcionario;
+    }
     //Esta tabla esta relacioanda
     //con la tabla Empleado
     private String Nombre;
