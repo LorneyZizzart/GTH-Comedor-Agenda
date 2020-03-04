@@ -80,7 +80,7 @@ public final class guardarReserva_jsp extends org.apache.jasper.runtime.HttpJspB
     listaTipoComida = _tipoComida.getAllTipoComida();
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    String resultado = "", auxResultado = "";
+    String resultado = "";
     try{
         
         
@@ -95,52 +95,64 @@ public final class guardarReserva_jsp extends org.apache.jasper.runtime.HttpJspB
         empleadoReserva.setNotificacion(0);
         empleadoReserva.setListarNotifiacion(0);
         empleadoReserva.setObservacion(request.getParameter("observacion"));
-
-        
+        empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
 
         if(Integer.parseInt(request.getParameter("funcionario")) == 1){
             empleadoReserva.setIdUser(Integer.parseInt(request.getParameter("idEmpleado")));
             reservasNow = _empleadoReserva.getReservaByIdDate(empleadoReserva.getIdUser(), calendar.get(Calendar.YEAR)+"/"+((calendar.get(Calendar.MONTH))+1)+"/"+calendar.get(Calendar.DATE));
-//            System.out.print(reservasNow.size());
-//           for(C_Empleado_Reserva reserva : reservasNow){
-//              System.out.print("idREserva");
-//              System.out.print(reserva.getIdTipoComida());
-//           }
-//           for(C_TipoComida tipoComida : listaTipoComida){
-//               System.out.print("idPLato");
-//              System.out.print(tipoComida.getIdTipoComida());
-//           }
-//           List<String> idsComida = new ArrayList<String>();
-            for(C_TipoComida tipoComida : listaTipoComida){
-                for(C_Empleado_Reserva reserva : reservasNow){
-                    if(reserva.getIdTipoComida() != tipoComida.getIdTipoComida()){
-                        if(request.getParameter("cantidad"+tipoComida.getNombreComida())!= null){
-                            empleadoReserva.setIdTipoComida(tipoComida.getIdTipoComida());
-                            empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad"+tipoComida.getNombreComida())));
-                            _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
-                        }                        
-                        auxResultado = auxResultado + "<div class='alert alert-success  alert-dismissible'> " +
-                                " <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
-                                "<i class='fa fa-check' style='color: green;'></i> Se reservaó: "+tipoComida.getNombreComida() + " satisfactoriamente"+
-                                "</div>";
-                        break;
-                    }else{                        
-                        auxResultado = auxResultado + "<div class='alert alert-warning alert-dismissible'> " +
-                                " <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" +
-                                "<i class='fa fa-close' style='color: red;'></i> Existe "+tipoComida.getNombreComida()+" reservado" +
-                                "</div>";
-                        break;
+            if(reservasNow.size() > 0){
+                for(C_TipoComida item : reservasNow){
+                    if(item.getIdTipoComida() != Integer.parseInt(request.getParameter("idTipoComida"))){
+                        empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));
+                        
+                        resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
+                    }else{
+                        resultado = "La reserva para el " + item.getNombreComida() +" se encuentra registrado en la fecha eligida";
                     }
                 }
-                
-            }
-            
+            }else{
+                empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));
+                resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
+            }          
 
         }else{
+            if(Integer.parseInt(request.getParameter("idCalidad")) == 0){
+                empleadoReserva.setNombreCompleto(request.getParameter("nombreCompleto"));
+                try{
+                    empleadoReserva.setCelular(Integer.parseInt(request.getParameter("celular")));
+                    empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));                       
+                    resultado = _empleadoReserva.SaveComensalExterno(Integer.parseInt(request.getParameter("idCalidad")), empleadoReserva);
+                }catch(Exception e){} 
+            }else{
+                try{
+                    empleadoReserva.setIdEmpleado(Integer.parseInt(request.getParameter("idEmpleadoExterno")));
+                    reservasNow = _empleadoReserva.getReservaExternoByIdDate(empleadoReserva.getIdEmpleado(), calendar.get(Calendar.YEAR)+"/"+((calendar.get(Calendar.MONTH))+1)+"/"+calendar.get(Calendar.DATE), Integer.parseInt(request.getParameter("idTipoComida")));
 
-            empleadoReserva.setNombreCompleto(request.getParameter("nombreCompleto"));
-            empleadoReserva.setCelular(Integer.parseInt(request.getParameter("celular")));
-            resultado = _empleadoReserva.SaveComensalExterno(empleadoReserva);
+                    if(reservasNow.size() > 0){                        
+                        boolean entrar = false;
+                        for(C_TipoComida item : reservasNow){
+                            if(item.getIdTipoComida() == Integer.parseInt(request.getParameter("idTipoComida"))){
+                                entrar = false;
+                            }else{
+                                entrar = true;
+                                empleadoReserva.setNombreComida(item.getNombreComida());
+                            }
+                        }
+                        if(entrar == true){
+                            empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));
+                            resultado = _empleadoReserva.SaveComensalExterno(Integer.parseInt(request.getParameter("idCalidad")),empleadoReserva);
+                        }else{
+                            resultado = "La reserva del la comida seleccionada se encuentra registrado en la fecha eligida";
+                        }
+                        
+                        
+                    }else{
+                        empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));                       
+                        resultado = _empleadoReserva.SaveComensalExterno(Integer.parseInt(request.getParameter("idCalidad")), empleadoReserva);
+                    }
+                }catch(Exception e){}                
+            }
+            
         }
     }catch(Exception e){
         resultado = "No se obtuvo todos los datos: " + e;
@@ -164,10 +176,13 @@ public final class guardarReserva_jsp extends org.apache.jasper.runtime.HttpJspB
 } else {
 
       out.write("\n");
+      out.write("<div class=\"alert alert-warning alert-dismissible\">\n");
+      out.write("    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>\n");
+      out.write("    <h4><i class=\"icon fa fa-ban\"></i> Alerta!</h4>\n");
       out.write("    ");
-      out.print(auxResultado);
-      out.write('\n');
-      out.write('\n');
+      out.print(resultado);
+      out.write("\n");
+      out.write("</div>\n");
     }   
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){

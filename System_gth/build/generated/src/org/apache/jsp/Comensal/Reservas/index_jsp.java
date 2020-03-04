@@ -478,7 +478,19 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <div class=\"box box-purple\" >\n");
       out.write("            <div class=\"box-header\">\n");
       out.write("                <div class=\"row\">\n");
-      out.write("                    <div class=\"col-sm-12 col-md-6\">\n");
+      out.write("                    <div class=\"col-sm-12 col-md-4\">\n");
+      out.write("                        <div class=\"form-group\">\n");
+      out.write("                            <label class=\"col-md-3 control-label\" style=\"padding: 0;\">Tipo funcionario:</label>\n");
+      out.write("                            <div class=\"col-md-9 col-xs-12 input-group\">\n");
+      out.write("                              <select id=\"tipoFuncionario\" name=\"tipoFuncionario\" class=\"form-control\" style=\"width: 100%;\">\n");
+      out.write("                                <option value=\"0\" selected>Todos</option>\n");
+      out.write("                                <option value=\"1\">Funcionario</option>\n");
+      out.write("                                <option value=\"2\">No Funcionario</option>\n");
+      out.write("                            </select>  \n");
+      out.write("                            </div>                        \n");
+      out.write("                        </div>  \n");
+      out.write("                    </div>\n");
+      out.write("                    <div class=\"col-sm-12 col-md-4\">\n");
       out.write("                         <div class=\"form-group\">\n");
       out.write("                                <label class=\"col-md-3 control-label\" style=\"padding: 1% 0 0 0;\">Tipos de comensal:</label>\n");
       out.write("                                <div class=\"col-md-9 col-xs-12 input-group\">\n");
@@ -508,7 +520,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                \n");
       out.write("                              </div>      \n");
       out.write("                    </div>\n");
-      out.write("                    <div class=\"col-sm-12 col-md-6\">\n");
+      out.write("                    <div class=\"col-sm-12 col-md-4\">\n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label class=\"col-md-3 control-label\" style=\"padding: 1% 0 0 0;\">Tipos de alimento:</label>\n");
       out.write("                            <div class=\"col-md-9 col-xs-12 input-group\">\n");
@@ -542,27 +554,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        <div class=\"form-group\">\n");
       out.write("                        <label class=\"col-md-3 control-label\" style=\"padding: 2% 0 0 0;\">Comensal:</label>\n");
       out.write("                        <div class=\"col-md-9 col-xs-12 input-group\">\n");
-      out.write("                          <select id=\"idEmpleado\" name=\"idEmpleado\" class=\"form-control selectFuncionario\" style=\"width: 100%;\">\n");
-      out.write("                              <option value=\"0\" selected>Todos</option>\n");
-      out.write("                          ");
-
-                                    for(Usuario item : Usuarios){
-                                        if(item.getEstado() == 1){
-                                            
-      out.write("\n");
-      out.write("                                   <option value=\"");
-      out.print(item.getEmpleado_id());
-      out.write('"');
-      out.write('>');
-      out.print(item.getNombre());
-      out.write("</option>\n");
-      out.write("                                    ");
-
-                                        }
-                                    }
-                         
-      out.write("\n");
-      out.write("                        </select>  \n");
+      out.write("                          <div id=\"listaComensal\"></div> \n");
       out.write("                        </div>                        \n");
       out.write("                      </div>\n");
       out.write("                    </div>\n");
@@ -774,12 +766,19 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                autoclose: true\n");
       out.write("        });\n");
       out.write("        estadoDate(true);\n");
-      out.write("        renderTable(0, $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());\n");
+      out.write("        renderTable(\"0%2\", $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0);\n");
+      out.write("        \n");
+      out.write("        renderListComensal(0)\n");
+      out.write("\n");
+      out.write("        \n");
+      out.write("        $('#tipoFuncionario').on('change', function() { \n");
+      out.write("            renderListComensal(this.value)\n");
+      out.write("        });\n");
       out.write("        \n");
       out.write("    });\n");
       out.write("    $('#filtrarTarea').click(function (){\n");
       out.write("        fechaInicio = $('#dp1').val(); fechaFinal = $('#dp2').val();\n");
-      out.write("        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val());\n");
+      out.write("        renderTable($('#idEmpleado').val(), $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), $('#tipoFuncionario').val());\n");
       out.write("    })\n");
       out.write("     $('#idRepeat').on('change', function() {       \n");
       out.write("        if(this.value == '2'){\n");
@@ -815,9 +814,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        $('#dp1').prop('disabled', valor);\n");
       out.write("        $('#dp2').prop('disabled', valor);\n");
       out.write("    }\n");
-      out.write("    function renderTable(idE, idR, fi, ff, co, al){\n");
+      out.write("    function renderTable(idE, idR, fi, ff, co, al, tipoFuncionario){\n");
       out.write("        $.post('listaReserva.jsp',\n");
-      out.write("            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al},\n");
+      out.write("            {idEmpleado:idE, idRepeticion:idR, fi:fi, ff:ff, co:co, al:al, tipoFuncionario:tipoFuncionario},\n");
       out.write("                    function (html) {\n");
       out.write("                    $(\"#tablaReservas\").removeClass('loader');\n");
       out.write("                    $(\"#tablaReservas\").html(html);\n");
@@ -828,6 +827,22 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                $(\"#tablaReservas\").removeClass('loader');\n");
       out.write("                $(\"#tablaReservas\").html(alerta);\n");
       out.write("       }); \n");
+      out.write("    }\n");
+      out.write("    \n");
+      out.write("    function renderListComensal(idTipoComensal){\n");
+      out.write("        $.post('listaComensal.jsp',\n");
+      out.write("            {idTipoComensal:idTipoComensal},\n");
+      out.write("                    function (html) {\n");
+      out.write("                    $(\"#listaComensal\").removeClass('loader');\n");
+      out.write("                    $(\"#listaComensal\").html(html);\n");
+      out.write("                    }\n");
+      out.write("             ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("        {\n");
+      out.write("                var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                $(\"#listaComensal\").removeClass('loader');\n");
+      out.write("                $(\"#listaComensal\").html(alerta);\n");
+      out.write("       }); \n");
+      out.write("\n");
       out.write("    }\n");
       out.write("</script>\n");
     } catch (Throwable t) {

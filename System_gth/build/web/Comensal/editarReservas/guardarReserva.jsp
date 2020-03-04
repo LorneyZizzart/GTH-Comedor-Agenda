@@ -29,7 +29,7 @@
         empleadoReserva.setNotificacion(0);
         empleadoReserva.setListarNotifiacion(0);
         empleadoReserva.setObservacion(request.getParameter("observacion"));
-
+        empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
 
         if(Integer.parseInt(request.getParameter("funcionario")) == 1){
             empleadoReserva.setIdUser(Integer.parseInt(request.getParameter("idEmpleado")));
@@ -38,7 +38,7 @@
                 for(C_TipoComida item : reservasNow){
                     if(item.getIdTipoComida() != Integer.parseInt(request.getParameter("idTipoComida"))){
                         empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));
-                        empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+                        
                         resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
                     }else{
                         resultado = "La reserva para el " + item.getNombreComida() +" se encuentra registrado en la fecha eligida";
@@ -46,7 +46,6 @@
                 }
             }else{
                 empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));
-                empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
                 resultado = _empleadoReserva.SaveEmpleadoReserva(empleadoReserva);
             }          
 
@@ -67,17 +66,14 @@
                         boolean entrar = false;
                         for(C_TipoComida item : reservasNow){
                             if(item.getIdTipoComida() == Integer.parseInt(request.getParameter("idTipoComida"))){
-                                System.out.print("entro1");
                                 entrar = false;
                             }else{
                                 entrar = true;
-                                System.out.print("entro2");
                                 empleadoReserva.setNombreComida(item.getNombreComida());
                             }
                         }
                         if(entrar == true){
                             empleadoReserva.setIdTipoComida(Integer.parseInt(request.getParameter("idTipoComida")));
-                            empleadoReserva.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
                             resultado = _empleadoReserva.SaveComensalExterno(Integer.parseInt(request.getParameter("idCalidad")),empleadoReserva);
                         }else{
                             resultado = "La reserva del la comida seleccionada se encuentra registrado en la fecha eligida";

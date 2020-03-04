@@ -52,11 +52,17 @@ public final class deleteReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write('\n');
 
     String respuesta = "";
+    String[] idReserva = request.getParameter("id").split("%");
     try {
-        respuesta = _empleadoReserva.DeleteEmpleadoReserva(Integer.parseInt(request.getParameter("id")));
+        if(Integer.parseInt(idReserva[1]) == 1){
+            respuesta = _empleadoReserva.DeleteEmpleadoReserva(Integer.parseInt(idReserva[0]));
+        }else{
+            respuesta = _empleadoReserva.DeleteReservaExterna(Integer.parseInt(idReserva[0]));
+        }
+        
     }catch (Exception e) {
 
-        respuesta = "Se ha producido en el sistema [1].";
+        respuesta = ""+e;
     }
     
     if(respuesta.equalsIgnoreCase("Ok"))

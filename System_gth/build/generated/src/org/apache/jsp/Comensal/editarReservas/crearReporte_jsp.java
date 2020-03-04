@@ -90,29 +90,16 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("         <form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
       out.write("             <div class=\"box-body\" style=\"padding-top: 0;\">\n");
       out.write("                        <div class=\"form-group\">\n");
+      out.write("                            <label>Tipo funcionario:</label>\n");
+      out.write("                              <select id=\"tipoRFuncionario\" name=\"tipoRFuncionario\" class=\"form-control\" style=\"width: 100%;\">\n");
+      out.write("                                <option value=\"0\" selected>Todos</option>\n");
+      out.write("                                <option value=\"1\">Funcionario</option>\n");
+      out.write("                                <option value=\"2\">No Funcionario</option>\n");
+      out.write("                            </select>                       \n");
+      out.write("                        </div> \n");
+      out.write("                        <div class=\"form-group\">\n");
       out.write("                                <h4 style=\"color: #501482;\" class=\"page-header\"><i class=\"fa fa-user\"></i> Comensal: </h4>\n");
-      out.write("                                <select name=\"idComensal\" class=\"form-control selectComensal\" data-placeholder=\"Selelcione una opción\"\n");
-      out.write("                                        style=\"width: 100%;\">\n");
-      out.write("                                     <option value=\"0\" selected>Todos</option>\n");
-      out.write("                                  ");
-
-                                    for(Usuario item : Usuarios){
-                                        if(item.getEstado() == 1){
-                                            
-      out.write("\n");
-      out.write("                                   <option value=\"");
-      out.print(item.getEmpleado_id());
-      out.write('"');
-      out.write('>');
-      out.print(item.getNombre());
-      out.write("</option>\n");
-      out.write("                                    ");
-
-                                        }
-                                    }
-                         
-      out.write("\n");
-      out.write("                                </select>\n");
+      out.write("                                <div id=\"listaRComensales\"></div>\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group col-md-6\" style=\"padding-right: 0;padding-left: 0;\">\n");
       out.write("                            <label>Fecha incio:</label>\n");
@@ -120,7 +107,7 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                              <div class=\"input-group-addon\">\n");
       out.write("                                <i class=\"fa fa-calendar\"></i>\n");
       out.write("                              </div>\n");
-      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"fi\" id=\"datepicker1\">\n");
+      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"fi\" id=\"datepicker1\" autocomplete=\"off\">\n");
       out.write("                            </div>\n");
       out.write("                        </div>  \n");
       out.write("                        <div class=\"form-group col-md-6\" style=\"padding-right: 0;padding-left: 0;\">\n");
@@ -129,7 +116,7 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                              <div class=\"input-group-addon\">\n");
       out.write("                                <i class=\"fa fa-calendar\"></i>\n");
       out.write("                              </div>\n");
-      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"ff\" id=\"datepicker2\">\n");
+      out.write("                              <input type=\"text\" class=\"form-control pull-right\" name=\"ff\" id=\"datepicker2\" autocomplete=\"off\">\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"form-group row\">\n");
@@ -212,6 +199,12 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("          autoclose: true\n");
       out.write("        });\n");
       out.write("        \n");
+      out.write("        renderListComensales(0);\n");
+      out.write("        \n");
+      out.write("        $('#tipoRFuncionario').on('change', function() { \n");
+      out.write("            renderListComensales(this.value)\n");
+      out.write("        });\n");
+      out.write("        \n");
       out.write("         $('.form_guardar').bootstrapValidator({\n");
       out.write("            message: 'This value is not valid',\n");
       out.write("            feedbackIcons: {\n");
@@ -272,18 +265,20 @@ public final class crearReporte_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("            \n");
       out.write("        });\n");
       out.write("        \n");
-      out.write("//        $(\".btnReport\").click(function () {\n");
-      out.write("//            var a = document.createElement(\"a\");\n");
-      out.write("//            a.target = \"_blank\";\n");
-      out.write("//            a.href = \"generarReporte.jsp\";\n");
-      out.write("//            a.click();\n");
-      out.write("//            $.post('generarReporte.jsp',\n");
-      out.write("//                  {fechaInicio : $('#datepicker1').val(),\n");
-      out.write("//                   fechaFinal : $('#datepicker2').val(),\n");
-      out.write("//                   tipoComensal: $('idComensal').val(),\n");
-      out.write("//                   tipoComida: $('idComida').val()}\n");
-      out.write("//            );\n");
-      out.write("//        });\n");
+      out.write("        function renderListComensales(idTipoComensal){\n");
+      out.write("            $.post('listaComensal.jsp',\n");
+      out.write("                {idTipoComensal:idTipoComensal},\n");
+      out.write("                        function (html) {\n");
+      out.write("                        $(\"#listaRComensales\").removeClass('loader');\n");
+      out.write("                        $(\"#listaRComensales\").html(html);\n");
+      out.write("                        }\n");
+      out.write("                 ).fail(function (jqXHR, textStatus, errorThrown)\n");
+      out.write("            {\n");
+      out.write("                    var alerta = \"<p class='bg-danger'>error: \"+errorThrown+\"</p>\";\n");
+      out.write("                    $(\"#listaRComensales\").removeClass('loader');\n");
+      out.write("                    $(\"#listaRComensales\").html(alerta);\n");
+      out.write("           }); \n");
+      out.write("        }\n");
       out.write("    });\n");
       out.write("\n");
       out.write("\n");

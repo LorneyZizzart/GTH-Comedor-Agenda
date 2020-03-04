@@ -47,7 +47,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-6">
           <!-- small box -->
-          <div class="small-box bg-yellow">
+          <div class="small-box bg-yellow table-responsive no-padding">
             <div class="inner">
               <h4><%=lista.get(0).getNombreComensal()%><span class="pull-right" style="font-weight: normal; font-size: 15px;"><%=lista.get(0).getDiasAnticipacion()%> días de anticipación</span></h4>
 
@@ -115,7 +115,7 @@
         </div>
         <div class="col-sm-12 col-md-6">
           <!-- small box -->
-          <div class="small-box bg-green">
+          <div class="small-box bg-green table-responsive no-padding">
             <div class="inner">
                 <h4><%=lista.get(1).getNombreComensal()%><span class="pull-right" style="font-weight: normal; font-size: 15px;"><%=lista.get(1).getDiasAnticipacion()%> días de anticipación</span></h4>
 

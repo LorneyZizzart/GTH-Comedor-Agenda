@@ -79,13 +79,19 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write('\n');
 
    List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
-    int idEmpleado = Integer.parseInt(request.getParameter("idEmpleado"));
+   List<C_TipoComensal> listaComensalExterno = new ArrayList();  
     int idRepeticion = Integer.parseInt(request.getParameter("idRepeticion"));
     String fi = request.getParameter("fi");
     String ff = request.getParameter("ff");
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
-    
+    String idEmpleado[] = request.getParameter("idEmpleado").split("%");
+    int tipoFuncionario = 0;
+    try {
+        tipoFuncionario = Integer.parseInt(request.getParameter("tipoFuncionario"));
+    }catch(Exception e){
+        
+    }
     try { 
         
         if (request.getParameterValues("co[]") != null) {
@@ -106,8 +112,24 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
         }
     } catch (Exception e) {
     }
-    
-    listaReservas = _empleadoReserva.getAllReservaEmpleado(idEmpleado, idRepeticion, fi, ff, idsComensal, idsComida);
+        if(tipoFuncionario==0){   
+            if(Integer.parseInt(idEmpleado[1]) == 1){
+               listaReservas = _empleadoReserva.getAllReservaEmpleado(Integer.parseInt(idEmpleado[0]), idRepeticion, fi, ff, idsComensal, idsComida);       
+            }else if(Integer.parseInt(idEmpleado[1]) == 2){
+                listaReservas = _empleadoReserva.getAllReservaEmpleado(0, idRepeticion, fi, ff, idsComensal, idsComida);       
+                listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, 0, fi, ff, idsComensal, idsComida);
+            }else{
+                int idComensalExterno =  0;
+                if(Integer.parseInt(idEmpleado[1]) == 0) idComensalExterno =  Integer.parseInt(idEmpleado[0]);
+                listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, idComensalExterno, fi, ff, idsComensal, idsComida);
+            }
+        }else if(tipoFuncionario == 1){
+            listaReservas = _empleadoReserva.getAllReservaEmpleado(Integer.parseInt(idEmpleado[0]), idRepeticion, fi, ff, idsComensal, idsComida);      
+        }else if(tipoFuncionario == 2){   
+            int idComensalExterno =  0;
+            if(Integer.parseInt(idEmpleado[1]) == 0) idComensalExterno =  Integer.parseInt(idEmpleado[0]);
+            listaComensalExterno = _empleadoReserva.getAllComensalExterno(idRepeticion, idComensalExterno, fi, ff, idsComensal, idsComida);
+        }
 
       out.write("\n");
       out.write("        <div class=\"col-xs-12\">            \n");
@@ -136,6 +158,11 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                                <th>Comensal</th>\n");
       out.write("                            </tr>\n");
       out.write("                        </thead>\n");
+      out.write("                        ");
+
+                                if(tipoFuncionario == 1 || tipoFuncionario == 0){
+                        
+      out.write("\n");
       out.write("                        <tbody>\n");
       out.write("                            ");
 
@@ -223,6 +250,125 @@ public final class listaReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
                             
       out.write("\n");
       out.write("                        </tbody>\n");
+      out.write("                        ");
+
+                                }
+                        
+      out.write("\n");
+      out.write("                        ");
+
+                                if(tipoFuncionario == 0){
+                        
+      out.write("\n");
+      out.write("                        <tbody>\n");
+      out.write("                            <tr style=\"background-color: #511583; color: #fff;\">\n");
+      out.write("                                <th colspan=\"14\" style=\"border-color: #511583;\">COMENSALES EXTERNOS</th>\n");
+      out.write("                            </tr>\n");
+      out.write("                        </tbody>\n");
+      out.write("                        ");
+
+                                }
+                        
+      out.write("\n");
+      out.write("                        ");
+
+                                if(tipoFuncionario == 2 || tipoFuncionario == 0){
+                        
+      out.write("\n");
+      out.write("                        <tbody>\n");
+      out.write("                            ");
+
+                                int contadorE = 0;
+                                for (C_TipoComensal item : listaComensalExterno) {
+                                    contadorE++;
+                            
+      out.write("\n");
+      out.write("                            <tr>\n");
+      out.write("                                <td>");
+      out.print(contadorE);
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print(item.getNombreEmpleado());
+      out.write("</td>                         \n");
+      out.write("                                <td>");
+      out.print( item.getNombreComida());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getFecha());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getCantidad());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getCosto());
+      out.write(" Bs.</td>  \n");
+      out.write("                                                             \n");
+      out.write("                                ");
+
+                                   if(item.getIdTipoComida() == 1){
+                                      
+      out.write("<td>");
+      out.print( item.getDescuentoDesayuno());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      
+      out.write("<td>");
+      out.print( item.getDescuentoAlmuerzo());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      
+      out.write("<td>");
+      out.print( item.getDescuentoCena());
+      out.write(" Bs.</td>");
+  
+                                   }
+                                
+      out.write("\n");
+      out.write("                                <td>");
+      out.print( item.getDescuentoAdicional());
+      out.write(" Bs.</td>\n");
+      out.write("                                ");
+
+                                   if(item.getIdTipoComida() == 1){
+                                      
+      out.write("<td>");
+      out.print(((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      
+      out.write("<td>");
+      out.print( ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      
+      out.write("<td>");
+      out.print( ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+  
+                                   }
+                                
+      out.write("\n");
+      out.write("                                <td>");
+      out.print( item.getNombreComensal());
+      out.write("</td>\n");
+      out.write("                            </tr>\n");
+      out.write("                            ");
+
+                                }
+                            
+      out.write("\n");
+      out.write("                                \n");
+      out.write("\n");
+      out.write("                        </tbody>\n");
+      out.write("                        ");
+
+                                }
+                        
+      out.write("\n");
       out.write("                        <tfoot>\n");
       out.write("                            <tr>\n");
       out.write("                                <th>#</th>\n");

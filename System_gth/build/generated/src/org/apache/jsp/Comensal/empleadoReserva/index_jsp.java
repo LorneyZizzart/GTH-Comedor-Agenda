@@ -490,11 +490,13 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <div class=\"row\">\n");
       out.write("        <div class=\"col-sm-12 col-md-6\">\n");
       out.write("          <!-- small box -->\n");
-      out.write("          <div class=\"small-box bg-yellow\">\n");
+      out.write("          <div class=\"small-box bg-yellow table-responsive no-padding\">\n");
       out.write("            <div class=\"inner\">\n");
       out.write("              <h4>");
       out.print(lista.get(0).getNombreComensal());
-      out.write("</h4>\n");
+      out.write("<span class=\"pull-right\" style=\"font-weight: normal; font-size: 15px;\">");
+      out.print(lista.get(0).getDiasAnticipacion());
+      out.write(" días de anticipación</span></h4>\n");
       out.write("\n");
       out.write("               <table class=\"table table-bordered\">\n");
       out.write("                <tr>\n");
@@ -511,7 +513,10 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
                     
       out.write("\n");
       out.write("                  <tr>\n");
-      out.write("                  <td>");
+      out.write("                  <td>(");
+      out.print(item.getHora());
+      out.write(')');
+      out.write(' ');
       out.print(item.getNombreComida());
       out.write("</td>\n");
       out.write("                  <td>");
@@ -526,8 +531,8 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print(lista.get(0).getDescuentoDesayuno());
       out.write(" Bs.</td>\n");
       out.write("                  <td>");
-      out.print(lista.get(0).getDiasAnticipacion());
-      out.write(" Dia</td>\n");
+      out.print(item.getHorasAnticipacion());
+      out.write(" Horas</td>\n");
       out.write("                  ");
             
                     }
@@ -538,8 +543,8 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print(lista.get(0).getDescuentoAlmuerzo());
       out.write(" Bs.</td>\n");
       out.write("                  <td>");
-      out.print(lista.get(0).getDiasAnticipacion());
-      out.write(" Dia</td>\n");
+      out.print(item.getHorasAnticipacion());
+      out.write(" Horas</td>\n");
       out.write("                  ");
             
                    }
@@ -550,8 +555,8 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print(lista.get(0).getDescuentoCena());
       out.write(" Bs.</td>\n");
       out.write("                  <td>");
-      out.print(lista.get(0).getDiasAnticipacion());
-      out.write(" Dia</td>\n");
+      out.print(item.getHorasAnticipacion());
+      out.write(" Horas</td>\n");
       out.write("                  ");
             
                    }
@@ -602,11 +607,13 @@ contadorO++;}
       out.write("        </div>\n");
       out.write("        <div class=\"col-sm-12 col-md-6\">\n");
       out.write("          <!-- small box -->\n");
-      out.write("          <div class=\"small-box bg-green\">\n");
+      out.write("          <div class=\"small-box bg-green table-responsive no-padding\">\n");
       out.write("            <div class=\"inner\">\n");
-      out.write("              <h4>");
+      out.write("                <h4>");
       out.print(lista.get(1).getNombreComensal());
-      out.write("</h4>\n");
+      out.write("<span class=\"pull-right\" style=\"font-weight: normal; font-size: 15px;\">");
+      out.print(lista.get(1).getDiasAnticipacion());
+      out.write(" días de anticipación</span></h4>\n");
       out.write("\n");
       out.write("               <table class=\"table table-bordered\">\n");
       out.write("                <tr>\n");
@@ -623,9 +630,12 @@ contadorO++;}
                 
       out.write(" \n");
       out.write("                <tr>\n");
-      out.write("                  <th>");
+      out.write("                    <th>(");
+      out.print(item.getHora());
+      out.write(')');
+      out.write(' ');
       out.print(item.getNombreComida());
-      out.write("</th>\n");
+      out.write(" </th>\n");
       out.write("                  <td>");
       out.print(item.getCosto());
       out.write(" Bs.</td>\n");
@@ -638,8 +648,8 @@ contadorO++;}
       out.print(lista.get(1).getDescuentoDesayuno());
       out.write(" Bs.</td>\n");
       out.write("                  <td>");
-      out.print(lista.get(1).getDiasAnticipacion());
-      out.write(" Dias</td>\n");
+      out.print(item.getHorasAnticipacion());
+      out.write(" Horas</td>\n");
       out.write("                  ");
             
                     }
@@ -650,8 +660,8 @@ contadorO++;}
       out.print(lista.get(1).getDescuentoAlmuerzo());
       out.write(" Bs.</td>\n");
       out.write("                  <td>");
-      out.print(lista.get(1).getDiasAnticipacion());
-      out.write(" Dias</td>\n");
+      out.print(item.getHorasAnticipacion());
+      out.write(" Horas</td>\n");
       out.write("                  ");
             
                     }
@@ -662,8 +672,8 @@ contadorO++;}
       out.print(lista.get(1).getDescuentoCena());
       out.write(" Bs.</td>\n");
       out.write("                  <td>");
-      out.print(lista.get(1).getDiasAnticipacion());
-      out.write(" Dias</td>\n");
+      out.print(item.getHorasAnticipacion());
+      out.write(" Horas</td>\n");
       out.write("                  ");
             
                     }
@@ -736,9 +746,9 @@ contadorM++;}
       out.write("              <div class=\"row\">\n");
       out.write("                <div class=\"col-sm-12 col-md-6 border-right\">\n");
       out.write("                  <div class=\"description-block\">\n");
-      out.write("                    <p style=\"color: #909090; margin: 0;\">Victor Hugo Lima Carrillo</p>\n");
-      out.write("                    <span class=\"description-text\">Recursos Humanos</span>\n");
-      out.write("                    <h5 class=\"description-header\">72137304</h5>\n");
+      out.write("                    <p style=\"color: #909090; margin: 0;\">Sandra Mischel Charcas Enriquez</p>\n");
+      out.write("                    <span class=\"description-text\">GESTIÓN DEL TALENTO HUMANO</span>\n");
+      out.write("                    <h5 class=\"description-header\">71724382</h5>\n");
       out.write("                  </div>\n");
       out.write("                  <!-- /.description-block -->\n");
       out.write("                </div>\n");

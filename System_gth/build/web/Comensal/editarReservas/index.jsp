@@ -46,7 +46,7 @@
     <div class="box box-purple" >
             <div class="box-header">
                 <div class="row">
-                    <div class="col-sm-12 col-md-3">
+                    <div class="col-sm-12 col-md-5">
                         <div class="form-group">
                             <label class="col-md-3 control-label" style="padding: 0;">Tipo funcionario:</label>
                             <div class="col-md-9 col-xs-12 input-group">
@@ -58,10 +58,10 @@
                             </div>                        
                         </div>  
                     </div>
-                    <div class="col-sm-12 col-md-4">
+                    <div class="col-sm-12 col-md-3">
                          <div class="form-group">
-                                <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de comensal:</label>
-                                <div class="col-md-9 col-xs-12 input-group">
+                                <label class="col-md-4 control-label" style="padding: 1% 0 0 0;">Tipos de comensal:</label>
+                                <div class="col-md-8 col-xs-12 input-group">
                                    <select id="idTipoCo" name="idTipoCo" class="form-control selectComensal" multiple="multiple" data-placeholder="Selelcione una opción"
                                         style="width: 100%;">
                                        <option value="0" selected>Todos</option>
@@ -79,7 +79,7 @@
                                 
                               </div>      
                     </div>
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-4">
                         <div class="form-group">
                             <label class="col-md-3 control-label" style="padding: 1% 0 0 0;">Tipos de alimento:</label>
                             <div class="col-md-9 col-xs-12 input-group">
@@ -102,8 +102,8 @@
                     </div>
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
-                            <label class="col-md-3 control-label" style="padding: 2% 0 0 0;">Comensal:</label>
-                            <div class="col-md-9 col-xs-12 input-group">
+                            <label class="col-md-5 col-sm-12 col-lg-4 control-label" style="padding: 2% 0 0 0;">Comensal:</label>
+                            <div class="col-md-6 col-sm-12 col-lg-8 input-group">
                                 <div id="listaComensal"></div>
                             </div>                            
                         </div>
@@ -203,7 +203,7 @@
             if(<%=palabra%> == "2"){
                 fechaInicio = '<%=Fecha%>'; 
                 fechaFinal = '<%=Fecha%>';
-                renderTable( <%=IdTipoComensal%>, 2, formato(fechaInicio), formato(fechaFinal), ['0'], ['<%=IdTipoComida%>'], 0, $('#tipoFuncionario').val());
+                renderTable( '<%=IdTipoComensal%>'+'%1', 2, formato(fechaInicio), formato(fechaFinal), ['0'], ['<%=IdTipoComida%>'], 0, $('#tipoFuncionario').val());
             }else{
                 renderTable("0%2", $('#idRepeat').val(), fechaInicio, fechaFinal, $('#idTipoCo').val(), $('#idTipoAl').val(), 0, $('#tipoFuncionario').val());
             }

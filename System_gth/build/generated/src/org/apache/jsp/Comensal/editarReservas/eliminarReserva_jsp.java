@@ -63,13 +63,19 @@ public final class eliminarReserva_jsp extends org.apache.jasper.runtime.HttpJsp
       out.write('\n');
 
     C_Empleado_Reserva empleadoReserva = new C_Empleado_Reserva();
-    String idReserva = _encript.ValorADesencriptar(request.getParameter("id"));
-    empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva));
+    String[] idReserva = request.getParameter("id").split("%");
+    if(Integer.parseInt(idReserva[1]) == 1){
+        empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva[0]));
+    }else{
+        empleadoReserva = _empleadoReserva.getReservaExternoById(Integer.parseInt(idReserva[0]));
+    }
 
       out.write("\n");
       out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
       out.write("            <input type=\"hidden\" value=\"");
-      out.print(idReserva);
+      out.print(idReserva[0]);
+      out.write('%');
+      out.print(idReserva[1]);
       out.write("\" name=\"idReserva\" id=\"idReserva\">\n");
       out.write("                    <div class=\"box-body\">\n");
       out.write("                        <div class=\"form-group\">\n");

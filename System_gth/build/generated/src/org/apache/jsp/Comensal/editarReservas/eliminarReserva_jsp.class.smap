@@ -8,11 +8,9 @@ Comensal/editarReservas/eliminarReserva.jsp
 *L
 1:45
 2,2:46,9
-5,4:65
-8,2:69
-10:71,3
-11,3:74
-14:77,3
+5,8:65
+12,2:73
+14:75,5
 15,3:80
 18:83,3
 19,3:86
@@ -21,5 +19,7 @@ Comensal/editarReservas/eliminarReserva.jsp
 26:95,3
 27,3:98
 30:101,3
-31,27:104
+31,3:104
+34:107,3
+35,27:110
 *E

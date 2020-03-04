@@ -84,6 +84,15 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
         }
       }
       out.write('\n');
+      Controlador.C_EmpleadoReservaController consultarComensal = null;
+      synchronized (_jspx_page_context) {
+        consultarComensal = (Controlador.C_EmpleadoReservaController) _jspx_page_context.getAttribute("consultarComensal", PageContext.PAGE_SCOPE);
+        if (consultarComensal == null){
+          consultarComensal = new Controlador.C_EmpleadoReservaController();
+          _jspx_page_context.setAttribute("consultarComensal", consultarComensal, PageContext.PAGE_SCOPE);
+        }
+      }
+      out.write('\n');
 
     List<Usuario> Usuarios = new ArrayList<Usuario>();
     Usuarios = _consultaUser.GetAllUser();
@@ -94,6 +103,8 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     listaComensal = _tipoComensal.getAllTipoComensal();
     
+    List<Usuario> listExternos = new ArrayList<Usuario>();
+    listExternos = consultarComensal.getNombresComensalesExternos();
 //    DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 //    String dataStart = request.getParameter("fechaInicio");
 //    String dataNow = request.getParameter("fechaNow");
@@ -116,6 +127,39 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                                No funcionario\n");
       out.write("                            </label>\n");
       out.write("                        </div>\n");
+      out.write("                        <div id=\"calidad\" class=\"form-group\">\n");
+      out.write("                            <label >En calidad:</label>\n");
+      out.write("                                   <select id=\"idCalidad\" name=\"idCalidad\" class=\"form-control\" data-placeholder=\"Selelcione una opción\"style=\"width: 100%;\">\n");
+      out.write("                                   <option value=\"0\">Nuevo</option>\n");
+      out.write("                                   <option value=\"1\">Antiguo</option>\n");
+      out.write("                            </select>                                \n");
+      out.write("                        </div>\n");
+      out.write("                        <div id=\"idComensalExterno\" class=\"form-group\">\n");
+      out.write("                            <label class=\"control-label\" style=\"padding: 2% 0 0 0;\">Comensal externo</label>\n");
+      out.write("                            <div class=\"input-group\" style=\"width: 100%;\">\n");
+      out.write("                              <select id=\"idEmpleadoExterno\" name=\"idEmpleadoExterno\" class=\"form-control selectFuncionario\" style=\"width: 100%;\">\n");
+      out.write("                                  <option value=\"0\" selected disabled>Selecione un comensal</option>\n");
+      out.write("                              ");
+
+                                        for(Usuario item : listExternos){
+                                            if(item.getEstado() == 1){
+                                                
+      out.write("\n");
+      out.write("                                       <option value=\"");
+      out.print(item.getEmpleado_id());
+      out.write('"');
+      out.write('>');
+      out.print(item.getNombre());
+      out.write("</option>\n");
+      out.write("                                        ");
+
+                                            }
+                                        }
+                             
+      out.write("\n");
+      out.write("                            </select>  \n");
+      out.write("                            </div>                        \n");
+      out.write("                        </div>\n");
       out.write("                        <div id=\"nombreComensal\" class=\"form-group\">\n");
       out.write("                            <label for=\"nombreCompleto\">Nombre completo</label>\n");
       out.write("                            <input type=\"text\" class=\"form-control\" id=\"nombreCompleto\" name=\"nombreCompleto\">\n");
@@ -125,31 +169,31 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                            <input type=\"number\" class=\"form-control\" id=\"celular\" name=\"celular\">\n");
       out.write("                        </div>\n");
       out.write("                        <div id=\"idComensal\" class=\"form-group\">\n");
-      out.write("                        <label class=\"control-label\" style=\"padding: 2% 0 0 0;\">Comensal</label>\n");
-      out.write("                        <div class=\"input-group\" style=\"width: 100%;\">\n");
-      out.write("                          <select id=\"idEmpleado\" name=\"idEmpleado\" class=\"form-control selectFuncionario\" style=\"width: 100%;\">\n");
-      out.write("                              <option value=\"0\" selected disabled>Selecione un funcionario</option>\n");
-      out.write("                          ");
+      out.write("                            <label class=\"control-label\" style=\"padding: 2% 0 0 0;\">Comensal</label>\n");
+      out.write("                            <div class=\"input-group\" style=\"width: 100%;\">\n");
+      out.write("                              <select id=\"idEmpleado\" name=\"idEmpleado\" class=\"form-control selectFuncionario\" style=\"width: 100%;\">\n");
+      out.write("                                  <option value=\"0\" selected disabled>Selecione un funcionario</option>\n");
+      out.write("                              ");
 
-                                    for(Usuario item : Usuarios){
-                                        if(item.getEstado() == 1){
-                                            
+                                        for(Usuario item : Usuarios){
+                                            if(item.getEstado() == 1){
+                                                
       out.write("\n");
-      out.write("                                   <option value=\"");
+      out.write("                                       <option value=\"");
       out.print(item.getUser_id());
       out.write('"');
       out.write('>');
       out.print(item.getNombre());
       out.write("</option>\n");
-      out.write("                                    ");
+      out.write("                                        ");
 
+                                            }
                                         }
-                                    }
-                         
+                             
       out.write("\n");
-      out.write("                        </select>  \n");
-      out.write("                        </div>                        \n");
-      out.write("                      </div>\n");
+      out.write("                            </select>  \n");
+      out.write("                            </div>                        \n");
+      out.write("                        </div>\n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label>Fecha</label>\n");
       out.write("                            <div class=\"input-group date\">\n");
@@ -174,35 +218,34 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                            </label>\n");
       out.write("                        </div>  \n");
       out.write("                       <input type=\"hidden\" value=\"0\" name=\"tipoComensal\" id=\"tipoComensal\">\n");
-      out.write("                        <div class=\"row\">\n");
-      out.write("                        ");
+      out.write("\n");
+      out.write("                        <div class=\"form-group\">\n");
+      out.write("                            <label class=\"control-label\" style=\"padding: 2% 0 0 0;\">Comida</label>\n");
+      out.write("                            <div class=\"input-group\" style=\"width: 100%;\">\n");
+      out.write("                              <select id=\"idTipoComida\" name=\"idTipoComida\" class=\"form-control\" style=\"width: 100%;\">\n");
+      out.write("                                ");
 
-                            int contador = 0;    
-                            for(C_TipoComida item : listaTipoComida){
-                                contador++;
-                                    String estado = "";
-                                                                                                        
-                                    if(item.getEstado() == 1){
-                        
+                                    for(C_TipoComida item : listaTipoComida){
+                                
       out.write("\n");
-      out.write("                        <label class=\"col-md-3 \">\n");
-      out.write("                            <input type=\"checkbox\" class=\"minimal posicion");
-      out.print(contador);
-      out.write("\"> ");
+      out.write("                                    <option value=\"");
+      out.print(item.getIdTipoComida());
+      out.write('"');
+      out.write('>');
       out.print(item.getNombreComida());
+      out.write("</option>\n");
+      out.write("                                ");
+
+                                    }
+                                
       out.write("\n");
-      out.write("                        </label>\n");
-      out.write("                        <div class=\"form-group col-md-9 \" >\n");
-      out.write("                            <input type=\"number\" class=\"form-control cantidad");
-      out.print(contador);
-      out.write("\" name=\"cantidad");
-      out.print(item.getNombreComida());
-      out.write("\" disabled>\n");
-      out.write("                        </div>\n");
-      out.write("                        ");
-}}
-      out.write("\n");
+      out.write("                            </select>  \n");
+      out.write("                            </div>                        \n");
       out.write("                        </div> \n");
+      out.write("                        <div class=\"form-group\" >\n");
+      out.write("                            <label>Cantidad</label>\n");
+      out.write("                            <input type=\"number\" class=\"form-control\" id=\"cantidad\"  name=\"cantidad\" value=\"1\">                            \n");
+      out.write("                        </div>\n");
       out.write("                        <div class=\"form-group\">\n");
       out.write("                            <label>Observaciones</label>\n");
       out.write("                            <textarea class=\"form-control\" rows=\"3\" id=\"observacion\"  name=\"observacion\"></textarea>\n");
@@ -220,6 +263,8 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("        $('#errorDate').hide();\n");
       out.write("        $('#nombreComensal').hide(); \n");
       out.write("        $('#celularComensal').hide()\n");
+      out.write("        $('#calidad').hide();\n");
+      out.write("        $('#idComensalExterno').hide()\n");
       out.write("        for(var i = 0; i <= $('#lengthComida').val(); i++){\n");
       out.write("                    $('.posicion'+i).attr('disabled', true)\n");
       out.write("        } \n");
@@ -252,14 +297,29 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                celularComensal\n");
       out.write("                $('#nombreComensal').hide('fast'); \n");
       out.write("                $('#celularComensal').hide('fast'); \n");
+      out.write("                $('#calidad').hide('fast');\n");
+      out.write("                $('#idComensalExterno').hide('fast');\n");
       out.write("                $('#idComensal').show('slow');\n");
       out.write("            }else{\n");
-      out.write("                $('#idComensal').hide('fast');\n");
+      out.write("                $('#idComensal').hide();\n");
       out.write("                $('#nombreComensal').show('slow');\n");
       out.write("                $('#celularComensal').show('slow');\n");
-      out.write("\n");
+      out.write("                $('#calidad').show('slow');\n");
       out.write("            }                \n");
       out.write("        })\n");
+      out.write("        \n");
+      out.write("        $('#idCalidad').on('change', function(){\n");
+      out.write("            if(this.value == 0){\n");
+      out.write("                $('#idComensalExterno').hide();\n");
+      out.write("                $('#nombreComensal').show('slow');\n");
+      out.write("                $('#celularComensal').show('slow');                \n");
+      out.write("                \n");
+      out.write("            }else{\n");
+      out.write("                $('#nombreComensal').hide(); \n");
+      out.write("                $('#celularComensal').hide(); \n");
+      out.write("                $('#idComensalExterno').show('slow');\n");
+      out.write("            }\n");
+      out.write("         })\n");
       out.write("        \n");
       out.write("        $('#datepicker1').on('change', function() {\n");
       out.write("            var dateNow = new Date();\n");
@@ -321,11 +381,11 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                        }\n");
       out.write("                    }\n");
       out.write("                },\n");
-      out.write("                celular:{\n");
-      out.write("                    message: 'El celular no es valido.',\n");
+      out.write("                calidad:{\n");
+      out.write("                    message: 'El empleado no es valido.',\n");
       out.write("                    validators: {\n");
       out.write("                        notEmpty: {\n");
-      out.write("                            message: 'El campo no puede ser vacio. '\n");
+      out.write("                            message: 'Debe seleccionar una opción. '\n");
       out.write("                        }\n");
       out.write("                    }\n");
       out.write("                },\n");
@@ -338,6 +398,22 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                    }\n");
       out.write("                },\n");
       out.write("                fi: {\n");
+      out.write("                    message: 'El campo no es valido.',\n");
+      out.write("                    validators: {\n");
+      out.write("                        notEmpty: {\n");
+      out.write("                            message: 'El campo no puede ser vacio. '\n");
+      out.write("                        }\n");
+      out.write("                    }\n");
+      out.write("                },\n");
+      out.write("                idTipoComida: {\n");
+      out.write("                    message: 'El campo no es valido.',\n");
+      out.write("                    validators: {\n");
+      out.write("                        notEmpty: {\n");
+      out.write("                            message: 'El campo no puede ser vacio. '\n");
+      out.write("                        }\n");
+      out.write("                    }\n");
+      out.write("                },\n");
+      out.write("                cantidad: {\n");
       out.write("                    message: 'El campo no es valido.',\n");
       out.write("                    validators: {\n");
       out.write("                        notEmpty: {\n");
@@ -372,6 +448,7 @@ public final class crearReserva_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("                }\n");
       out.write("            });\n");
       out.write("        });\n");
+      out.write("\n");
       out.write("        \n");
       out.write("    })\n");
       out.write("    \n");

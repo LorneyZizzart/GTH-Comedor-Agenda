@@ -63,7 +63,7 @@ public final class actualizarReserva_jsp extends org.apache.jasper.runtime.HttpJ
 
         empleadoReserva.setObservacion(request.getParameter("observacion"));
         
-        resultado =  _empleadoReserva.EditEmpleadoReservaById(idEmpleadoReserva, empleadoReserva);
+        resultado =  _empleadoReserva.EditEmpleadoReservaCalendario(idEmpleadoReserva, empleadoReserva);
     }catch(Exception e){
         System.out.print("Error: Se ha producido un error al registrar la reserva. " + e);
     }

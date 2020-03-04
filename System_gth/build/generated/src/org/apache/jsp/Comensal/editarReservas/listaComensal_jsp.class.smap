@@ -1,0 +1,19 @@
+SMAP
+listaComensal_jsp.java
+JSP
+*S JSP
+*F
++ 0 listaComensal.jsp
+Comensal/editarReservas/listaComensal.jsp
+*L
+1,4:47
+4,2:50,9
+8,29:70
+36,5:99
+41,3:105
+43:108
+44:109,8
+45:117
+46,3:119
+48,8:122
+*E

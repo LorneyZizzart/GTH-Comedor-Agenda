@@ -49,15 +49,6 @@ public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("\n");
       out.write("\n");
       out.write("\n");
-      Controlador.EncriptionController _encript = null;
-      synchronized (_jspx_page_context) {
-        _encript = (Controlador.EncriptionController) _jspx_page_context.getAttribute("_encript", PageContext.PAGE_SCOPE);
-        if (_encript == null){
-          _encript = new Controlador.EncriptionController();
-          _jspx_page_context.setAttribute("_encript", _encript, PageContext.PAGE_SCOPE);
-        }
-      }
-      out.write('\n');
       Controlador.C_EmpleadoReservaController _empleadoReserva = null;
       synchronized (_jspx_page_context) {
         _empleadoReserva = (Controlador.C_EmpleadoReservaController) _jspx_page_context.getAttribute("_empleadoReserva", PageContext.PAGE_SCOPE);
@@ -78,15 +69,22 @@ public final class editarReserva_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write('\n');
 
     C_Empleado_Reserva empleadoReserva = new C_Empleado_Reserva();
-    String idReserva = _encript.ValorADesencriptar(request.getParameter("id"));
-    empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva));
+    String[] idReserva = request.getParameter("id").split("%");
+    if(Integer.parseInt(idReserva[1]) == 1){
+        empleadoReserva = _empleadoReserva.getReservaEmpleadoById(Integer.parseInt(idReserva[0]));
+    }else{
+        empleadoReserva = _empleadoReserva.getReservaExternoById(Integer.parseInt(idReserva[0]));
+    }
+
     List<C_TipoComensal> listaComensal = new ArrayList<C_TipoComensal>();
     listaComensal = _tipoComensal.getAllTipoComensal();
 
       out.write("\n");
       out.write("<form id=\"form_guardar\" method=\"post\" class=\"form_guardar\">\n");
       out.write("            <input type=\"hidden\" value=\"");
-      out.print(idReserva);
+      out.print(idReserva[0]);
+      out.write('%');
+      out.print(idReserva[1]);
       out.write("\" name=\"idReserva\" id=\"idReserva\">\n");
       out.write("                    <div class=\"box-body\">\n");
       out.write("                        <div class=\"form-group\">\n");

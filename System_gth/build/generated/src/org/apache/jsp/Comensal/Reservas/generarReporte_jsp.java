@@ -96,14 +96,19 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write('\n');
 
     List<C_TipoComensal> listaReservas = new ArrayList<C_TipoComensal>();
+    List<C_TipoComensal> listaReservasExternas = new ArrayList<C_TipoComensal>();
     List<String> idsComensal =  new ArrayList<String>();
     List<String> idsComida = new ArrayList<String>();
 
     String fechaInicio = null;  String fechaFinal = null;
     Boolean orderAlfa = false, orderDate = false;
-    int idEmpleado = Integer.parseInt(request.getParameter("e"));
+    
+    int tipoFuncionario = 0;
+    String[] idComensal = null;
     
     try {
+        tipoFuncionario = Integer.parseInt(request.getParameter("tipoRFuncionario"));
+        idComensal = request.getParameter("idEmpleado").split("%");
         fechaInicio =  request.getParameter("fi");
         fechaFinal = request.getParameter("ff");
         
@@ -142,8 +147,15 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
     }catch(Exception e){
         orderDate = false;
     }
-
-    listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, idEmpleado);
+     
+     if(tipoFuncionario == 0){
+        listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+        listaReservasExternas = _empleadoReserva.getReservasExternasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+    }else if(tipoFuncionario == 1){
+        listaReservas = _empleadoReserva.getReservasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+    }else if(tipoFuncionario == 2){
+       listaReservasExternas = _empleadoReserva.getReservasExternasForParams(fechaInicio, fechaFinal, idsComensal, idsComida, orderAlfa, orderDate, Integer.parseInt(idComensal[0]));
+    }
     
 
       out.write("\n");
@@ -164,7 +176,11 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("</small>\n");
       out.write("        </div>\n");
       out.write("    </div>\n");
-      out.write("    <!-- Table row -->\n");
+      out.write("    ");
+
+    if(tipoFuncionario == 0 || tipoFuncionario == 1){
+    
+      out.write("\n");
       out.write("    <div class=\"row\">\n");
       out.write("      <div class=\"col-xs-12 table-responsive\">\n");
       out.write("        <table class=\"table table-bordered table-striped\">\n");
@@ -243,9 +259,112 @@ public final class generarReporte_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("      </div>\n");
       out.write("      <!-- /.col -->\n");
       out.write("    </div>\n");
+      out.write("                                                    ");
+
+    }
+    if(tipoFuncionario == 0 || tipoFuncionario == 2){
+                            
+      out.write("\n");
+      out.write("                            <h4 style=\"font-weight: bold;\">COMENSALES EXTERNOS</h4>                       \n");
+      out.write("    <div class=\"row\">\n");
+      out.write("      <div class=\"col-xs-12 table-responsive\">\n");
+      out.write("        <table class=\"table table-bordered table-striped\">\n");
+      out.write("          <thead\n");
+      out.write("                            \n");
+      out.write("                            <tr>\n");
+      out.write("                                <th>#</th>\n");
+      out.write("                                <th>Nombre completo</th>\n");
+      out.write("                                <th>Tipo de alimento</th>\n");
+      out.write("                                <th style=\"width: 8%\">Fecha</th>\n");
+      out.write("                                <th>Cantidad</th>\n");
+      out.write("                                <th style=\"width: 10%\">Precio total</th>\n");
+      out.write("                                <th>Comensal</th>\n");
+      out.write("                                <th class=\"text-center\" style=\"width: 15%;\">Firma</th>\n");
+      out.write("                            </tr>\n");
+      out.write("                        </thead>\n");
+      out.write("                        <tbody>\n");
+      out.write("                            ");
+
+                                int contadorE = 0;
+                                for (C_TipoComensal item : listaReservasExternas) {
+                                    contadorE++;
+
+                            
+      out.write("\n");
+      out.write("                            <tr>\n");
+      out.write("                                <td>");
+      out.print(contadorE);
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print(item.getNombreEmpleado());
+      out.write("</td>                         \n");
+      out.write("                                <td>");
+      out.print( item.getNombreComida());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getFecha());
+      out.write("</td>\n");
+      out.write("                                <td>");
+      out.print( item.getCantidad());
+      out.write("</td>\n");
+      out.write("    \n");
+      out.write("                                ");
+
+                                   if(item.getIdTipoComida() == 1){
+                                      
+      out.write("<td>");
+      out.print(((item.getCosto()-item.getDescuentoDesayuno())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 2){
+                                      
+      out.write("<td>");
+      out.print( ((item.getCosto()-item.getDescuentoAlmuerzo())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+ 
+                                   }else if(item.getIdTipoComida() == 3){
+                                      
+      out.write("<td>");
+      out.print( ((item.getCosto()-item.getDescuentoCena())-item.getDescuentoAdicional())*item.getCantidad());
+      out.write(" Bs.</td>");
+  
+                                   }
+                                
+      out.write("\n");
+      out.write("                                <td>");
+      out.print( item.getNombreComensal());
+      out.write("</td>\n");
+      out.write("                                <td></td>\n");
+      out.write("                            </tr>\n");
+      out.write("                            ");
+
+                                }
+                            
+      out.write("\n");
+      out.write("                        </tbody>\n");
+      out.write("        </table>\n");
+      out.write("      </div>\n");
+      out.write("      <!-- /.col -->\n");
+      out.write("    </div>\n");
+      out.write("                            ");
+}
+      out.write("\n");
       out.write("    <!-- /.row -->\n");
       out.write("    <!-- /.row -->\n");
       out.write("  </section>\n");
+      out.write("    <section>\n");
+      out.write("        <div style=\"text-align: center; margin-top: 100px; padding-top: 100px;\">\n");
+      out.write("            <div style=\"border-top: 1px solid #716f6f;\n");
+      out.write("                        margin: 0 30% 0 30%;\n");
+      out.write("                        border-style: dotted;\n");
+      out.write("                        border-bottom: none;\n");
+      out.write("                        border-left: none;\n");
+      out.write("                        border-right: none;\">\n");
+      out.write("                <p style=\"margin: 0;\">Dina Gladys Mena Sarco</p>\n");
+      out.write("                <span style=\"text-transform: uppercase; color: #909090;\">ADMINISTRADOR DEL COMEDOR</span>\n");
+      out.write("            </div>\n");
+      out.write("        </div>                        \n");
+      out.write("    </section>\n");
       out.write("  <!-- /.content -->\n");
       out.write("</div>\n");
       out.write("<!-- ./wrapper -->\n");

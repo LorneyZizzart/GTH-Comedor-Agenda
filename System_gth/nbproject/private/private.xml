@@ -12,15 +12,26 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/guardarReserva.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/masterPage/complemento/head.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/Reservas/generarReporte.jsp</file>
             <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/listaComensal.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/Reservas/listaReserva.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/C_ComensalExterno.java</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/Reservas/crearReporte.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/guardarActulizacionReserva.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/crearReporte.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/listaReserva.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/UsuarioController.java</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/guardarReserva.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/empleadoReserva/index.jsp</file>
             <file>file:/E:/Proyectos/GTH/System_gth/src/java/Controlador/C_EmpleadoReservaController.java</file>
             <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/crearReserva.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/UsuarioModel.java</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/src/java/Entidad/Usuario.java</file>
             <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/generarReporte.jsp</file>
             <file>file:/E:/Proyectos/GTH/System_gth/src/java/Modelo/C_EmpleadoReservaModel.java</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/crearReporte.jsp</file>
             <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/index.jsp</file>
-            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/editarReservas/listaReserva.jsp</file>
+            <file>file:/E:/Proyectos/GTH/System_gth/web/Comensal/Reservas/index.jsp</file>
         </group>
     </open-files>
 </project-private>
