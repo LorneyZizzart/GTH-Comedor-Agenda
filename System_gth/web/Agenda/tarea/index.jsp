@@ -5,7 +5,7 @@
 <%    HttpSession sesionmenus = request.getSession();
     if (sesionmenus.getAttribute("USUARIO") != null) {
 %>
-<%@ include file= "../../masterPage/complemento/menu.jsp" %> 
+<%@ include file= "../../masterPage/complemento/menu.jsp" %>     
 <%    }
 %>
 <jsp:useBean id="_tarea" class="Controlador.A_TareaController" />
@@ -20,6 +20,7 @@
     String[] listaRe = new String[]{"Todo", "Hoy", "Semanal", "Quincenal", "Mensual", "Semestral", "Anual", "Predeterminado" , "General"};
     listaR = _repeticion.getAllRepeticionTarea();
 %>
+<!---->
 <input type="hidden" value="<%=DatoUsuario.getUser_id()%>" name="idUsuario" id="idUsuario">
 <section class="content-header">
     <h1>
