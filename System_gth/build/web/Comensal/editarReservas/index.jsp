@@ -103,7 +103,7 @@
                     <div class="col-sm-12 col-md-3">
                         <div class="form-group">
                             <label class="col-md-5 col-sm-12 col-lg-4 control-label" style="padding: 2% 0 0 0;">Comensal:</label>
-                            <div class="col-md-6 col-sm-12 col-lg-8 input-group">
+                            <div class="col-md-6 col-sm-12 col-lg-8" style="padding: 0;">
                                 <div id="listaComensal"></div>
                             </div>                            
                         </div>
